@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 
 import Navigation from "@/components/Navigation";
+import { useLoading } from "@/contexts/LoadingContext";
 
 import heroPoster from "./assets/assests/hero bg.png";
 import servicesBg from "./assets/assests/service bg.png";
@@ -23,6 +24,7 @@ import adsImg from "./assets/assests/ads.png";
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 const Index = () => {
+  const { isLoaded } = useLoading();
   const heroRef = useRef<HTMLDivElement | null>(null);
   const servicesRef = useRef<HTMLDivElement | null>(null);
   const statsRef = useRef<HTMLDivElement | null>(null);
@@ -30,6 +32,8 @@ const Index = () => {
   const floatRef = useRef<HTMLDivElement[]>([]);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
+  const ctaSectionRef = useRef<HTMLElement | null>(null);
+  const magneticBtnRef = useRef<HTMLButtonElement | null>(null);
 
   const [highlightMode, setHighlightMode] = useState<"typical" | "dynamic">(
     "typical",
@@ -80,7 +84,7 @@ const Index = () => {
 
   /* ------- Micro Animations ------- */
   useEffect(() => {
-    if (!enableMotion()) return;
+    if (!enableMotion() || !isLoaded) return;
 
     // Floating ambient auras
     floatRef.current.forEach((el, i) => {
@@ -97,18 +101,33 @@ const Index = () => {
 
     // HERO reveal + spotlight follow
     if (heroRef.current) {
-      gsap.timeline().fromTo(
+      // Force ScrollTrigger to recognize the new layout after loader is gone
+      ScrollTrigger.refresh();
+
+      gsap.timeline({ delay: 0.1 }).fromTo(
         heroRef.current.querySelectorAll(".hero-el"),
-        { opacity: 0, y: 28, filter: "blur(6px)" },
+        { opacity: 0, y: 30, filter: "blur(10px)" },
         {
           opacity: 1,
           y: 0,
           filter: "blur(0px)",
-          duration: 0.85,
-          stagger: 0.1,
-          ease: "power3.out",
+          duration: 1.2,
+          stagger: 0.15,
+          ease: "expo.out",
         },
       );
+
+      // Hero Marquee Parallax
+      gsap.to(".marquee-parallax", {
+        x: (i, target) => -(target.scrollWidth / 3), // Move left by one set of words
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1.2, // Smooth follow-through
+        },
+      });
 
       const node = heroRef.current;
       const onMove = (e: MouseEvent) => {
@@ -129,7 +148,7 @@ const Index = () => {
         node.removeEventListener("mousemove", onMove);
       };
     }
-  }, []);
+  }, [isLoaded]);
 
   /* ------- Services animations + image parallax only ------- */
   useEffect(() => {
@@ -241,6 +260,71 @@ const Index = () => {
     });
   }, []);
 
+  /* ------- Magnetic Button Effect ------- */
+  useEffect(() => {
+    if (!enableMotion() || !magneticBtnRef.current) return;
+
+    const btn = magneticBtnRef.current;
+    const isTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+    if (isTouch) return;
+
+    const onMove = (e: MouseEvent) => {
+      const rect = btn.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const distanceX = e.clientX - centerX;
+      const distanceY = e.clientY - centerY;
+      const distance = Math.hypot(distanceX, distanceY);
+
+      if (distance < 120) {
+        gsap.to(btn, {
+          x: distanceX * 0.35,
+          y: distanceY * 0.35,
+          duration: 0.4,
+          ease: "power2.out",
+        });
+      } else {
+        gsap.to(btn, {
+          x: 0,
+          y: 0,
+          duration: 0.6,
+          ease: "elastic.out(1, 0.3)",
+        });
+      }
+    };
+
+    window.addEventListener("mousemove", onMove);
+    return () => window.removeEventListener("mousemove", onMove);
+  }, []);
+
+  /* ------- CTA Section Entrance Animation ------- */
+  useEffect(() => {
+    if (!enableMotion() || !ctaSectionRef.current) return;
+
+    const section = ctaSectionRef.current;
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top 80%",
+      },
+    });
+
+    tl.fromTo(
+      section.querySelectorAll(
+        ".promise-badge, h2, .cta-footer, .btn-cta-premium-wrap",
+      ),
+      { opacity: 0, y: 40, filter: "blur(10px)" },
+      {
+        opacity: 1,
+        y: 0,
+        filter: "blur(0px)",
+        stagger: 0.12,
+        duration: 1,
+        ease: "expo.out",
+      },
+    );
+  }, []);
+
   /* ----------------- POLISHED CSS (core fix) ----------------- */
   const localCSS = `
     html, body, #root { -webkit-overflow-scrolling: touch; }
@@ -302,21 +386,23 @@ const Index = () => {
       font-weight: 400;
     }
 
-    /* HERO background spotlight (subtle, premium) */
+    .hero-el { opacity: 0; }
+
+    /* HERO background spotlight (Vibrant & Atmospheric) */
     .hero-spot {
       position: absolute; inset: 0; pointer-events: none;
       background:
-        radial-gradient(700px 420px at var(--mx, 50%) var(--my, 35%), rgba(255,255,255,0.10), transparent 60%),
-        radial-gradient(520px 360px at 15% 30%, rgba(43,192,228,0.14), transparent 62%),
-        radial-gradient(520px 360px at 85% 70%, rgba(255,138,0,0.10), transparent 62%);
+        radial-gradient(900px 500px at var(--mx, 50%) var(--my, 35%), rgba(139, 92, 246, 0.12), transparent 70%),
+        radial-gradient(600px 400px at 10% 20%, rgba(43,192,228,0.18), transparent 65%),
+        radial-gradient(600px 400px at 90% 80%, rgba(236,72,153,0.15), transparent 65%);
       mix-blend-mode: screen;
-      opacity: 0.65;
+      opacity: 0.8;
       transition: opacity 500ms var(--ease-premium);
     }
 
     /* Marquee (lighter) */
     @keyframes hero-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-    .hero-scroll-track { display:flex; animation: hero-scroll 70s linear infinite; will-change: transform; gap: 4rem; }
+    .hero-scroll-track { display:flex; animation: hero-scroll 120s linear infinite; will-change: transform; gap: 4rem; }
     @media (prefers-reduced-motion: reduce) { .hero-scroll-track { animation: none !important; } }
 
     /* Pro Hero Button Primary */
@@ -326,10 +412,11 @@ const Index = () => {
       align-items: center;
       justify-content: center;
       padding: 0.9rem 2.8rem;
-      font-weight: 700;
+      font-weight: 800;
       color: #fff;
-      background: linear-gradient(135deg, #4F46E5 0%, #9333EA 50%, #EC4899 100%);
-      background-size: 200% auto;
+      background: conic-gradient(from 180deg at 50% 50%, #2BC0E4 0deg, #4300FF 120deg, #FF0066 240deg, #2BC0E4 360deg);
+      background-size: 200% 200%;
+      animation: gradient-x 6s infinite alternate;
       border-radius: 9999px;
       transition: all 500ms var(--ease-premium);
       box-shadow: 
@@ -338,8 +425,8 @@ const Index = () => {
         inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
     .hero-btn-pro:hover {
-      background-position: right center;
       transform: translateY(-4px) scale(1.02);
+      filter: brightness(1.1);
       box-shadow: 
         0 20px 40px -10px rgba(79, 70, 229, 0.5),
         0 8px 12px -2px rgba(0, 0, 0, 0.1);
@@ -380,33 +467,39 @@ const Index = () => {
 
     /* Pro Service Cards Refinement */
     .service-premium-card {
-      transition: all 400ms var(--ease-premium);
+      transition: all 500ms var(--ease-premium);
       transform-style: preserve-3d;
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(15, 15, 25, 0.1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 1px rgba(255, 255, 255, 0.05);
     }
     .service-premium-card:hover {
-      transform: translateY(-8px);
-      background: rgba(255, 255, 255, 0.04);
-      border-color: rgba(255, 255, 255, 0.15);
-      box-shadow: 0 40px 80px -15px rgba(0,0,0,0.6);
+      transform: translateY(-12px) scale(1.02);
+      background: rgba(25, 25, 35, 0.6);
+      border-color: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 50px 100px -20px rgba(0,0,0,0.8);
     }
     .service-glow {
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.06) 0%, transparent 60%);
+      background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.08) 0%, transparent 65%);
       opacity: 0;
-      transition: opacity 300ms ease;
+      transition: opacity 400ms ease;
       pointer-events: none;
     }
     .service-premium-card:hover .service-glow {
       opacity: 1;
     }
     .service-img-wrap {
-      transition: transform 500ms var(--ease-premium);
+      transition: transform 600ms var(--ease-premium);
+      filter: drop-shadow(0 0 20px rgba(0,0,0,0.3));
     }
     .service-premium-card:hover .service-img-wrap {
-      transform: scale(1.08) translateY(-5px);
+      transform: scale(1.15) translateY(-8px) translateZ(20px);
     }
 
     /* Professional Button Styling with Theme-Colored Shadows */
@@ -432,6 +525,139 @@ const Index = () => {
         0 24px 48px -12px rgba(236, 72, 153, 0.5),
         0 4px 6px -1px rgba(0, 0, 0, 0.05);
     }
+
+    /* 'Liquid Aura' CTA Button (High-End Glass) */
+    .btn-cta-premium {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem 3.5rem;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #0b1220;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 9999px;
+      transition: all 450ms var(--ease-premium);
+      box-shadow: 
+        0 15px 35px -12px rgba(0, 0, 0, 0.1),
+        0 20px 40px -20px rgba(79, 70, 229, 0.2),
+        0 20px 40px -20px rgba(236, 72, 153, 0.2);
+      overflow: hidden;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    /* Liquid Gradient Inflow Layer */
+    .btn-cta-premium::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: conic-gradient(from 180deg at 50% 50%, #2BC0E4 0deg, #4300FF 120deg, #FF0066 240deg, #2BC0E4 360deg);
+      background-size: 200% 200%;
+      animation: gradient-x 6s infinite alternate;
+      opacity: 0;
+      transform: translateY(100%);
+      transition: all 600ms var(--ease-premium);
+      z-index: 1;
+    }
+
+    .btn-cta-premium span,
+    .btn-cta-premium svg {
+      position: relative;
+      z-index: 2;
+      transition: color 400ms ease;
+    }
+
+    .btn-cta-premium:hover {
+      transform: translateY(-5px) scale(1.05);
+      border-color: rgba(255, 255, 255, 0.5);
+      color: #fff;
+      box-shadow: 
+        0 30px 60px -15px rgba(79, 70, 229, 0.45),
+        0 30px 60px -15px rgba(236, 72, 153, 0.45);
+    }
+    
+    .btn-cta-premium:hover::before {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .promise-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 1.4rem;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: 9999px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      transition: all 400ms var(--ease-premium);
+    }
+    
+    .promise-badge:hover {
+      transform: translateY(-2px);
+      background: #fff;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      border-color: rgba(79, 70, 229, 0.2);
+    }
+
+    .promise-dot-outer {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1rem;
+      height: 1rem;
+    }
+    
+    .promise-dot-inner {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2BC0E4, #EC4899);
+    }
+    
+    .promise-dot-pulse {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px solid rgba(79, 70, 229, 0.4);
+      animation: badge-pulse 2s infinite;
+    }
+
+    @keyframes badge-pulse {
+      0% { transform: scale(1); opacity: 0.5; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    /* Atmospheric Background */
+    .cta-mesh {
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(79, 70, 229, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.04) 0%, transparent 40%);
+      pointer-events: none;
+    }
+    
+    .cta-grid {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      mask-image: radial-gradient(circle at 50% 50%, black, transparent 80%);
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    @keyframes gradient-x { 0%{ background-position: 0% 50%; } 100%{ background-position: 100% 50%; } }
+    @keyframes twinkle { 0%,100%{opacity:.45} 50%{opacity:.9} }
 
     @media (prefers-reduced-motion: reduce) {
       * { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
@@ -477,35 +703,63 @@ const Index = () => {
                 }}
               />
 
-              {/* marquee (kept but positioned tighter so it doesn't create weird whitespace feeling) */}
-              <div className="absolute inset-x-0 top-[15%] sm:top-[18%] pointer-events-none z-0 overflow-hidden opacity-[0.14] select-none">
-                <div className="hero-scroll-track select-none whitespace-nowrap py-4">
-                  {[...Array(4)].map((_, i) => (
-                    <span
-                      key={i}
-                      className="font-black text-[5rem] sm:text-[7.5rem] lg:text-[10rem] leading-none tracking-tighter shrink-0"
-                      style={{
-                        background:
-                          "linear-gradient(to right, #4F46E5 0%, #9333EA 50%, #EC4899 100%)",
-                        WebkitBackgroundClip: "text",
-                        backgroundClip: "text",
-                        color: "transparent",
-                        filter: "none",
-                        marginRight: "6rem",
-                        letterSpacing: "-0.05em",
-                        fontFamily: "'Plus Jakarta Sans', sans-serif",
-                      }}
-                    >
-                      CREATE &nbsp; BUILD &nbsp; GROW&nbsp;
-                    </span>
+              {/* marquee (Enhanced Visibility: Fill + Stroke Mix) */}
+              <div
+                className="absolute inset-x-0 top-[16%] sm:top-[20%] pointer-events-none z-0 overflow-hidden opacity-[0.22] select-none"
+                style={{
+                  maskImage:
+                    "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
+                  WebkitMaskImage:
+                    "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
+                }}
+              >
+                <div className="hero-scroll-track marquee-parallax select-none whitespace-nowrap py-4">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="inline-flex items-center">
+                      <span
+                        className="font-black text-[6.5rem] sm:text-[9.5rem] lg:text-[14rem] leading-none shrink-0 inline-block text-white"
+                        style={{
+                          opacity: 0.12,
+                          marginRight: "4rem",
+                          letterSpacing: "-0.01em",
+                          fontFamily: "'Plus Jakarta Sans', sans-serif",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        CREATE
+                      </span>
+                      <span
+                        className="font-black text-[6.5rem] sm:text-[9.5rem] lg:text-[14rem] leading-none shrink-0 inline-block"
+                        style={{
+                          color: "transparent",
+                          WebkitTextStroke: "2px rgba(255,255,255,0.4)",
+                          marginRight: "4rem",
+                          letterSpacing: "-0.01em",
+                          fontFamily: "'Plus Jakarta Sans', sans-serif",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        BUILD
+                      </span>
+                      <span
+                        className="font-black text-[6.5rem] sm:text-[9.5rem] lg:text-[14rem] leading-none shrink-0 inline-block text-white"
+                        style={{
+                          opacity: 0.12,
+                          marginRight: "4rem",
+                          letterSpacing: "-0.01em",
+                          fontFamily: "'Plus Jakarta Sans', sans-serif",
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        GROW
+                      </span>
+                    </div>
                   ))}
                 </div>
               </div>
 
               <div className="relative z-10 w-full max-w-7xl mx-auto">
-                <span className="hero-el hidden sm:inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm md:text-base font-medium mb-6 hero-tagline-gradient">
-                  
-                </span>
+                <span className="hero-el hidden sm:inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm md:text-base font-medium mb-6 hero-tagline-gradient"></span>
 
                 <h1
                   className="hero-el hero-title-exact tracking-tight mb-4 sm:mb-6 text-white text-[clamp(2.6rem,6.2vw,5.25rem)] leading-[1.03]"
@@ -552,9 +806,9 @@ const Index = () => {
                 {[...Array(8)].map((_, i) => (
                   <span
                     key={i}
-                    className="text-white/80 font-bold text-lg mx-8 tracking-widest uppercase"
+                    className="text-white/80 italic font-serif font-light  text-lg mx-8 tracking-widest "
                   >
-                    &nbsp;•&nbsp; METABULL UNIVERSE &nbsp;•&nbsp;
+                    &nbsp;•&nbsp; MetaBull Universe &nbsp;•&nbsp;
                   </span>
                 ))}
               </div>
@@ -584,10 +838,12 @@ const Index = () => {
                     </div>
                     <h2 className="text-[clamp(2.5rem,5vw,3.75rem)] font-black text-white leading-[1.1] tracking-tight">
                       We build things that <br />
-                      <span className="text-white/40">move the needle.</span>
+                      <span className="bg-clip-text text-transparent bg-[conic-gradient(from_180deg_at_50%_50%,#2BC0E4_0deg,#4300FF_120deg,#FF0066_240deg,#2BC0E4_360deg)] [background-size:200%_200%] animate-[gradient-x_6s_infinite_alternate]">
+                        move the needle.
+                      </span>
                     </h2>
                   </div>
-                  <p className="text-white/50 text-base md:text-lg max-w-sm font-medium leading-relaxed">
+                  <p className="text-white/90 text-base md:text-lg max-w-sm font-medium leading-relaxed">
                     Strategy-led design and engineering for brands that want to
                     lead their industry.
                   </p>
@@ -597,26 +853,26 @@ const Index = () => {
                   {[
                     {
                       tag: "01",
-                      title: "Web Platforms",
-                      text: "High-performance, scalable web ecosystems.",
+                      title: "Strategic Marketing",
+                      text: "ROI-focused performance marketing campaigns.",
                       img: websiteImg,
                     },
                     {
                       tag: "02",
-                      title: "Brand Systems",
+                      title: "Social Media Management",
                       text: "Strategic visual identities that tell your story.",
                       img: brandingImg,
                     },
                     {
                       tag: "03",
-                      title: "Social Growth",
-                      text: "Content that engages and builds community.",
+                      title: "Video Production",
+                      text: "High-impact video content for brands that want to stand out.",
                       img: socialImg,
                     },
                     {
                       tag: "04",
-                      title: "Paid Media",
-                      text: "ROI-focused performance marketing campaigns.",
+                      title: "Web Platforms",
+                      text: "High-performance, scalable web ecosystems.",
                       img: adsImg,
                     },
                   ].map((c, idx) => (
@@ -654,7 +910,7 @@ const Index = () => {
                         <h3 className="text-white text-xl md:text-2xl font-bold leading-tight mb-3">
                           {c.title}
                         </h3>
-                        <p className="text-white/40 text-sm leading-relaxed font-medium group-hover:text-white/60 transition-colors">
+                        <p className="text-white/80 text-sm leading-relaxed font-medium group-hover:text-white transition-opacity duration-300">
                           {c.text}
                         </p>
                       </div>
@@ -857,199 +1113,60 @@ const Index = () => {
               </div>
             </section>
 
-            {/* BIG CARD + TOGGLE */}
-            {/* <section
-              aria-label="EternaCloud Card"
-              className="px-4 sm:px-6 lg:px-8 section-pad-y text-slate-900"
-              style={{ background: "#ffffff" }}
-            >
-              <div className="container mx-auto max-w-7xl">
-                <div
-                  className={`${
-                    highlightMode === "typical"
-                      ? "bg-gradient-to-br from-[#0b1220] to-[#141728] text-white"
-                      : "bg-white text-slate-900"
-                  } w-full rounded-2xl border-none shadow-[0_10px_40px_rgba(0,0,0,0.12)] overflow-hidden p-5 md:p-10 lg:p-14`}
-                >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                    <div
-                      className={`${
-                        highlightMode === "typical"
-                          ? "text-white/95"
-                          : "text-slate-900"
-                      }`}
-                    >
-                      <div
-                        className={`inline-flex items-center gap-3 px-3 py-1 rounded-full text-xs md:text-sm font-medium mb-5 ${
-                          highlightMode === "typical"
-                            ? "bg-white/[0.03] text-white/60"
-                            : "bg-slate-100 text-slate-700"
-                        }`}
-                      >
-                        <span
-                          className={`w-2 h-2 rounded-full inline-block ${
-                            highlightMode === "typical"
-                              ? "bg-pink-500"
-                              : "bg-purple-600"
-                          }`}
-                        />
-                        Why MetaBull Universe
-                      </div>
-
-                      <h3 className="text-xl md:text-3xl lg:text-4xl font-extrabold mb-4 leading-tight">
-                        {highlightMode === "typical"
-                          ? "Why do modern businesses need a partner like MetaBull Universe?"
-                          : "So how does MetaBull Universe fix all this?"}
-                      </h3>
-
-                      <p
-                        className={`${
-                          highlightMode === "typical"
-                            ? "text-white/60"
-                            : "text-slate-600"
-                        } max-w-2xl mb-6 text-sm md:text-base leading-relaxed`}
-                      >
-                        {highlightMode === "typical"
-                          ? "Digital competition grows every day — and brands without strong websites, consistent content and clear marketing strategies easily fall behind. We help you bring everything into one organised system so your brand can grow smoothly and confidently."
-                          : "We unite your branding, website, content, social media and paid campaigns under one reliable team. No scattered vendors, no constant chasing — just a clear plan, structured execution and measurable growth for your business."}
-                      </p>
-
-                      <ul
-                        className={`pl-4 border-l ${
-                          highlightMode === "typical"
-                            ? "border-white/10 text-white/70"
-                            : "border-slate-100 text-slate-700"
-                        } text-sm space-y-3`}
-                      >
-                        {highlightMode === "typical" ? (
-                          <>
-                            <li>
-                              Online presence feels outdated or disconnected
-                              across platforms.
-                            </li>
-                            <li>
-                              Teams keep chasing designs, content and trends
-                              without clear direction.
-                            </li>
-                            <li>
-                              Marketing efforts are scattered between tools and
-                              vendors, making results hard to track.
-                            </li>
-                          </>
-                        ) : (
-                          <>
-                            <li>
-                              One powerful, consistent brand identity across
-                              website, socials & campaigns.
-                            </li>
-                            <li>
-                              One strategy for content, design and marketing
-                              that actually supports your goals.
-                            </li>
-                            <li>
-                              One partner handling everything end-to-end with
-                              transparent reporting and communication.
-                            </li>
-                          </>
-                        )}
-                      </ul>
-
-                      <div className="mt-7 flex flex-col sm:flex-row gap-3">
-                        <div className="inline-block p-[3px] rounded-full bg-gradient-to-r from-[#2BC0E4] via-[#6C3AC9] to-[#FF8A00] w-full sm:w-auto">
-                          <button
-                            role="tab"
-                            aria-pressed={highlightMode === "typical"}
-                            onClick={() => setHighlightMode("typical")}
-                            className={`w-full px-6 py-2.5 rounded-full font-bold text-sm transition-all duration-200 ${
-                              highlightMode === "typical"
-                                ? "bg-[#0b1220] text-white shadow-[inset_0_-6px_18px_rgba(0,0,0,0.55)]"
-                                : "bg-white text-slate-800"
-                            }`}
-                          >
-                            Typical Function
-                          </button>
-                        </div>
-
-                        <div className="inline-block p-[3px] rounded-full bg-gradient-to-r from-[#2BC0E4] via-[#6C3AC9] to-[#FF8A00] w-full sm:w-auto">
-                          <button
-                            role="tab"
-                            aria-pressed={highlightMode === "dynamic"}
-                            onClick={() => setHighlightMode("dynamic")}
-                            className={`w-full px-6 py-2.5 rounded-full font-bold text-sm transition-all duration-200 ${
-                              highlightMode === "dynamic"
-                                ? "bg-white text-[#0b1220] shadow-[inset_0_-3px_10px_rgba(2,6,23,0.06)]"
-                                : highlightMode === "typical"
-                                  ? "bg-[#0b1220] text-white/70"
-                                  : "bg-white text-slate-700"
-                            }`}
-                          >
-                            Dynamic Orchestration
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="hidden md:flex items-center justify-center">
-                      <div
-                        className={`w-full max-w-[36rem] h-[28rem] md:h-[32rem] relative rounded-2xl overflow-hidden flex items-center justify-center shadow-2xl border ${
-                          highlightMode === "typical"
-                            ? "bg-gradient-to-br from-[#0f1724] to-[#0b0f1a] border-white/6"
-                            : "bg-white border-slate-100"
-                        }`}
-                      >
-                        {highlightMode === "typical" ? (
-                          <video
-                            className="w-full h-full object-cover object-center transform gpu"
-                            src={centerVideo}
-                            poster={solutionPoster}
-                            preload="metadata"
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            aria-hidden="true"
-                          />
-                        ) : (
-                          <img
-                            src={solutionPoster}
-                            alt="MetaBull Universe solution illustration"
-                            className="w-full h-full object-cover object-center"
-                          />
-                        )}
-                        <div className="absolute inset-0 pointer-events-none bg-gradient-to-br from-black/10 to-black/25" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section> */}
-
             {/* CTA */}
             <section
+              ref={ctaSectionRef}
               aria-label="Call to Action"
-              className="px-4 sm:px-6 lg:px-8 section-pad-y text-center bg-white"
+              className="px-4 sm:px-6 lg:px-8 pt-16 pb-20 text-center bg-white relative overflow-hidden"
             >
-              <div className="container mx-auto max-w-5xl">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium mb-6 border border-gray-100 mx-auto bg-white shadow-sm">
-                  <span className="inline-flex items-center justify-center p-[3px] rounded-full bg-gradient-to-r from-[#2BC0E4] via-[#6C3AC9] to-[#FF8A00]">
-                    <span className="w-3 h-3 rounded-full bg-white inline-flex" />
-                  </span>
-                  <span className="text-[#0b1220]">Our Promise</span>
-                </div>
+              {/* Decorative Background Elements */}
+              <div className="cta-mesh" />
+              <div className="cta-grid" />
 
-                <h2 className="text-[clamp(2.2rem,6.2vw,4.9rem)] font-bold mb-7 leading-[1.05] text-[#0b1220]">
-                  <span className="hero-tagline-gradient block">
-                    One partnership
+              {/* Tighter background glow */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-50/30 rounded-full blur-[100px] pointer-events-none" />
+
+              <div className="container mx-auto max-w-4xl relative z-10">
+                <h2 className="text-[clamp(2.5rem,7vw,5.5rem)] font-black mb-10 leading-[1.02] tracking-tighter text-slate-900">
+                  One{" "}
+                  <span className="bg-clip-text text-transparent bg-[conic-gradient(from_180deg_at_50%_50%,#2BC0E4_0deg,#4300FF_120deg,#FF0066_240deg,#2BC0E4_360deg)] [background-size:200%_200%] animate-[gradient-x_6s_infinite_alternate]">
+                    partnership
                   </span>
-                  <span className="block">makes things easy.</span>
+                  <span className="block italic font-serif font-light text-slate-800/80 mt-1">
+                    makes things easy.
+                  </span>
                 </h2>
 
-                <div className="flex justify-center">
-                  <Link to="/about-us" aria-label="About Us">
-                    <button className="card-cta px-10 py-4 text-lg">
-                      About Us
+                <div className="flex flex-col items-center gap-6">
+                  <Link
+                    to="/about-us"
+                    aria-label="About Us"
+                    className="btn-cta-premium-wrap"
+                  >
+                    <button
+                      ref={magneticBtnRef}
+                      className="btn-cta-premium group origin-center"
+                    >
+                      <span className="relative z-10">Explore Our Journey</span>
+                      <svg
+                        className="ml-4 w-5 h-5 relative z-10 group-hover:translate-x-2 transition-transform duration-500 ease-out"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2.5}
+                          d="M13 7l5 5m0 0l-5 5m5-5H6"
+                        />
+                      </svg>
                     </button>
                   </Link>
+
+                  <p className="text-slate-400 text-[9px] md:text-xs font-bold tracking-[0.25em] uppercase mt-4">
+                    Trusted by modern innovators worldwide
+                  </p>
                 </div>
               </div>
             </section>
