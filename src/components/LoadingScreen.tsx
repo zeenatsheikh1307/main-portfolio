@@ -6,15 +6,14 @@ import { useLoading } from "@/contexts/LoadingContext";
 const LoadingScreen = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLHeadingElement>(null);
-  const orbit1Ref = useRef<HTMLDivElement>(null);
-  const orbit2Ref = useRef<HTMLDivElement>(null);
-  const lightRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const lightBeamRef = useRef<HTMLDivElement>(null);
+  const scannerRef = useRef<HTMLDivElement>(null);
   const [percent, setPercent] = useState(0);
   const { setLoaded } = useLoading();
 
   useEffect(() => {
-    // Smoother percentage acceleration
+    // High-precision numerical counter
     const interval = setInterval(() => {
       setPercent((prev) => {
         if (prev >= 100) {
@@ -22,14 +21,11 @@ const LoadingScreen = () => {
           return 100;
         }
         const remains = 100 - prev;
-        const speedFactor = remains < 20 ? 0.3 : 1;
-        const step = Math.max(
-          1,
-          Math.floor(Math.random() * (remains / 15 + 3) * speedFactor),
-        );
+        const speed = remains < 15 ? 40 : 70;
+        const step = remains < 10 ? 1 : Math.floor(Math.random() * 3 + 1);
         return Math.min(100, prev + step);
       });
-    }, 80);
+    }, 60);
     return () => clearInterval(interval);
   }, []);
 
@@ -42,225 +38,210 @@ const LoadingScreen = () => {
         },
       });
 
-      tl.to([logoRef.current, textRef.current, ".orbit-wrap", ".status-wrap"], {
+      // The "Portal" Exit Sequence
+      tl.to([logoRef.current, textRef.current, ".monolith-ui"], {
         opacity: 0,
-        scale: 1.15,
-        filter: "blur(30px) brightness(2)",
-        duration: 1.2,
-        letterSpacing: "1.2em",
-        ease: "expo.inOut",
+        scale: 0.95,
+        filter: "blur(10px)",
+        duration: 0.6,
+        ease: "power2.inOut",
       }).to(
         containerRef.current,
         {
           opacity: 0,
-          duration: 1.5,
-          ease: "power4.inOut",
+          scale: 1.1,
+          filter: "brightness(3) blur(30px)",
+          duration: 1.2,
+          ease: "expo.inOut",
         },
-        "-=0.8",
+        "-=0.2",
       );
     }
   }, [percent]);
 
   useEffect(() => {
-    // Initial State
-    gsap.set(containerRef.current, { opacity: 1 });
+    // Initial Architectural Reveal
+    gsap.fromTo(
+      containerRef.current,
+      { opacity: 0 },
+      { opacity: 1, duration: 1, ease: "power2.out" },
+    );
 
-    // Mouse Parallax for Light Leak
-    const moveLight = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
-      const x = (clientX / window.innerWidth - 0.5) * 40;
-      const y = (clientY / window.innerHeight - 0.5) * 40;
-      gsap.to(lightRef.current, { x, y, duration: 2, ease: "power2.out" });
-    };
-    window.addEventListener("mousemove", moveLight);
+    gsap.fromTo(
+      ".split-line",
+      { scaleY: 0 },
+      { scaleY: 1, duration: 1.2, ease: "expo.inOut" },
+    );
 
-    // Split Text Animation for Brand
-    if (textRef.current) {
-      const text = "METABULL";
-      textRef.current.innerHTML = text
-        .split("")
-        .map(
-          (char) => `<span class="char opacity-0 inline-block">${char}</span>`,
-        )
-        .join("");
-      gsap.to(".char", {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        stagger: 0.1,
-        ease: "expo.out",
-        delay: 0.5,
-      });
-    }
-
-    // Advanced Perpetual Cycles
-    const orbits = [orbit1Ref.current, orbit2Ref.current];
-    orbits.forEach((orb, i) => {
-      gsap.to(orb, {
-        rotation: i === 0 ? 360 : -360,
-        duration: i === 0 ? 5 : 3.5,
-        repeat: -1,
-        ease: "none",
-      });
+    // Architectural Light Sweep
+    gsap.to(lightBeamRef.current, {
+      x: "150vw",
+      duration: 3.5,
+      repeat: -1,
+      ease: "power1.inOut",
+      repeatDelay: 1,
     });
 
-    return () => window.removeEventListener("mousemove", moveLight);
+    // Vertical Scanner line
+    gsap.to(scannerRef.current, {
+      y: "100vh",
+      duration: 4,
+      repeat: -1,
+      ease: "none",
+    });
+
+    // Brand Reveal Stagger
+    gsap.from(".brand-part", {
+      opacity: 0,
+      y: 20,
+      stagger: 0.2,
+      duration: 1.5,
+      ease: "expo.out",
+      delay: 0.5,
+    });
   }, []);
-
-  // Update visual intensity based on progress
-  useEffect(() => {
-    const intensity = percent / 100;
-    gsap.to(".orbit-glow", {
-      opacity: 0.2 + intensity * 0.4,
-      scale: 1 + intensity * 0.2,
-      duration: 0.5,
-    });
-  }, [percent]);
 
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-[#020205] overflow-hidden"
+      className="fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-[#000000] overflow-hidden"
     >
       <style>{`
-        .grain {
-          position: absolute;
-          inset: -150%;
-          background-image: url("https://grainy-gradients.vercel.app/noise.svg");
-          opacity: 0.12;
-          pointer-events: none;
-          animation: grain-shift 8s steps(10) infinite;
-          mix-blend-mode: soft-light;
-        }
-        @keyframes grain-shift {
-          0%, 100% { transform: translate(0, 0); }
-          50% { transform: translate(-5%, -5%); }
-        }
-
-        .scanlines {
+        .monolith-bg {
           position: absolute;
           inset: 0;
-          background: linear-gradient(to bottom, transparent 50%, rgba(255,255,255,0.01) 50%);
-          background-size: 100% 4px;
-          pointer-events: none;
-          z-index: 5;
+          background: radial-gradient(circle at 50% 50%, #0a0a0a 0%, #000 100%);
         }
-
-        .shimmer-text {
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
-          background-size: 200% 100%;
-          -webkit-background-clip: text;
-          background-clip: text;
-          animation: shimmer 4s infinite linear;
-        }
-        @keyframes shimmer {
-          0% { background-position: -200% 0; }
-          100% { background-position: 200% 0; }
-        }
-
-        .glint-wrap::after {
-          content: "";
+        
+        .architectural-light {
           position: absolute;
-          inset: 0;
-          background: linear-gradient(135deg, transparent 45%, rgba(255,255,255,0.3) 50%, transparent 55%);
-          background-size: 300% 300%;
-          animation: glint 6s infinite ease-in-out;
+          top: 0;
+          left: -40vw;
+          width: 50vw;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.035), transparent);
+          transform: skewX(-25deg);
           pointer-events: none;
-        }
-        @keyframes glint {
-          0% { background-position: -150% -150%; }
-          30% { background-position: 150% 150%; }
-          100% { background-position: 150% 150%; }
+          z-index: 1;
         }
 
-        .orbital-line {
-            mask-image: linear-gradient(to right, transparent, black, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black, transparent);
+        .scanner-beam {
+          position: absolute;
+          top: -100px;
+          left: 0;
+          width: 100%;
+          height: 100px;
+          background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.02), transparent);
+          pointer-events: none;
+          z-index: 2;
+        }
+
+        .split-line {
+          position: absolute;
+          left: 50%;
+          top: 0;
+          bottom: 0;
+          width: 1px;
+          background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1), transparent);
+          transform: translateX(-50%);
+          z-index: 0;
+        }
+
+        .prism-dot {
+          position: absolute;
+          width: 2px;
+          height: 2px;
+          border-radius: 50%;
+          background: #fff;
+          box-shadow: 0 0 10px #fff;
+          opacity: 0.2;
         }
       `}</style>
 
-      {/* Aesthetic Layers */}
-      <div className="grain" />
-      <div className="scanlines" />
+      {/* Atmospheric Layers */}
+      <div className="monolith-bg" />
+      <div className="split-line" />
+      <div ref={lightBeamRef} className="architectural-light" />
+      <div ref={scannerRef} className="scanner-beam" />
 
-      {/* Interactive Light Leaks */}
-      <div
-        ref={lightRef}
-        className="absolute inset-0 pointer-events-none opacity-40"
-      >
-        <div className="absolute top-[10%] left-[20%] w-[60vw] h-[60vw] bg-violet-900/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-[10%] right-[20%] w-[50vw] h-[50vw] bg-pink-900/10 blur-[120px] rounded-full" />
-      </div>
+      {/* Subtle Prism Dust */}
+      {[...Array(12)].map((_, i) => (
+        <div
+          key={i}
+          className="prism-dot animate-pulse"
+          style={{
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+            animationDelay: `${Math.random() * 2}s`,
+          }}
+        />
+      ))}
 
-      <div className="relative flex flex-col items-center">
-        {/* Orbital System */}
-        <div className="orbit-wrap absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div
-            ref={orbit1Ref}
-            className="absolute inset-[-100px] rounded-full border border-white/[0.02] orbital-line"
-          >
-            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-1.5 h-1.5 bg-violet-400 rounded-full blur-[2px] shadow-[0_0_20px_#8b5cf6]" />
-          </div>
-
-          <div
-            ref={orbit2Ref}
-            className="absolute inset-[-70px] rounded-full border border-white/[0.04] orbital-line"
-          >
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1 h-1 bg-pink-400 rounded-full blur-[1.5px] shadow-[0_0_15px_#ec4899]" />
-          </div>
-        </div>
-
-        {/* Logo - Floating & Glinting */}
+      <div className="relative flex flex-col items-center z-10">
+        {/* Floating Logo - Desaturated & Glossy */}
         <div
           ref={logoRef}
-          className="glint-wrap relative z-10 mb-14 select-none group pointer-events-none"
+          className="relative mb-12 select-none pointer-events-none transform transition-transform duration-1000"
         >
-          <div className="orbit-glow absolute inset-[-30px] bg-violet-600/10 blur-[60px] rounded-full opacity-20 transition-all duration-1000" />
+          <div className="absolute inset-[-40px] bg-white/[0.03] blur-[60px] rounded-full" />
           <img
             src={logo}
             alt="MetaBull"
-            className="w-28 h-28 object-contain filter drop-shadow-[0_0_40px_rgba(255,255,255,0.1)] saturate-[1.1]"
+            className="w-24 h-24 object-contain filter grayscale brightness-[1.2] opacity-80"
           />
         </div>
 
-        {/* Masterclass Typography */}
-        <div className="relative z-10 flex flex-col items-center text-center">
-          <h1
-            ref={textRef}
-            className="text-4xl font-light tracking-[0.6em] uppercase text-white/95 font-sans mb-4"
-            style={{ filter: "drop-shadow(0 0 20px rgba(255,255,255,0.15))" }}
-          >
-            METABULL
+        {/* Elite Brand Typography */}
+        <div ref={textRef} className="flex flex-col items-center text-center">
+          <h1 className="brand-part text-[clamp(2.5rem,8vw,5.5rem)] font-black tracking-[-0.04em] text-white leading-[0.9] mb-2 uppercase">
+            MetaBull
           </h1>
 
-          <div className="status-wrap flex flex-col items-center gap-2">
-            <div className="flex items-center gap-3">
-              <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-white/10" />
-              <span className="shimmer-text text-[11px] font-bold tracking-[1em] text-white/20 uppercase ml-[1em]">
-                {percent}% UNIVERSE
+          <div className="brand-part flex items-center gap-6 w-full mt-1">
+            <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+            <span className="text-[clamp(0.75rem,2vw,1.25rem)] font-light tracking-[1.2em] text-white/50 uppercase ml-[1.2em]">
+              Universe
+            </span>
+            <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent via-white/20 to-transparent" />
+          </div>
+
+          {/* Precision Status UI */}
+          <div className="monolith-ui mt-16 flex flex-col items-center gap-4">
+            <div className="flex items-center gap-8 font-mono text-[10px] tracking-[0.3em] text-white/20">
+              <span className="flex items-center gap-2">
+                <span className="w-1 h-1 rounded-full bg-white/40" />
+                SECURE_LINK
               </span>
-              <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-white/10" />
+              <span className="flex items-center gap-2">
+                <span className="w-1 h-1 rounded-full bg-white/40" />
+                VORTEX_INIT
+              </span>
             </div>
 
-            <div className="w-40 h-[1.5px] bg-white/[0.03] relative overflow-hidden mt-6 rounded-full shadow-inner">
+            <div className="text-[32px] font-black text-white/90 font-mono tracking-tighter tabular-nums">
+              {percent.toString().padStart(3, "0")}
+            </div>
+
+            <div className="w-48 h-[1px] bg-white/[0.05] relative">
               <div
-                className="absolute inset-y-0 left-0 bg-gradient-to-r from-transparent via-indigo-500 to-transparent transition-all duration-500 ease-out"
-                style={{ width: "60px", left: `calc(${percent}% - 30px)` }}
+                className="absolute inset-y-0 left-0 bg-white/40 transition-all duration-300 ease-out shadow-[0_0_10px_rgba(255,255,255,0.3)]"
+                style={{ width: `${percent}%` }}
               />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Signature Detail */}
-      <div className="absolute bottom-10 flex items-center gap-6 opacity-[0.08] select-none pointer-events-none">
-        <span className="text-[10px] tracking-[0.5em] font-light text-white uppercase">
-          Neural Engine Syncinging
-        </span>
-        <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-        <span className="text-[10px] tracking-[0.5em] font-light text-white uppercase">
-          Vortex v2.08
-        </span>
+      {/* Signature Corner Details */}
+      <div className="monolith-ui absolute bottom-12 inset-x-12 flex justify-between items-end opacity-20 pointer-events-none select-none">
+        <div className="flex flex-col gap-1 tracking-[0.4em] text-[8px] font-bold text-white/40">
+          <span>ARCH_CORE: 0x81F2</span>
+          <span>EST_LATENCY: 14MS</span>
+        </div>
+        <div className="flex flex-col items-end gap-1 tracking-[0.4em] text-[8px] font-bold text-white/40">
+          <span>© 2026 METABULL</span>
+          <span>ALL RIGHTS RESERVED</span>
+        </div>
       </div>
     </div>
   );
