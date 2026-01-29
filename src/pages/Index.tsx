@@ -347,9 +347,9 @@ const Index = () => {
                 relative isolate
                 flex flex-col items-center justify-center text-center
                 px-4 sm:px-6 lg:px-8
-                pt-[clamp(5rem,10vh,8rem)]
-                pb-[clamp(2.5rem,6vh,5rem)]
-                min-h-[100svh]
+                pt-[clamp(7rem,14vh,10rem)]
+                pb-[clamp(7rem,14vh,10rem)]
+                min-h-[105vh]
                 bg-no-repeat bg-cover bg-center
                 gpu
               "
@@ -430,6 +430,17 @@ const Index = () => {
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 sm:h-28 bg-gradient-to-b from-transparent via-black/30 to-black/80 z-[1]" />
             </section>
 
+            {/* BRANDING MARQUEE */}
+            <div className="w-full bg-black py-4 overflow-hidden relative z-20 border-y border-white/10">
+              <div className="hero-scroll-track select-none whitespace-nowrap">
+                {[...Array(8)].map((_, i) => (
+                  <span key={i} className="text-white/80 font-bold text-lg mx-8 tracking-widest uppercase">
+                    METABULL UNIVERSE &nbsp;•&nbsp;
+                  </span>
+                ))}
+              </div>
+            </div>
+
             {/* SERVICES */}
             <section
               ref={servicesRef}
@@ -437,7 +448,7 @@ const Index = () => {
               className="
                 relative overflow-hidden
                 px-4 sm:px-6 lg:px-8
-                section-pad-y
+                py-[clamp(10rem,18vh,14rem)]
                 services-top-fade
               "
               style={{
