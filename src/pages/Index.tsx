@@ -284,9 +284,23 @@ const Index = () => {
       background-clip: text;
       color: transparent;
       font-weight: 600;
+      font-family: 'Outfit', sans-serif;
     }
-    .hero-title-exact { color: #fff; font-weight: 900; letter-spacing: -0.02em; }
-    .hero-paragraph-exact { color: rgba(255,255,255,0.78); max-width: 62ch; margin-left:auto; margin-right:auto; }
+    .hero-title-exact { 
+      color: #fff; 
+      font-weight: 800; 
+      letter-spacing: -0.04em; 
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      text-transform: capitalize;
+    }
+    .hero-paragraph-exact { 
+      color: rgba(255,255,255,0.78); 
+      max-width: 62ch; 
+      margin-left:auto; 
+      margin-right:auto; 
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+    }
 
     /* HERO background spotlight (subtle, premium) */
     .hero-spot {
@@ -305,14 +319,54 @@ const Index = () => {
     .hero-scroll-track { display:flex; animation: hero-scroll 70s linear infinite; will-change: transform; gap: 4rem; }
     @media (prefers-reduced-motion: reduce) { .hero-scroll-track { animation: none !important; } }
 
-    /* Card CTA style (kept premium) */
-    .card-cta{
-      display:inline-flex;align-items:center;justify-content:center;gap:.5rem;border-radius:9999px;padding:.625rem 1.5rem;font-weight:600;letter-spacing:0.01em;
-      background:linear-gradient(90deg,#8b5cf6 0%,#6C63FF 50%,#3B82F6 100%);
-      color:#fff;box-shadow:0 10px 30px rgba(59,130,246,0.12), inset 0 1px 0 rgba(255,255,255,0.12);
-      transition: transform .28s var(--ease-premium), box-shadow .24s ease, opacity .2s;
+    /* Pro Hero Button Primary */
+    .hero-btn-pro {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.9rem 2.8rem;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #4F46E5 0%, #9333EA 50%, #EC4899 100%);
+      background-size: 200% auto;
+      border-radius: 9999px;
+      transition: all 500ms var(--ease-premium);
+      box-shadow: 
+        0 10px 30px -5px rgba(79, 70, 229, 0.4),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
-    .card-cta:hover{ transform: translateY(-3px); box-shadow:0 14px 40px rgba(59,130,246,0.16); }
+    .hero-btn-pro:hover {
+      background-position: right center;
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 
+        0 20px 40px -10px rgba(79, 70, 229, 0.5),
+        0 8px 12px -2px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Pro Hero Button Secondary */
+    .hero-btn-glass {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.9rem 2.8rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 9999px;
+      transition: all 400ms var(--ease-premium);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .hero-btn-glass:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+      color: #fff;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+    }
 
     /* Services blend: no weird -mt gaps */
     .services-top-fade::before{
@@ -324,9 +378,63 @@ const Index = () => {
       z-index: 2;
     }
 
-    /* Section card styling is handled by Tailwind; keep motion safe */
+    /* Pro Service Cards Refinement */
+    .service-premium-card {
+      transition: all 400ms var(--ease-premium);
+      transform-style: preserve-3d;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .service-premium-card:hover {
+      transform: translateY(-8px);
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 40px 80px -15px rgba(0,0,0,0.6);
+    }
+    .service-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.06) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 300ms ease;
+      pointer-events: none;
+    }
+    .service-premium-card:hover .service-glow {
+      opacity: 1;
+    }
+    .service-img-wrap {
+      transition: transform 500ms var(--ease-premium);
+    }
+    .service-premium-card:hover .service-img-wrap {
+      transform: scale(1.08) translateY(-5px);
+    }
+
+    /* Professional Button Styling with Theme-Colored Shadows */
+    .btn-view-all {
+      background: #ffffff;
+      color: #000000;
+      padding: 1rem 3.5rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      border-radius: 999px;
+      transition: all 400ms var(--ease-premium);
+      /* Multi-colored atmospheric shadow */
+      box-shadow: 
+        0 12px 24px -8px rgba(59, 130, 246, 0.35), /* blue glow */
+        0 12px 24px -8px rgba(236, 72, 153, 0.35), /* pink glow */
+        0 8px 16px -4px rgba(0, 0, 0, 0.1);
+    }
+    .btn-view-all:hover {
+      transform: translateY(-4px);
+      background: #ffffff;
+      box-shadow: 
+        0 24px 48px -12px rgba(59, 130, 246, 0.5), 
+        0 24px 48px -12px rgba(236, 72, 153, 0.5),
+        0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
     @media (prefers-reduced-motion: reduce) {
-      * { scroll-behavior: auto !important; }
+      * { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
     }
   `;
 
@@ -347,8 +455,8 @@ const Index = () => {
                 relative isolate
                 flex flex-col items-center justify-center text-center
                 px-4 sm:px-6 lg:px-8
-                pt-[clamp(7rem,14vh,10rem)]
-                pb-[clamp(7rem,14vh,10rem)]
+                pt-[clamp(14rem,28vh,20rem)]
+                pb-[clamp(6rem,12vh,9rem)]
                 min-h-[105vh]
                 bg-no-repeat bg-cover bg-center
                 gpu
@@ -370,23 +478,25 @@ const Index = () => {
               />
 
               {/* marquee (kept but positioned tighter so it doesn't create weird whitespace feeling) */}
-              <div className="absolute inset-x-0 top-[12%] sm:top-[14%] pointer-events-none z-0 overflow-hidden opacity-[0.075]">
+              <div className="absolute inset-x-0 top-[15%] sm:top-[18%] pointer-events-none z-0 overflow-hidden opacity-[0.14] select-none">
                 <div className="hero-scroll-track select-none whitespace-nowrap py-4">
                   {[...Array(4)].map((_, i) => (
                     <span
                       key={i}
-                      className="font-black text-[4.2rem] sm:text-[6.2rem] lg:text-[8.2rem] leading-none tracking-tighter shrink-0"
+                      className="font-black text-[5rem] sm:text-[7.5rem] lg:text-[10rem] leading-none tracking-tighter shrink-0"
                       style={{
                         background:
-                          "linear-gradient(to bottom, #2BC0E4 0%, #5D31D8 50%, #FF8A00 100%)",
+                          "linear-gradient(to right, #4F46E5 0%, #9333EA 50%, #EC4899 100%)",
                         WebkitBackgroundClip: "text",
                         backgroundClip: "text",
                         color: "transparent",
-                        filter: "blur(2px)",
-                        marginRight: "4rem",
+                        filter: "none",
+                        marginRight: "6rem",
+                        letterSpacing: "-0.05em",
+                        fontFamily: "'Plus Jakarta Sans', sans-serif",
                       }}
                     >
-                      CREATE &nbsp; BUILD &nbsp; GROW
+                      CREATE &nbsp; BUILD &nbsp; GROW&nbsp;
                     </span>
                   ))}
                 </div>
@@ -394,7 +504,7 @@ const Index = () => {
 
               <div className="relative z-10 w-full max-w-7xl mx-auto">
                 <span className="hero-el hidden sm:inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm md:text-base font-medium mb-6 hero-tagline-gradient">
-                  Digital Growth • Branding • Website Development • Marketing
+                  
                 </span>
 
                 <h1
@@ -412,15 +522,21 @@ const Index = () => {
                   that matters.
                 </p>
 
-                <div className="hero-el flex items-center justify-center gap-3">
+                <div className="hero-el flex flex-col sm:flex-row items-center justify-center gap-4 mt-4">
                   <Link to="/about-us">
-                    <button className="card-cta px-7 py-3 text-[15px] md:text-[16px]">
-                      Explore About Us
+                    <button className="hero-btn-pro group">
+                      Contact Us
+                      <span className="ml-2 group-hover:translate-x-1 transition-transform">
+                        →
+                      </span>
                     </button>
                   </Link>
                   <Link to="/contact">
-                    <button className="inline-flex items-center justify-center rounded-full px-7 py-3 text-[15px] md:text-[16px] font-semibold text-white/90 border border-white/15 bg-white/5 backdrop-blur hover:bg-white/10 transition">
+                    <button className="hero-btn-glass group">
                       Talk to Team
+                      <span className="ml-2 opacity-1 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
+                        →
+                      </span>
                     </button>
                   </Link>
                 </div>
@@ -434,138 +550,213 @@ const Index = () => {
             <div className="w-full bg-black py-4 overflow-hidden relative z-20 border-y border-white/10">
               <div className="hero-scroll-track select-none whitespace-nowrap">
                 {[...Array(8)].map((_, i) => (
-                  <span key={i} className="text-white/80 font-bold text-lg mx-8 tracking-widest uppercase">
-                    METABULL UNIVERSE &nbsp;•&nbsp;
+                  <span
+                    key={i}
+                    className="text-white/80 font-bold text-lg mx-8 tracking-widest uppercase"
+                  >
+                    &nbsp;•&nbsp; METABULL UNIVERSE &nbsp;•&nbsp;
                   </span>
                 ))}
               </div>
             </div>
 
-            {/* SERVICES */}
+            {/* SERVICES SECTION */}
             <section
               ref={servicesRef}
               aria-label="Services"
               className="
                 relative overflow-hidden
                 px-4 sm:px-6 lg:px-8
-                py-[clamp(10rem,18vh,14rem)]
+                py-[clamp(6rem,12vh,10rem)]
                 services-top-fade
               "
               style={{
                 backgroundImage: `url(${servicesBg})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center bottom",
-                backgroundRepeat: "no-repeat",
               }}
             >
-              <div className="container mx-auto max-w-7xl relative z-10">
-                <div className="text-center mb-10 md:mb-14">
-                  <h2 className="text-[clamp(1.85rem,4.5vw,3.05rem)] font-extrabold text-white leading-tight max-w-3xl mx-auto">
-                    Your business needs.
-                    <br />
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#61dafb] via-[#8b5cf6] to-[#ff7a59]">
-                      Our complete digital services.
-                    </span>
-                  </h2>
-                  <p className="text-sm md:text-base text-white/60 mt-3 max-w-2xl mx-auto">
-                    Everything you need to build a solid online presence, tell
-                    your story and scale your brand — in one place.
+              <div className="container mx-auto max-w-[1440px] relative z-10">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 md:mb-24">
+                  <div className="max-w-2xl">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full hero-btn-glass text-xs font-bold uppercase tracking-wider mb-6">
+                      Our Expertise
+                    </div>
+                    <h2 className="text-[clamp(2.5rem,5vw,3.75rem)] font-black text-white leading-[1.1] tracking-tight">
+                      We build things that <br />
+                      <span className="text-white/40">move the needle.</span>
+                    </h2>
+                  </div>
+                  <p className="text-white/50 text-base md:text-lg max-w-sm font-medium leading-relaxed">
+                    Strategy-led design and engineering for brands that want to
+                    lead their industry.
                   </p>
                 </div>
 
-                <div className="relative">
-                  {/* subtle center glow */}
-                  <div className="pointer-events-none hidden lg:block absolute inset-x-0 top-24 bottom-0 flex items-start justify-center z-0">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
+                  {[
+                    {
+                      tag: "01",
+                      title: "Web Platforms",
+                      text: "High-performance, scalable web ecosystems.",
+                      img: websiteImg,
+                    },
+                    {
+                      tag: "02",
+                      title: "Brand Systems",
+                      text: "Strategic visual identities that tell your story.",
+                      img: brandingImg,
+                    },
+                    {
+                      tag: "03",
+                      title: "Social Growth",
+                      text: "Content that engages and builds community.",
+                      img: socialImg,
+                    },
+                    {
+                      tag: "04",
+                      title: "Paid Media",
+                      text: "ROI-focused performance marketing campaigns.",
+                      img: adsImg,
+                    },
+                  ].map((c, idx) => (
                     <div
-                      className="w-[92px] h-[520px] rounded-full opacity-60"
-                      style={{
-                        background:
-                          "radial-gradient(closest-side, rgba(255,200,150,0.18), rgba(130,80,255,0.06))",
-                        filter: "blur(28px)",
+                      key={idx}
+                      className="group relative service-premium-card rounded-[24px] overflow-hidden flex flex-col p-8 h-[26rem] md:h-[29rem]"
+                      onMouseMove={(e) => {
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        e.currentTarget.style.setProperty(
+                          "--mouse-x",
+                          `${x}px`,
+                        );
+                        e.currentTarget.style.setProperty(
+                          "--mouse-y",
+                          `${y}px`,
+                        );
                       }}
-                    />
-                  </div>
+                    >
+                      <div className="service-glow" />
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 relative z-10">
-                    {[
-                      {
-                        tag: "Websites",
-                        text: "Modern, fast websites that build trust from the first click.",
-                        img: websiteImg,
-                      },
-                      {
-                        tag: "Branding",
-                        text: "Logos and brand systems that make your business unforgettable.",
-                        img: brandingImg,
-                      },
-                      {
-                        tag: "Social Media",
-                        text: "Strategic content that connects and grows your audience.",
-                        img: socialImg,
-                      },
-                      {
-                        tag: "Marketing & Ads",
-                        text: "Paid campaigns that turn attention into real customers.",
-                        img: adsImg,
-                      },
-                    ].map((c, idx) => (
-                      <div key={idx} className="relative service-card">
-                        <div
-                          className="
-                            rounded-3xl overflow-hidden group relative
-                            bg-[linear-gradient(180deg,rgba(10,10,12,0.78),rgba(6,6,10,0.62))]
-                            border border-white/10 shadow-2xl
-                            p-7 md:p-8
-                            min-h-[22rem] md:min-h-[25rem]
-                            flex flex-col
-                          "
-                          style={{ backdropFilter: "saturate(120%) blur(7px)" }}
-                        >
-                          <div className="flex items-start justify-between w-full mb-6">
-                            <div
-                              className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium z-10"
-                              style={{
-                                background:
-                                  "linear-gradient(90deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))",
-                                border: "1px solid rgba(255,255,255,0.06)",
-                              }}
-                            >
-                              <span
-                                className="w-2.5 h-2.5 rounded-full"
-                                style={{
-                                  background:
-                                    "linear-gradient(135deg,#8b5cf6,#ff7a59)",
-                                }}
-                              />
-                              <span className="text-white/90">{c.tag}</span>
-                            </div>
-                          </div>
-
-                          {/* Image area (responsive, no extra space) */}
-                          <div className="relative w-full flex-1 min-h-[8.5rem] md:min-h-[10.5rem] flex items-center justify-center">
-                            <div className="absolute inset-0 bg-gradient-to-t from-purple-500/10 to-transparent opacity-0 group-hover:opacity-40 blur-2xl transition-opacity duration-500" />
-                            <img
-                              src={c.img}
-                              alt={c.tag}
-                              className="service-img h-[9.5rem] md:h-[11.5rem] w-auto object-contain drop-shadow-2xl will-change-transform"
-                            />
-                          </div>
-
-                          <div className="mt-5">
-                            <p className="text-white/90 font-semibold text-[16px] md:text-[18px] leading-snug">
-                              {c.text}
-                            </p>
-                          </div>
+                      <div className="relative z-10 flex justify-between items-start mb-8">
+                        <span className="text-[11px] font-black text-white/30 tracking-widest">
+                          {c.tag}
+                        </span>
+                        <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:border-white transition-all duration-300">
+                          <span className="text-white group-hover:text-black transition-colors">
+                            →
+                          </span>
                         </div>
                       </div>
-                    ))}
-                  </div>
 
-                  <div className="mt-10 text-center">
-                    <Link to="/services">
-                      <button className="card-cta">View All Services</button>
-                    </Link>
+                      <div className="relative z-10">
+                        <h3 className="text-white text-xl md:text-2xl font-bold leading-tight mb-3">
+                          {c.title}
+                        </h3>
+                        <p className="text-white/40 text-sm leading-relaxed font-medium group-hover:text-white/60 transition-colors">
+                          {c.text}
+                        </p>
+                      </div>
+
+                      <div className="service-img-wrap flex-1 flex items-center justify-center mt-6">
+                        <img
+                          src={c.img}
+                          alt={c.title}
+                          className="w-4/5 h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-transform duration-700"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-16 md:mt-20 text-center">
+                  <Link to="/services">
+                    <button className="btn-view-all group">
+                      Explore All Services
+                      <span className="ml-3 group-hover:translate-x-1 transition-transform inline-block">
+                        →
+                      </span>
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </section>
+
+            {/* HIGHLIGHTS */}
+            <section
+              ref={highlightsRef}
+              aria-label="Highlights"
+              className="px-4 sm:px-6 lg:px-8 section-pad-y relative overflow-hidden text-slate-900"
+              style={{
+                backgroundColor: "#ffffff",
+                backgroundImage: `url(${dynamicBg})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                boxShadow: "none",
+                border: "none",
+              }}
+            >
+              <div className="absolute bottom-0 left-0 w-full h-36 md:h-52 lg:h-64 pointer-events-none bg-gradient-to-t from-white via-white/90 to-transparent z-0" />
+
+              <div className="container mx-auto max-w-7xl relative z-10">
+                {/* <div className="relative text-center mb-10 md:mb-14">
+                  <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full text-[12px] sm:text-sm font-medium shadow-lg bg-white border border-white/60">
+                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full p-0.5 bg-[linear-gradient(135deg,#2BC0E4, #4300FF, #FF0066)]">
+                      <span className="w-3.5 h-3.5 rounded-full bg-white inline-flex items-center justify-center">
+                        <StarIcon className="w-3 h-3 text-[#6b21a8]" />
+                      </span>
+                    </span>
+                    <span className="hero-tagline-gradient whitespace-nowrap">
+                      High-Touch Precision
+                    </span>
                   </div>
+                </div> */}
+
+                <div className="text-center mb-8 md:mb-10">
+                  <h2 className="text-[clamp(1.75rem,4.5vw,2.75rem)] font-bold mb-4 text-slate-900 leading-tight">
+                    Your teams get to enjoy
+                    <br />
+                    <span className="hero-tagline-gradient">
+                      seamless continuous service
+                    </span>
+                  </h2>
+                  <p className="max-w-3xl mx-auto text-slate-600 mt-4">
+                    Unify cross-functional teams the easy way. Rely on us to
+                    bridge expectations, serve simplicity and deliver lasting
+                    value. We handle the tedious necessities so you don't have
+                    to.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-7 lg:gap-8 items-start mt-8">
+                  {[
+                    {
+                      title: "Design",
+                      desc: "Details you specify once carry forward everywhere. We make sure they don't get bypassed.",
+                    },
+                    {
+                      title: "Engineering",
+                      desc: "Your builds have clarity behind it. We create what's needed, what's changed and why it matters.",
+                    },
+                    {
+                      title: "Construction",
+                      desc: "Materials you need on site get valorized and tracked on multiple levels. Nothing shows up half-right.",
+                    },
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className="bg-transparent rounded-2xl shadow-lg p-5 md:p-8 relative overflow-hidden min-h-[12rem] md:min-h-[22rem] backdrop-blur-sm border border-white/10"
+                    >
+                      <h3 className="text-[15px] md:text-xl font-semibold text-slate-900 mb-2">
+                        {item.title}
+                      </h3>
+                      <p className="text-[13px] md:text-base text-slate-600 leading-relaxed">
+                        {item.desc}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </section>
@@ -662,84 +853,6 @@ const Index = () => {
                       </div>
                     ))}
                   </div>
-                </div>
-              </div>
-            </section>
-
-            {/* HIGHLIGHTS */}
-            <section
-              ref={highlightsRef}
-              aria-label="Highlights"
-              className="px-4 sm:px-6 lg:px-8 section-pad-y relative overflow-hidden text-slate-900"
-              style={{
-                backgroundColor: "#ffffff",
-                backgroundImage: `url(${dynamicBg})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-                boxShadow: "none",
-                border: "none",
-              }}
-            >
-              <div className="absolute bottom-0 left-0 w-full h-36 md:h-52 lg:h-64 pointer-events-none bg-gradient-to-t from-white via-white/90 to-transparent z-0" />
-
-              <div className="container mx-auto max-w-7xl relative z-10">
-                <div className="relative text-center mb-10 md:mb-14">
-                  <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full text-[12px] sm:text-sm font-medium shadow-lg bg-white border border-white/60">
-                    <span className="inline-flex items-center justify-center w-5 h-5 rounded-full p-0.5 bg-[linear-gradient(135deg,#2BC0E4, #4300FF, #FF0066)]">
-                      <span className="w-3.5 h-3.5 rounded-full bg-white inline-flex items-center justify-center">
-                        <StarIcon className="w-3 h-3 text-[#6b21a8]" />
-                      </span>
-                    </span>
-                    <span className="hero-tagline-gradient whitespace-nowrap">
-                      High-Touch Precision
-                    </span>
-                  </div>
-                </div>
-
-                <div className="text-center mb-8 md:mb-10">
-                  <h2 className="text-[clamp(1.75rem,4.5vw,2.75rem)] font-bold mb-4 text-slate-900 leading-tight">
-                    Your teams get to enjoy
-                    <br />
-                    <span className="hero-tagline-gradient">
-                      seamless continuous service
-                    </span>
-                  </h2>
-                  <p className="max-w-3xl mx-auto text-slate-600 mt-4">
-                    Unify cross-functional teams the easy way. Rely on us to
-                    bridge expectations, serve simplicity and deliver lasting
-                    value. We handle the tedious necessities so you don't have
-                    to.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-7 lg:gap-8 items-start mt-8">
-                  {[
-                    {
-                      title: "Design",
-                      desc: "Details you specify once carry forward everywhere. We make sure they don't get bypassed.",
-                    },
-                    {
-                      title: "Engineering",
-                      desc: "Your builds have clarity behind it. We create what's needed, what's changed and why it matters.",
-                    },
-                    {
-                      title: "Construction",
-                      desc: "Materials you need on site get valorized and tracked on multiple levels. Nothing shows up half-right.",
-                    },
-                  ].map((item, i) => (
-                    <div
-                      key={i}
-                      className="bg-transparent rounded-2xl shadow-lg p-5 md:p-8 relative overflow-hidden min-h-[12rem] md:min-h-[22rem] backdrop-blur-sm border border-white/10"
-                    >
-                      <h3 className="text-[15px] md:text-xl font-semibold text-slate-900 mb-2">
-                        {item.title}
-                      </h3>
-                      <p className="text-[13px] md:text-base text-slate-600 leading-relaxed">
-                        {item.desc}
-                      </p>
-                    </div>
-                  ))}
                 </div>
               </div>
             </section>
