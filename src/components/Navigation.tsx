@@ -100,17 +100,17 @@ const Navigation = () => {
             transform 600ms var(--ease-premium);
           will-change: width, padding, border-radius, transform;
           border-radius: 18px;
-          padding: 10px 16px;
+          padding: 10px 20px;
           transform: translateY(-10px);
         }
 
         /* Shrink state: smaller, pill, more “tight” */
         @media (min-width: 768px){
-          .mb-nav { padding: 10px 28px; transform: translateY(-16px); }
+          .mb-nav { padding: 10px 32px; transform: translateY(-16px); }
           .mb-nav.mb-nav--shrink{
             width: min(900px, calc(100% - 32px));
             border-radius: 999px;
-            padding: 8px 22px;
+            padding: 8px 32px;
             background: rgba(255,255,255,0.70);
             box-shadow: 0 18px 45px rgba(20,20,40,0.10);
           }
@@ -128,9 +128,12 @@ const Navigation = () => {
         /* Link underline animation */
         .mb-link{
           position: relative;
-          padding: 8px 10px;
+          padding: 8px 12px;
           border-radius: 12px;
-          transition: transform 220ms var(--ease-premium), opacity 220ms var(--ease-premium);
+          font-size: 1.05rem;
+          font-weight: 500;
+          letter-spacing: -0.01em;
+          transition: transform 220ms var(--ease-premium), opacity 220ms var(--ease-premium), color 220ms var(--ease-premium);
         }
         .mb-link:hover{ transform: translateY(-1px); opacity: 0.9; }
 
@@ -148,10 +151,18 @@ const Navigation = () => {
           transition: transform 320ms var(--ease-premium);
         }
         .mb-link.active{
-          color: rgb(29 78 216);
-          font-weight: 600;
+          color: rgb(37 99 235);
+          font-weight: 700;
         }
         .mb-link.active::after{ transform: scaleX(1); }
+
+        .mb-nav-links-container {
+          gap: 2.25rem;
+          transition: gap 600ms var(--ease-premium);
+        }
+        .mb-nav--shrink .mb-nav-links-container {
+          gap: 1.25rem;
+        }
 
         .mb-dropdown{
           position: absolute;
@@ -172,6 +183,24 @@ const Navigation = () => {
           opacity: 1;
           visibility: visible;
           transform: translateX(-50%) translateY(0) scale(1);
+        }
+
+        /* Move the needle button effect */
+        .mb-btn-needle {
+          background: conic-gradient(from 180deg at 50% 50%, #2BC0E4 0deg, #4300FF 120deg, #FF0066 240deg, #2BC0E4 360deg);
+          background-size: 200% 200%;
+          animation: gradient-x 6s infinite alternate;
+          transition: all 400ms var(--ease-premium);
+        }
+        .mb-btn-needle:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 15px 30px rgba(67, 0, 255, 0.25);
+          filter: brightness(1.1);
+        }
+
+        @keyframes gradient-x { 
+          0%{ background-position: 0% 50%; } 
+          100%{ background-position: 100% 50%; } 
         }
 
         /* 3D Logo Pop */
@@ -204,16 +233,16 @@ const Navigation = () => {
           <Link to="/" className="mb-logo-wrap">
             <img
               src={logo}
-              alt="Metabull"
-              className={`mb-logo-3d rounded-full object-contain transition-all duration-500`}
+              alt="MetaBull"
+              className={`mb-logo-3d object-contain transition-all duration-500`}
               style={{
-                width: scrolled ? 40 : 46,
-                height: scrolled ? 40 : 46,
+                width: scrolled ? 48 : 56,
+                height: scrolled ? 48 : 56,
               }}
             />
             <div className="flex flex-col leading-none">
               <span className="font-bold text-[18px] tracking-[-0.02em] text-[#181C32] truncate">
-                Metabull
+                MetaBull
               </span>
               <span className="text-[11px] font-bold tracking-[0.25em] text-[#181C32]/60 uppercase">
                 Universe
@@ -222,7 +251,7 @@ const Navigation = () => {
           </Link>
 
           {/* CENTER: Desktop Links */}
-          <div className="hidden md:flex items-center justify-center gap-2">
+          <div className="hidden md:flex items-center justify-center mb-nav-links-container">
             <Link
               to="/"
               className={`mb-link text-[#181C32] ${isActive("/") ? "active" : ""}`}
@@ -308,11 +337,7 @@ const Navigation = () => {
           <div className="flex items-center justify-end gap-2">
             <Link
               to="/contact"
-              className="hidden md:inline-flex items-center justify-center rounded-2xl px-5 py-2.5 text-[14px] font-semibold text-white
-                         bg-gradient-to-r from-violet-500 via-purple-500 to-indigo-500
-                         shadow-[0_10px_24px_rgba(139,92,246,0.28)]
-                         hover:shadow-[0_16px_34px_rgba(139,92,246,0.38)]
-                         transition-all duration-300"
+              className="mb-btn-needle hidden md:inline-flex items-center justify-center rounded-2xl px-6 py-2.5 text-[14px] font-bold text-white shadow-lg"
             >
               Get Started
             </Link>
@@ -430,10 +455,7 @@ const Navigation = () => {
                 <Link
                   to="/contact"
                   onClick={() => setMobileOpen(false)}
-                  className="w-full inline-flex items-center justify-center rounded-2xl px-5 py-4 text-[15px] font-semibold text-white
-                             bg-gradient-to-r from-violet-500 via-purple-500 to-indigo-500
-                             shadow-[0_14px_30px_rgba(139,92,246,0.30)]
-                             active:scale-[0.98] transition"
+                  className="mb-btn-needle w-full inline-flex items-center justify-center rounded-2xl px-5 py-4 text-[15px] font-bold text-white shadow-lg active:scale-[0.98]"
                 >
                   Get Started
                 </Link>
