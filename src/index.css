@@ -1,0 +1,529 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Performance optimizations */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --radius: 0.5rem;
+  }
+
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+@layer utilities {
+  .font-sans {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  /* Glowing border effects */
+  .glow-border {
+    position: relative;
+    background: linear-gradient(
+      45deg,
+      hsl(var(--background)),
+      hsl(var(--card))
+    );
+    border-radius: inherit;
+    overflow: hidden;
+  }
+
+  .glow-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    background: linear-gradient(
+      45deg,
+      hsl(var(--purple-500) / 0.5),
+      hsl(var(--blue-500) / 0.5),
+      hsl(var(--purple-500) / 0.5)
+    );
+    border-radius: inherit;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: xor;
+    -webkit-mask-composite: xor;
+    transition: all 0.3s ease;
+  }
+
+  .glow-border:hover::before {
+    background: linear-gradient(
+      45deg,
+      hsl(var(--purple-400) / 0.8),
+      hsl(var(--blue-400) / 0.8),
+      hsl(var(--purple-400) / 0.8)
+    );
+    box-shadow:
+      0 0 20px hsl(var(--purple-500) / 0.3),
+      0 0 40px hsl(var(--blue-500) / 0.2);
+  }
+
+  /* Purple/Blue color variables for glow effects */
+  :root {
+    --purple-400: 168 85% 78%;
+    --purple-500: 262 83% 58%;
+    --blue-400: 213 94% 68%;
+    --blue-500: 217 92% 60%;
+  }
+
+  /* Reusable blue text gradient */
+  .text-gradient-blue {
+    background-image: linear-gradient(90deg, hsl(var(--blue-400)), hsl(var(--blue-500)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Performance optimized animations */
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* Mobile optimized Spline container */
+  .spline-container {
+    width: 100%;
+    height: 100%;
+    will-change: transform;
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  /* Glass morphism with better performance */
+  .glass {
+    background: hsl(var(--background) / 0.05);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid hsl(var(--border) / 0.1);
+  }
+
+  .glass-hover:hover {
+    background: hsl(var(--background) / 0.1);
+    border-color: hsl(var(--border) / 0.2);
+  }
+
+  /* Optimized scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background) / 0.1);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--foreground) / 0.2);
+    border-radius: 2px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--foreground) / 0.4);
+  }
+
+  /* Mobile-first responsive design */
+  @media (max-width: 480px) {
+    .spline-container {
+      transform: scale(0.9);
+      transform-origin: center;
+    }
+
+    /* Enhanced mobile touch targets */
+    button, .button {
+      min-height: 26px;
+      min-width: 44px;
+    }
+
+    /* Better mobile text sizes */
+    h1 {
+      font-size: 2rem;
+      line-height: 1.1;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      line-height: 1.2;
+    }
+
+    p {
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    /* Reduce motion for better performance on mobile */
+    @media (prefers-reduced-motion: reduce) {
+      .animate-float,
+      .animate-pulse-slow {
+        animation: none;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .spline-container {
+      transform: scale(0.95);
+      transform-origin: center;
+    }
+
+    /* Mobile navigation improvements */
+    .mobile-nav {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    /* Better mobile spacing */
+    .mobile-padding {
+      padding: 1rem;
+    }
+
+    /* Enhanced mobile cards */
+    .mobile-card {
+      padding: 1.5rem;
+      margin: 0.5rem;
+    }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .spline-container {
+      transform: scale(0.98);
+      transform-origin: center;
+    }
+  }
+
+  /* Enhanced mobile interactions */
+  @media (hover: none) and (pointer: coarse) {
+    .hover-lift:active {
+      transform: translateY(-1px);
+    }
+
+    .hover-scale:active {
+      transform: scale(1.02);
+    }
+
+    /* Better mobile button feedback */
+    button:active {
+      transform: scale(0.98);
+    }
+  }
+
+  /* Light mode mobile optimizations */
+  .light .mobile-nav {
+    background: hsl(var(--background) / 0.95);
+    border-color: hsl(var(--border) / 0.5);
+  }
+
+  .light .glow-border::before {
+    background: linear-gradient(
+      45deg,
+      hsl(var(--purple-500) / 0.3),
+      hsl(var(--blue-500) / 0.3),
+      hsl(var(--purple-500) / 0.3)
+    );
+  }
+
+  .light .glow-border:hover::before {
+    background: linear-gradient(
+      45deg,
+      hsl(var(--purple-400) / 0.6),
+      hsl(var(--blue-400) / 0.6),
+      hsl(var(--purple-400) / 0.6)
+    );
+  }
+}
+
+/* Optimized keyframes */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Performance optimized transitions */
+.transition-optimized {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity, background-color;
+}
+
+/* Optimized hover effects */
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+.hover-scale:hover {
+  transform: scale(1.02);
+}
+
+/* Loading optimizations */
+.loading-skeleton {
+  background: linear-gradient(90deg, transparent, hsl(var(--foreground) / 0.1), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .glass {
+    border: 2px solid hsl(var(--border) / 0.3);
+    background: hsl(var(--background) / 0.1);
+  }
+
+  .glow-border::before {
+    background: linear-gradient(
+      45deg,
+      hsl(var(--foreground) / 0.5),
+      hsl(var(--foreground) / 0.3),
+      hsl(var(--foreground) / 0.5)
+    );
+  }
+}
+
+/* Theme transition support */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Enhanced mobile viewport handling */
+@supports (height: 100dvh) {
+  @media (max-width: 768px) {
+    .min-h-screen {
+      min-height: 100dvh;
+    }
+  }
+}
+
+#alphabet{
+    height: 11vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5vw;
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+}
+#alphabet h5{
+    font-size: 2vw;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: 4px;
+    border-bottom: 2px  solid black;
+    margin-left: 4vw;
+
+/* Liquid glass wrapper (durable + mobile/iOS friendly)
+   - Use backdrop-filter with -webkit- prefix for iOS Safari
+   - Provide gentle ambient gradients via ::before
+   - Add a subtle noise layer for depth
+   - Respect prefers-reduced-motion */
+.page-glass {
+  position: relative;
+  isolation: isolate; /* keep effects contained */
+}
+
+.page-glass::before {
+  content: '';
+  position: absolute;
+  inset: -6%;
+  z-index: -30;
+  pointer-events: none;
+  background: radial-gradient(40rem 20rem at 10% 20%, rgba(67,0,255,0.10), transparent 20%), radial-gradient(36rem 18rem at 90% 80%, rgba(255,0,102,0.06), transparent 20%), linear-gradient(180deg, rgba(10,10,10,0.6), rgba(0,0,0,0.85));
+  filter: blur(48px) saturate(120%);
+  border-radius: 28px;
+  opacity: 0.95;
+}
+
+.page-glass > section {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(2,6,23,0.6);
+  margin-bottom: 2.5rem;
+}
+
+/* Subtle noise overlay for organic feel */
+.page-glass > section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'><filter id='n'><feTurbulence baseFrequency='0.8' numOctaves='1' stitchTiles='stitch'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.02' /></svg>");
+  opacity: 0.6;
+  mix-blend-mode: overlay;
+  border-radius: inherit;
+}
+
+/* Prefer reduced motion: simplify heavy effects */
+@media (prefers-reduced-motion: reduce) {
+  .page-glass::before { filter: none; opacity: 0.8; }
+  .page-glass > section { backdrop-filter: none; -webkit-backdrop-filter: none; box-shadow: none; }
+  .page-glass > section::after { display: none; }
+}
+}
+#alphabet h6{
+    font-size: 1vw;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-style: italic;
+    padding: 0.6vw 0.8vw;
+    border-radius: 50%;
+    transition: all ease 0.2s;
+
+}
+#alphabet h6:hover{
+        border:1px solid #000 ;
+
+
+}
+#marquee{
+    width: 120%;
+    white-space: nowrap;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: hidden;
+
+}
+#marquee .img1{
+    display: inline-block;
+    font-size: 3vw;
+    text-transform: uppercase;
+    margin-left: 10px;
+    font-weight: 900;
+    animation: marquee 10s linear infinite;
+}
+@keyframes marquee {
+      from{
+        transform:translateX(0) ;
+      }
+      to{
+        transform:translateX(calc(-100% - 100px)) ;
+      }
+
+}
+
+#marque{
+    width: 120%;
+    white-space: nowrap;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: hidden;
+
+}
+#marque .img2{
+    display: inline-block;
+    font-size: 3vw;
+    margin-left: 12px;
+    text-transform: uppercase;
+    font-weight: 900;
+    animation: marque 10s linear infinite;
+}
+@keyframes marque {
+      from{
+          transform:translateX(calc(-100% - 100px)) ;
+
+      }
+      to{
+        transform:translateX(0) ;
+      }
+}
+
+.rotate-tilt {
+  transform: rotate(10deg); /* Tilting right */
+  transform-origin: right;
+}
