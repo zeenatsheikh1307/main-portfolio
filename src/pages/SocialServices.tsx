@@ -206,91 +206,108 @@ const SocialServices = () => {
         </div>
       </section>
 
-      {/* Services Grid (Preserved Layout) */}
-      <section id="services" ref={servicesRef} className="md:pl-24 px-4 md:px-6 py-16 md:py-24 bg-gradient-to-b from-[#0a0a0f] via-[#0d0d14] to-[#0a0a0f]">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
+
+
+      {/* Platforms Section */}
+      <section className="relative md:pl-24 px-4 md:px-6 py-16 md:py-24 overflow-hidden bg-gradient-to-b from-[#0a0a0f] to-[#0d0d14] min-h-screen flex items-center">
+        <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-16">
-            <div className="inline-block mb-4 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/20">
-              <span className="text-sm font-medium bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                What we offer
-              </span>
-            </div>
-            <h2 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
-              OUR SOCIAL APPROACH
-            </h2>
-            <p className="text-white/60 max-w-2xl mx-auto text-lg">
-              Strategic social media management that builds authentic communities and drives meaningful engagement
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white">PLATFORMS WE MASTER</h2>
+            <p className="text-white/60 text-lg max-w-2xl mx-auto">
+              Expert social media management across all major platforms
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {[
-              { icon: Target, title: "STRATEGY", desc: "Data-driven social media strategies tailored to your brand's unique voice and goals.", gradient: "from-blue-900/50 via-blue-800/30 to-blue-950/20", iconColor: "text-blue-400" },
-              { icon: Users, title: "COMMUNITY", desc: "Building and nurturing engaged communities around your brand's mission.", gradient: "from-purple-900/50 via-purple-800/30 to-purple-950/20", iconColor: "text-purple-400" },
-              { icon: MessageCircle, title: "CONTENT", desc: "Compelling content creation that sparks conversations and drives engagement.", gradient: "from-green-900/50 via-green-800/30 to-green-950/20", iconColor: "text-green-400" },
-              { icon: BarChart, title: "ANALYTICS", desc: "Comprehensive analytics and insights to optimize performance and ROI.", gradient: "from-yellow-900/50 via-yellow-800/30 to-yellow-950/20", iconColor: "text-yellow-400" },
-              { icon: TrendingUp, title: "GROWTH", desc: "Organic growth strategies that build lasting relationships with your audience.", gradient: "from-pink-900/50 via-pink-800/30 to-pink-950/20", iconColor: "text-pink-400" },
-              { icon: Calendar, title: "MANAGEMENT", desc: "End-to-end social media management from planning to execution and optimization.", gradient: "from-orange-900/50 via-orange-800/30 to-orange-950/20", iconColor: "text-orange-400" },
-            ].map((service, index) => (
-              <div key={index} className={`service-card group relative bg-gradient-to-br ${service.gradient} backdrop-blur-xl rounded-3xl p-8 md:p-10 border border-white/10 hover:border-white/30 transition-all duration-500 hover:scale-[1.02] hover:-translate-y-3 min-h-[320px] flex flex-col justify-between overflow-hidden shadow-xl`}>
-                <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative z-10">
-                  <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 flex items-center justify-center mb-6`}>
-                    <service.icon className={`w-7 h-7 md:w-8 md:h-8 ${service.iconColor}`} />
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-bold mb-4 text-white leading-tight">{service.title}</h3>
-                  <p className="text-white/70 leading-relaxed text-sm md:text-base">{service.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+          {/* 3D Rotating Carousel */}
+          <style>{`
+            @keyframes rotate3d {
+              from {
+                transform: rotateY(0deg);
+              }
+              to {
+                transform: rotateY(360deg);
+              }
+            }
+            
+            .carousel-3d {
+              perspective: 1200px;
+              position: relative;
+              width: 100%;
+              height: 450px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+            
+            .carousel-container {
+              position: relative;
+              width: 300px;
+              height: 300px;
+              transform-style: preserve-3d;
+              animation: rotate3d 20s linear infinite;
+            }
+            
+            .carousel-container:hover {
+              animation-play-state: paused;
+            }
+            
+            .carousel-item {
+              position: absolute;
+              width: 200px;
+              height: 250px;
+              left: 50%;
+              top: 50%;
+              margin-left: -100px;
+              margin-top: -125px;
+              transform-style: preserve-3d;
+            }
+          `}</style>
 
-      {/* Recent Work / Campaigns */}
-      <section className="relative md:pl-24 px-4 md:px-6 py-12 md:py-20 overflow-hidden bg-[#0a0a0f]">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4"><span className="bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">RECENT CAMPAIGNS</span></h2>
-          </div>
-          <div ref={projectsRef} className="flex gap-6 overflow-x-auto py-4 px-2 snap-x snap-mandatory scrollbar-hide pb-12">
-            {socialCampaigns.map(campaign => (
-              <article key={campaign.id} className="campaign-card group snap-start w-[380px] flex-shrink-0 rounded-2xl overflow-hidden bg-gradient-to-br from-[#1a1a2e]/95 to-[#16162a]/60 backdrop-blur-xl border border-white/10 hover:border-purple-400/60 transition-all duration-500">
-                <div className="relative h-64 overflow-hidden bg-gray-900">
-                  <img src={campaign.image} alt={campaign.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                  <div className="absolute bottom-4 left-4 right-4 flex justify-between items-center">
-                    <span className="text-white font-bold text-lg">{campaign.engagement} Engagement</span>
-                    <span className="text-emerald-400 font-bold">{campaign.growth}</span>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-2">{campaign.title}</h3>
-                  <p className="text-white/60 text-sm mb-4">{campaign.description}</p>
-                  <div className="flex justify-between items-center text-xs text-white/40">
-                    <span>{campaign.platform}</span>
-                    <span>{campaign.client}</span>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+          <div className="carousel-3d">
+            <div className="carousel-container">
+              {[
+                { name: 'INSTAGRAM', logo: '/instgram logo.avif', gradient: 'from-purple-600 via-pink-600 to-orange-500', glow: 'group-hover:shadow-[0_0_60px_rgba(219,39,119,0.5)]' },
+                { name: 'FACEBOOK', logo: '/facebook logo.jpg', gradient: 'from-blue-600 to-blue-700', glow: 'group-hover:shadow-[0_0_60px_rgba(59,130,246,0.5)]' },
+                { name: 'LINKEDIN', logo: '/linkedin logo.png', gradient: 'from-blue-500 to-blue-600', glow: 'group-hover:shadow-[0_0_60px_rgba(14,165,233,0.5)]' },
+                { name: 'YOUTUBE', logo: '/youtube logo.jpg', gradient: 'from-red-600 to-red-700', glow: 'group-hover:shadow-[0_0_60px_rgba(239,68,68,0.5)]' },
+                { name: 'WHATSAPP', logo: '/whatsapp logo.png', gradient: 'from-green-500 to-green-600', glow: 'group-hover:shadow-[0_0_60px_rgba(34,197,94,0.5)]' },
+                { name: 'TELEGRAM', logo: '/telegram logo.jpg', gradient: 'from-sky-500 to-blue-500', glow: 'group-hover:shadow-[0_0_60px_rgba(14,165,233,0.5)]' },
+              ].map((platform, i) => {
+                const angle = (i / 6) * 360;
+                const radius = 350;
+                return (
+                  <div
+                    key={i}
+                    className="carousel-item"
+                    style={{
+                      transform: `rotateY(${angle}deg) translateZ(${radius}px)`
+                    }}
+                  >
+                    <div className={`group relative w-full h-full bg-white/[0.02] hover:bg-white/[0.08] backdrop-blur-2xl border border-white/20 hover:border-white/40 rounded-3xl p-6 text-center transition-all duration-500 hover:scale-110 cursor-pointer ${platform.glow} shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]`}>
+                      {/* Gradient background on hover */}
+                      <div className={`absolute inset-0 bg-gradient-to-br ${platform.gradient} opacity-0 group-hover:opacity-20 rounded-3xl transition-opacity duration-500`}></div>
 
-      {/* Platforms Section */}
-      <section className="relative md:pl-24 px-4 md:px-6 py-16 md:py-24 overflow-hidden bg-gradient-to-b from-[#0a0a0f] to-[#0d0d14]">
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">PLATFORMS WE MASTER</h2>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {['INSTAGRAM', 'FACEBOOK', 'TWITTER', 'LINKEDIN', 'YOUTUBE', 'TIKTOK', 'WHATSAPP', 'TELEGRAM'].map((platform, i) => (
-              <div key={i} className="group bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl p-6 text-center transition-all duration-300">
-                <h3 className="text-white font-bold">{platform}</h3>
-              </div>
-            ))}
+                      {/* Logo Image */}
+                      <div className="relative z-10">
+                        <div className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-3 transform group-hover:scale-125 transition-transform duration-500 filter group-hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]">
+                          <img
+                            src={platform.logo}
+                            alt={platform.name}
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
+                        <h3 className="text-base md:text-lg font-black text-white/80 group-hover:text-white tracking-wider transition-colors duration-300">
+                          {platform.name}
+                        </h3>
+                      </div>
+
+                      {/* Decorative corner accent */}
+                      <div className={`absolute top-0 right-0 w-16 h-16 bg-gradient-to-br ${platform.gradient} opacity-0 group-hover:opacity-30 rounded-bl-3xl rounded-tr-3xl transition-opacity duration-500`}></div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>

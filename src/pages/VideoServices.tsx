@@ -202,69 +202,90 @@ const VideoServices = () => {
         </div>
       </section>
 
-      {/* Services Grid (Preserved) */}
-      <section className="md:pl-24 px-4 md:px-6 py-16 md:py-24 bg-gradient-to-b from-[#0a0a0f] via-[#0d0d14] to-[#0a0a0f]" ref={servicesRef}>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent mb-4">OUR VIDEO EXPERTISE</h2>
-            <p className="text-white/60 text-lg">Cinematic storytelling and professional video production</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {[
-              { icon: Camera, title: "CINEMATOGRAPHY", desc: "Professional video production with cinematic quality.", iconColor: "text-red-400" },
-              { icon: Edit, title: "POST-PRODUCTION", desc: "Advanced editing, color grading, and effects.", iconColor: "text-purple-400" },
-              { icon: Film, title: "MOTION DESIGN", desc: "Dynamic motion graphics and animations.", iconColor: "text-blue-400" },
-              { icon: Palette, title: "COLOR GRADING", desc: "Professional color correction and grading.", iconColor: "text-green-400" },
-              { icon: Music, title: "SOUND DESIGN", desc: "Immersive audio design and mixing.", iconColor: "text-yellow-400" },
-              { icon: Play, title: "DELIVERY", desc: "Multi-format export and optimization.", iconColor: "text-pink-400" },
-            ].map((service, i) => (
-              <div key={i} className="service-card group relative bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-xl rounded-3xl p-8 border border-white/10 hover:border-white/30 transition-all hover:-translate-y-2 min-h-[300px] flex flex-col justify-between">
-                <div>
-                  <service.icon className={`w-8 h-8 mb-4 ${service.iconColor}`} />
-                  <h3 className="text-xl font-bold text-white mb-2">{service.title}</h3>
-                  <p className="text-white/70">{service.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Recent Video Projects */}
+
+      {/* Our Work */}
       <section id="projects" className="md:pl-24 px-4 md:px-6 py-16 md:py-24 bg-[#0a0a0f] relative overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-white via-emerald-200 to-cyan-200 bg-clip-text text-transparent mb-4">RECENT PROJECTS</h2>
+          {/* Header redesign - Enhanced */}
+          <div className="flex flex-col items-center justify-center mb-20 text-center">
+            {/* Main heading with gradient */}
+            <h2 className="text-5xl sm:text-6xl md:text-7xl font-black uppercase mb-4 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent tracking-tight">
+              Our Work
+            </h2>
+
+            {/* Decorative line */}
+            <div className="w-24 h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent mb-4"></div>
           </div>
           <div ref={projectsRef} className="flex gap-8 overflow-x-auto py-4 px-2 snap-x snap-mandatory scrollbar-hide pb-12">
             {videoProjects.map(project => (
-              <article key={project.id} className="video-card group relative snap-start w-[380px] flex-shrink-0 rounded-3xl overflow-hidden bg-gradient-to-b from-[#1a1a2e]/95 to-[#16162a]/60 backdrop-blur-xl border border-white/10 hover:border-purple-400/60 transition-all duration-500 shadow-2xl hover:scale-[1.02]">
-                <div className="relative h-56 overflow-hidden bg-black">
-                  <img src={project.thumbnail} alt={project.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
-                  <button onClick={() => setSelectedVideo(project.youtube || null)} className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 hover:scale-110 transition-transform">
-                      <Play className="w-8 h-8 text-white fill-white ml-1" />
-                    </div>
-                  </button>
-                  <div className="absolute top-4 left-4 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-xs font-bold text-white border border-white/10">{project.category}</div>
-                  <div className="absolute bottom-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-xs font-bold text-white border border-white/10">{project.duration}</div>
+              <article key={project.id} className="project-card group relative snap-start w-[450px] flex-shrink-0 flex flex-col h-[400px] transition-all duration-700 ease-out hover:-translate-y-4 hover:scale-[1.02] overflow-visible">
+                {/* Folder Tab */}
+                <div className="absolute -top-0 right-6 z-20 flex items-center gap-2 bg-black/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-white/10 transition-opacity duration-300 group-hover:opacity-0">
+                  <span className="text-white/90 text-[8px] uppercase font-bold tracking-[0.15em]">
+                    {project.category}
+                  </span>
+                  <span className="text-white/50 text-[8px] font-bold">•</span>
+                  <span className="text-white/70 text-[8px] uppercase font-bold tracking-wide">
+                    {project.duration}
+                  </span>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
-                  <p className="text-white/60 text-sm mb-4">{project.description}</p>
-                  <div className="flex justify-between items-center text-xs text-white/40">
-                    <span>{project.year}</span>
-                    <button onClick={() => setSelectedVideo(project.youtube || null)} className="text-purple-400 hover:text-purple-300 font-bold flex items-center gap-1">Watch <Play className="w-3 h-3" /></button>
+
+                {/* Main Card Body - White Background */}
+                <div className="w-full h-full bg-white flex flex-col relative z-10 rounded-[2.5rem] overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] group-hover:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.25)] transition-all duration-700">
+
+                  {/* Video/Image Container */}
+                  <div className="relative h-[280px] w-full bg-[#0a0a0f] flex items-center justify-center overflow-hidden">
+                    {/* Thumbnail Image */}
+                    <img
+                      src={project.thumbnail}
+                      alt={project.title}
+                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+                    />
+
+                    {/* Play Button Overlay */}
+                    <button
+                      onClick={() => setSelectedVideo(project.youtube || null)}
+                      className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20"
+                    >
+                      <div className="w-16 h-16 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center border border-white/30 hover:scale-110 transition-transform shadow-xl">
+                        <Play className="w-8 h-8 text-black fill-black ml-1" />
+                      </div>
+                    </button>
+                  </div>
+
+                  {/* Content Footer - White Background */}
+                  <div className="flex-1 flex items-center justify-between p-6 bg-white">
+                    <div className="flex flex-col gap-2">
+                      {/* Project Title - Bold & Modern */}
+                      <div className="flex flex-col gap-0">
+                        <h3 className="text-[2rem] font-black text-gray-900 uppercase tracking-[-0.02em] leading-[0.9]">
+                          {project.title.split(' ')[0]}
+                        </h3>
+                        {project.title.split(' ').slice(1).length > 0 && (
+                          <span className="text-[2rem] font-black text-gray-900 uppercase tracking-[-0.02em] leading-[0.9]">
+                            {project.title.split(' ').slice(1).join(' ')}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Year */}
+                      <span className="text-xs text-gray-400 font-medium">{project.year}</span>
+                    </div>
+
+                    {/* Arrow Button */}
+                    <button
+                      onClick={() => setSelectedVideo(project.youtube || null)}
+                      className="w-12 h-12 rounded-full bg-gray-900 flex items-center justify-center group-hover:bg-purple-600 transition-all duration-300 hover:scale-110 shadow-lg"
+                    >
+                      <Play className="w-5 h-5 text-white fill-white ml-0.5" />
+                    </button>
                   </div>
                 </div>
               </article>
             ))}
           </div>
-          {/* Awards - Simplified */}
-          <div className="mt-12 flex justify-center gap-8 text-white/50 text-sm">
-            <div className="flex items-center gap-2"><Award className="w-5 h-5" /> Festival Winner 2024</div>
-            <div className="flex items-center gap-2"><Award className="w-5 h-5" /> Best Editing</div>
-          </div>
+
         </div>
       </section>
 
