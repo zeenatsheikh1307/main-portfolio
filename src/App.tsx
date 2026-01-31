@@ -16,6 +16,9 @@ import AboutUs from "./pages/AboutUs";
 import Team from "./pages/Team";
 import LoadingScreen from "@/components/LoadingScreen";
 import { LoadingProvider } from "@/contexts/LoadingContext";
+import TestimonialDemo from "./pages/TestimonialDemo";
+import PricingDemo from "./pages/PricingDemo";
+
 
 const queryClient = new QueryClient();
 
@@ -40,7 +43,8 @@ const App = () => (
               <Route path="/about-us" element={<AboutUs />} />
               <Route path="/team" element={<Team />} />
               <Route path="/contact" element={<Contact />} />
-
+              <Route path="/testimonial-demo" element={<TestimonialDemo />} />
+              <Route path="/pricing-demo" element={<PricingDemo />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -8,6 +8,7 @@ import { ScrollSmoother } from "gsap/ScrollSmoother";
 
 import Navigation from "@/components/Navigation";
 import { useLoading } from "@/contexts/LoadingContext";
+import TestimonialDemo from "@/pages/TestimonialDemo";
 
 import heroPoster from "./assets/assests/hero bg.png";
 import servicesBg from "./assets/assests/service bg.png";
@@ -20,6 +21,20 @@ import websiteImg from "./assets/assests/website.png";
 import brandingImg from "./assets/assests/graphics.png";
 import socialImg from "./assets/assests/social media.png";
 import adsImg from "./assets/assests/ads.png";
+
+// Logo Imports
+import globeLogo from "./assets/assests/imgi_13_6751b0f88d7433fd25b4d5b9_globe-blue.svg";
+import ai2Logo from "./assets/assests/imgi_34_67b7ae29a34054d481ed86f8_ai2.svg";
+import leonardoLogo from "./assets/assests/imgi_36_67b7afe2d51809648db7a00a_leonardo.svg";
+import snorkelLogo from "./assets/assests/imgi_37_67b7aff15ddb92f9803e857b_snorkel.svg";
+import zohoLogo from "./assets/assests/imgi_38_67b7b01204013240ce111e90_zoho.svg";
+import quoraLogo from "./assets/assests/imgi_39_67b7b01b76fa500cc4788094_quora.svg";
+import zoomLogo from "./assets/assests/imgi_41_67b7b02c1b74f147051a8243_zoom.svg";
+import wordwareLogo from "./assets/assests/imgi_45_67b7b0666959b020059524f4_wordware.svg";
+import latitudeLogo from "./assets/assests/imgi_46_67b7b083c401542e937e7344_latitude.svg";
+import pikaLogo from "./assets/assests/imgi_47_67b7b08affcaaddc02fdb34e_pika.svg";
+import sphereLogo from "./assets/assests/imgi_59_650091497a540a18ebadbb53_sphere.svg";
+import { Testimonial } from "@/components/ui/design-testimonial";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -801,15 +816,29 @@ const Index = () => {
             </section>
 
             {/* BRANDING MARQUEE */}
-            <div className="w-full bg-black py-4 overflow-hidden relative z-20 border-y border-white/10">
-              <div className="hero-scroll-track select-none whitespace-nowrap">
-                {[...Array(8)].map((_, i) => (
-                  <span
-                    key={i}
-                    className="text-white/80 italic font-serif font-light  text-lg mx-8 tracking-widest "
-                  >
-                    &nbsp;•&nbsp; MetaBull Universe &nbsp;•&nbsp;
-                  </span>
+            <div className="w-full bg-black h-16 py-0 overflow-hidden relative z-20 border-y border-white/10 select-none">
+              <div className="hero-scroll-track whitespace-nowrap flex items-center h-full">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="flex items-center gap-32 mx-16 shrink-0 min-w-max">
+                    {[
+                      zohoLogo,
+                      zoomLogo,
+                      quoraLogo,
+                      leonardoLogo,
+                      pikaLogo,
+                      snorkelLogo,
+                      wordwareLogo,
+                      latitudeLogo,
+                      ai2Logo,
+                    ].map((logo, idx) => (
+                      <img
+                        key={`${i}-${idx}`}
+                        src={logo}
+                        alt="Partner Logo"
+                        className="h-24 w-auto object-contain opacity-90 hover:opacity-100 transition-all duration-300 hover:scale-125 cursor-pointer"
+                      />
+                    ))}
+                  </div>
                 ))}
               </div>
             </div>
@@ -972,33 +1001,30 @@ const Index = () => {
 
                 <div className="text-center mb-8 md:mb-10">
                   <h2 className="text-[clamp(1.75rem,4.5vw,2.75rem)] font-bold mb-4 text-slate-900 leading-tight">
-                    Your teams get to enjoy
+                    Why teams trust MetaBull Universe
                     <br />
                     <span className="hero-tagline-gradient">
-                      seamless continuous service
+                      clarity, consistency & continuous support
                     </span>
                   </h2>
                   <p className="max-w-3xl mx-auto text-slate-600 mt-4">
-                    Unify cross-functional teams the easy way. Rely on us to
-                    bridge expectations, serve simplicity and deliver lasting
-                    value. We handle the tedious necessities so you don't have
-                    to.
+                    We work as an extension of your team — ensuring smooth communication, clear execution, and reliable delivery at every stage.
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-7 lg:gap-8 items-start mt-8">
                   {[
                     {
-                      title: "Design",
-                      desc: "Details you specify once carry forward everywhere. We make sure they don't get bypassed.",
+                      title: "Clear Communication",
+                      desc: "No confusion. No guesswork. We keep everything transparent — from planning to delivery. You always know what’s happening, what’s next, and why it matters for your business.",
                     },
                     {
-                      title: "Engineering",
-                      desc: "Your builds have clarity behind it. We create what's needed, what's changed and why it matters.",
+                      title: "Consistent Quality",
+                      desc: "Every task, update, and delivery follows the same high standard. We focus on details, timelines, and finishing — nothing rushed, nothing half-done, ever.",
                     },
                     {
-                      title: "Construction",
-                      desc: "Materials you need on site get valorized and tracked on multiple levels. Nothing shows up half-right.",
+                      title: "Reliable Partnership",
+                      desc: "We don’t disappear after delivery. We work as a long-term partner, supporting, improving, and growing your business as it evolves.",
                     },
                   ].map((item, i) => (
                     <div
@@ -1112,6 +1138,8 @@ const Index = () => {
                 </div>
               </div>
             </section>
+
+            <Testimonial />
 
             {/* CTA */}
             <section
