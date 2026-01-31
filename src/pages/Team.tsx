@@ -137,7 +137,7 @@ const Team: React.FC = () => {
   }, [query]);
 
   return (
-    <div className="relative min-h-screen bg-background text-foreground selection:bg-purple-500/30 selection:text-foreground">
+    <div className="relative min-h-screen bg-black text-white selection:bg-purple-500/30 selection:text-white">
       {/* soft cosmic bg */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute -top-40 -left-24 h-[42rem] w-[42rem] rounded-full bg-[radial-gradient(circle_at_30%_30%,rgba(67,0,255,.22),transparent_60%)] blur-2xl" />
@@ -176,12 +176,12 @@ const Team: React.FC = () => {
           {/* Search */}
           <div className="mx-auto max-w-xl sm:max-w-2xl mt-6 sm:mt-8">
             <div className="relative">
-              <Search className="absolute left-4 top-4 h-6 w-6 text-foreground/40" />
+              <Search className="absolute left-4 top-4 h-6 w-6 text-white/40" />
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search by name, role, or skill…"
-                className="w-full rounded-2xl bg-foreground/[0.06] border border-white/15 py-4 pl-14 pr-4 outline-none placeholder-foreground/40 focus:border-white/30 shadow-[0_0_28px_-8px_rgba(67,0,255,0.55)]"
+                className="w-full rounded-2xl bg-white/5 border border-white/15 py-4 pl-14 pr-4 outline-none placeholder-white/40 text-white focus:border-white/30 shadow-[0_0_28px_-8px_rgba(67,0,255,0.55)]"
               />
             </div>
           </div>
@@ -247,11 +247,11 @@ function Card({ member, onOpen }: { member: Member; onOpen: () => void }) {
                  bg-[linear-gradient(135deg,rgba(255,255,255,0.12),rgba(255,255,255,0)_30%),linear-gradient(135deg,rgba(43,192,228,.45),rgba(67,0,255,.35),rgba(255,0,102,.4))]"
       style={{ backgroundClip: "padding-box, border-box", border: "1px solid transparent" }}
     >
-      <div className="rounded-2xl bg-background/80 backdrop-blur border border-white/15 overflow-hidden shadow-[0_10px_30px_-12px_rgba(0,0,0,0.45)]">
+      <div className="rounded-2xl bg-zinc-900/80 backdrop-blur border border-white/15 overflow-hidden shadow-[0_10px_30px_-12px_rgba(0,0,0,0.45)]">
         {/* image with fixed aspect */}
         <div className="relative">
           {!imgLoaded && (
-            <div className="aspect-[4/3] w-full overflow-hidden bg-foreground/[0.06]">
+            <div className="aspect-[4/3] w-full overflow-hidden bg-white/5">
               <div className="h-full w-[140%] -translate-x-10 animate-[shimmer_1.2s_infinite] bg-[linear-gradient(110deg,rgba(255,255,255,0.04)_8%,rgba(255,255,255,0.16)_18%,rgba(255,255,255,0.04)_33%)] [background-size:200%_100%]" />
             </div>
           )}
@@ -266,7 +266,7 @@ function Card({ member, onOpen }: { member: Member; onOpen: () => void }) {
             loading="lazy"
             decoding="async"
           />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-background/90 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-zinc-900/90 to-transparent" />
         </div>
 
         {/* content */}
@@ -315,10 +315,10 @@ function ProfileModal({ member, onClose }: { member: Member; onClose: () => void
   return (
     <div className="fixed inset-0 z-50 grid place-items-center p-4">
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative z-10 w-full max-w-2xl overflow-hidden rounded-2xl border border-white/15 bg-background/90 backdrop-blur-md shadow-2xl">
+      <div className="relative z-10 w-full max-w-2xl overflow-hidden rounded-2xl border border-white/15 bg-zinc-950/90 backdrop-blur-md shadow-2xl">
         <button
           onClick={onClose}
-          className="absolute right-3 top-3 rounded-lg border border-white/15 bg-white/10 p-2 text-foreground/80 hover:bg-white/20"
+          className="absolute right-3 top-3 rounded-lg border border-white/15 bg-white/10 p-2 text-white/80 hover:bg-white/20"
           aria-label="Close"
         >
           <XIcon className="h-5 w-5" />
@@ -331,7 +331,7 @@ function ProfileModal({ member, onClose }: { member: Member; onClose: () => void
           <div className="md:col-span-2 p-6">
             <h3 className="text-2xl font-semibold">{member.name}</h3>
             <p className="text-[#9b7cff]">{member.role}</p>
-            <p className="mt-4 text-foreground leading-relaxed">{member.bio}</p>
+            <p className="mt-4 text-white/90 leading-relaxed">{member.bio}</p>
             {!!member.tags?.length && (
               <div className="mt-5 flex flex-wrap gap-2">
                 {member.tags.map((t) => (

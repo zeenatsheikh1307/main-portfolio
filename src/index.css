@@ -91,11 +91,9 @@ html {
   /* Glowing border effects */
   .glow-border {
     position: relative;
-    background: linear-gradient(
-      45deg,
-      hsl(var(--background)),
-      hsl(var(--card))
-    );
+    background: linear-gradient(45deg,
+        hsl(var(--background)),
+        hsl(var(--card)));
     border-radius: inherit;
     overflow: hidden;
   }
@@ -105,12 +103,10 @@ html {
     position: absolute;
     inset: 0;
     padding: 1px;
-    background: linear-gradient(
-      45deg,
-      hsl(var(--purple-500) / 0.5),
-      hsl(var(--blue-500) / 0.5),
-      hsl(var(--purple-500) / 0.5)
-    );
+    background: linear-gradient(45deg,
+        hsl(var(--purple-500) / 0.5),
+        hsl(var(--blue-500) / 0.5),
+        hsl(var(--purple-500) / 0.5));
     border-radius: inherit;
     mask:
       linear-gradient(#fff 0 0) content-box,
@@ -121,12 +117,10 @@ html {
   }
 
   .glow-border:hover::before {
-    background: linear-gradient(
-      45deg,
-      hsl(var(--purple-400) / 0.8),
-      hsl(var(--blue-400) / 0.8),
-      hsl(var(--purple-400) / 0.8)
-    );
+    background: linear-gradient(45deg,
+        hsl(var(--purple-400) / 0.8),
+        hsl(var(--blue-400) / 0.8),
+        hsl(var(--purple-400) / 0.8));
     box-shadow:
       0 0 20px hsl(var(--purple-500) / 0.3),
       0 0 40px hsl(var(--blue-500) / 0.2);
@@ -142,11 +136,9 @@ html {
 
   /* Reusable blue text gradient */
   .text-gradient-blue {
-    background-image: linear-gradient(
-      90deg,
-      hsl(var(--blue-400)),
-      hsl(var(--blue-500))
-    );
+    background-image: linear-gradient(90deg,
+        hsl(var(--blue-400)),
+        hsl(var(--blue-500)));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -234,6 +226,7 @@ html {
 
     /* Reduce motion for better performance on mobile */
     @media (prefers-reduced-motion: reduce) {
+
       .animate-float,
       .animate-pulse-slow {
         animation: none;
@@ -295,40 +288,40 @@ html {
   }
 
   .light .glow-border::before {
-    background: linear-gradient(
-      45deg,
-      hsl(var(--purple-500) / 0.3),
-      hsl(var(--blue-500) / 0.3),
-      hsl(var(--purple-500) / 0.3)
-    );
+    background: linear-gradient(45deg,
+        hsl(var(--purple-500) / 0.3),
+        hsl(var(--blue-500) / 0.3),
+        hsl(var(--purple-500) / 0.3));
   }
 
   .light .glow-border:hover::before {
-    background: linear-gradient(
-      45deg,
-      hsl(var(--purple-400) / 0.6),
-      hsl(var(--blue-400) / 0.6),
-      hsl(var(--purple-400) / 0.6)
-    );
+    background: linear-gradient(45deg,
+        hsl(var(--purple-400) / 0.6),
+        hsl(var(--blue-400) / 0.6),
+        hsl(var(--purple-400) / 0.6));
   }
 }
 
 /* Optimized keyframes */
 @keyframes float {
+
   0%,
   100% {
     transform: translateY(0px);
   }
+
   50% {
     transform: translateY(-15px);
   }
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.6;
   }
@@ -354,12 +347,10 @@ html {
 
 /* Loading optimizations */
 .loading-skeleton {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    hsl(var(--foreground) / 0.1),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      hsl(var(--foreground) / 0.1),
+      transparent);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
@@ -368,6 +359,7 @@ html {
   0% {
     background-position: -200% 0;
   }
+
   100% {
     background-position: 200% 0;
   }
@@ -381,12 +373,10 @@ html {
   }
 
   .glow-border::before {
-    background: linear-gradient(
-      45deg,
-      hsl(var(--foreground) / 0.5),
-      hsl(var(--foreground) / 0.3),
-      hsl(var(--foreground) / 0.5)
-    );
+    background: linear-gradient(45deg,
+        hsl(var(--foreground) / 0.5),
+        hsl(var(--foreground) / 0.3),
+        hsl(var(--foreground) / 0.5));
   }
 }
 
@@ -417,6 +407,7 @@ html {
   border-top: 2px solid #000;
   border-bottom: 2px solid #000;
 }
+
 #alphabet h5 {
   font-size: 2vw;
   text-transform: uppercase;
@@ -433,7 +424,8 @@ html {
    - Respect prefers-reduced-motion */
   .page-glass {
     position: relative;
-    isolation: isolate; /* keep effects contained */
+    isolation: isolate;
+    /* keep effects contained */
   }
 
   .page-glass::before {
@@ -443,28 +435,22 @@ html {
     z-index: -30;
     pointer-events: none;
     background:
-      radial-gradient(
-        40rem 20rem at 10% 20%,
+      radial-gradient(40rem 20rem at 10% 20%,
         rgba(67, 0, 255, 0.1),
-        transparent 20%
-      ),
-      radial-gradient(
-        36rem 18rem at 90% 80%,
+        transparent 20%),
+      radial-gradient(36rem 18rem at 90% 80%,
         rgba(255, 0, 102, 0.06),
-        transparent 20%
-      ),
+        transparent 20%),
       linear-gradient(180deg, rgba(10, 10, 10, 0.6), rgba(0, 0, 0, 0.85));
     filter: blur(48px) saturate(120%);
     border-radius: 28px;
     opacity: 0.95;
   }
 
-  .page-glass > section {
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.02),
-      rgba(255, 255, 255, 0.01)
-    );
+  .page-glass>section {
+    background: linear-gradient(180deg,
+        rgba(255, 255, 255, 0.02),
+        rgba(255, 255, 255, 0.01));
     backdrop-filter: blur(8px) saturate(120%);
     -webkit-backdrop-filter: blur(8px) saturate(120%);
     border: 1px solid rgba(255, 255, 255, 0.04);
@@ -474,7 +460,7 @@ html {
   }
 
   /* Subtle noise overlay for organic feel */
-  .page-glass > section::after {
+  .page-glass>section::after {
     content: "";
     position: absolute;
     inset: 0;
@@ -491,16 +477,19 @@ html {
       filter: none;
       opacity: 0.8;
     }
-    .page-glass > section {
+
+    .page-glass>section {
       backdrop-filter: none;
       -webkit-backdrop-filter: none;
       box-shadow: none;
     }
-    .page-glass > section::after {
+
+    .page-glass>section::after {
       display: none;
     }
   }
 }
+
 #alphabet h6 {
   font-size: 1vw;
   text-transform: uppercase;
@@ -510,9 +499,11 @@ html {
   border-radius: 50%;
   transition: all ease 0.2s;
 }
+
 #alphabet h6:hover {
   border: 1px solid #000;
 }
+
 #marquee {
   width: 120%;
   white-space: nowrap;
@@ -522,6 +513,7 @@ html {
   align-items: center;
   overflow-y: hidden;
 }
+
 #marquee .img1 {
   display: inline-block;
   font-size: 3vw;
@@ -530,10 +522,12 @@ html {
   font-weight: 900;
   animation: marquee 10s linear infinite;
 }
+
 @keyframes marquee {
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(calc(-100% - 100px));
   }
@@ -548,6 +542,7 @@ html {
   align-items: center;
   overflow-y: hidden;
 }
+
 #marque .img2 {
   display: inline-block;
   font-size: 3vw;
@@ -556,16 +551,19 @@ html {
   font-weight: 900;
   animation: marque 10s linear infinite;
 }
+
 @keyframes marque {
   from {
     transform: translateX(calc(-100% - 100px));
   }
+
   to {
     transform: translateX(0);
   }
 }
 
 .rotate-tilt {
-  transform: rotate(10deg); /* Tilting right */
+  transform: rotate(10deg);
+  /* Tilting right */
   transform-origin: right;
 }
