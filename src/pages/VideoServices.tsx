@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navigation from '@/components/Navigation';
 import PricingDemo from './PricingDemo';
+import CoverflowCarousel from '@/components/ui/coverflow-carousel';
 
 import v1 from "./assets/assests/original-b8969bc781998cd5a622d584dcb359a6.mp4";
 import v2 from "./assets/assests/Video.mp4";
@@ -217,75 +218,20 @@ const VideoServices = () => {
             {/* Decorative line */}
             <div className="w-24 h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent mb-4"></div>
           </div>
-          <div ref={projectsRef} className="flex gap-8 overflow-x-auto py-4 px-2 snap-x snap-mandatory scrollbar-hide pb-12">
-            {videoProjects.map(project => (
-              <article key={project.id} className="project-card group relative snap-start w-[450px] flex-shrink-0 flex flex-col h-[400px] transition-all duration-700 ease-out hover:-translate-y-4 hover:scale-[1.02] overflow-visible">
-                {/* Folder Tab */}
-                <div className="absolute -top-0 right-6 z-20 flex items-center gap-2 bg-black/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-white/10 transition-opacity duration-300 group-hover:opacity-0">
-                  <span className="text-white/90 text-[8px] uppercase font-bold tracking-[0.15em]">
-                    {project.category}
-                  </span>
-                  <span className="text-white/50 text-[8px] font-bold">•</span>
-                  <span className="text-white/70 text-[8px] uppercase font-bold tracking-wide">
-                    {project.duration}
-                  </span>
-                </div>
-
-                {/* Main Card Body - White Background */}
-                <div className="w-full h-full bg-white flex flex-col relative z-10 rounded-[2.5rem] overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] group-hover:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.25)] transition-all duration-700">
-
-                  {/* Video/Image Container */}
-                  <div className="relative h-[280px] w-full bg-[#0a0a0f] flex items-center justify-center overflow-hidden">
-                    {/* Thumbnail Image */}
-                    <img
-                      src={project.thumbnail}
-                      alt={project.title}
-                      className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-                    />
-
-                    {/* Play Button Overlay */}
-                    <button
-                      onClick={() => setSelectedVideo(project.youtube || null)}
-                      className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20"
-                    >
-                      <div className="w-16 h-16 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center border border-white/30 hover:scale-110 transition-transform shadow-xl">
-                        <Play className="w-8 h-8 text-black fill-black ml-1" />
-                      </div>
-                    </button>
-                  </div>
-
-                  {/* Content Footer - White Background */}
-                  <div className="flex-1 flex items-center justify-between p-6 bg-white">
-                    <div className="flex flex-col gap-2">
-                      {/* Project Title - Bold & Modern */}
-                      <div className="flex flex-col gap-0">
-                        <h3 className="text-[2rem] font-black text-gray-900 uppercase tracking-[-0.02em] leading-[0.9]">
-                          {project.title.split(' ')[0]}
-                        </h3>
-                        {project.title.split(' ').slice(1).length > 0 && (
-                          <span className="text-[2rem] font-black text-gray-900 uppercase tracking-[-0.02em] leading-[0.9]">
-                            {project.title.split(' ').slice(1).join(' ')}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Year */}
-                      <span className="text-xs text-gray-400 font-medium">{project.year}</span>
-                    </div>
-
-                    {/* Arrow Button */}
-                    <button
-                      onClick={() => setSelectedVideo(project.youtube || null)}
-                      className="w-12 h-12 rounded-full bg-gray-900 flex items-center justify-center group-hover:bg-purple-600 transition-all duration-300 hover:scale-110 shadow-lg"
-                    >
-                      <Play className="w-5 h-5 text-white fill-white ml-0.5" />
-                    </button>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-
+        </div>
+        <div className="relative group/carousel">
+          <CoverflowCarousel
+            items={videoProjects.map(p => ({
+              id: p.id,
+              title: p.title,
+              description: p.description,
+              image: p.thumbnail, // thumbnail is mp4, but we'll use it as placeholder for image slot if needed, or better, pass as video
+              video: p.thumbnail, // Pass the video file here
+              category: p.category,
+              tech: [p.duration, p.year], // Mapping duration/year to tech pills if needed, or just ignore
+              url: p.youtube
+            }))}
+          />
         </div>
       </section>
 

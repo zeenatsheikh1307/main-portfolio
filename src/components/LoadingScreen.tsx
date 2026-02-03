@@ -187,7 +187,7 @@ const LoadingScreen = () => {
           <img
             src={logo}
             alt="MetaBull"
-            className="w-24 h-24 object-contain filter grayscale brightness-[1.2] opacity-80"
+            className="w-24 h-24 object-contain"
           />
         </div>
 
