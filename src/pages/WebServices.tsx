@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, Suspense, lazy, useState } from 'react';
-import { Code2, Palette, Zap, Globe, Smartphone, Rocket, ExternalLink, Github } from 'lucide-react';
+import { Code2, Palette, Zap, Globe, Smartphone, Rocket, ExternalLink, Github, ChevronLeft, ChevronRight } from 'lucide-react';
 import { gsap } from 'gsap';
 import { Link } from "react-router-dom";
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -17,6 +17,9 @@ import waman from "./assets/assests/r(9).png";
 import fresco from "./assets/assests/r(10).png";
 // hero background video
 import serviceHeroVideo from "./assets/assests/service hero.mp4";
+import webVideo from "./assets/assests/web .mp4";
+import { PricingSection } from '@/components/ui/pricing';
+import PricingDemo from './PricingDemo';
 
 const Spline = lazy(() => import('@splinetool/react-spline'));
 
@@ -113,6 +116,26 @@ const WebServices = () => {
   const servicesRef = useRef<HTMLDivElement>(null);
   const projectsRef = useRef<HTMLDivElement>(null);
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(true);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    setIsDesktop(window.innerWidth >= 768);
+    const handleResize = () => setIsDesktop(window.innerWidth >= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const nextSlide = () => {
+    const maxIndex = webProjects.length - (isDesktop ? 2 : 1);
+    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
+  };
+
+  const prevSlide = () => {
+    const maxIndex = webProjects.length - (isDesktop ? 2 : 1);
+    setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
+  };
 
   // Inject small CSS snippets that were previously using styled-jsx (avoids TSX/styled-jsx errors)
   useEffect(() => {
@@ -187,6 +210,8 @@ const WebServices = () => {
   /* Make popular gradient still feel glassy */
   .cta-pill.bg-gradient-to-r { background-color: transparent; border: 1px solid rgba(255,255,255,0.04); }
       @media (max-width: 768px) { .pricing-card { min-height: auto; } }
+      @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+      .marquee-text { line-height: 0.75; display: inline-block; padding-top: 4px; padding-bottom: 4px; }
     `;
     document.head.appendChild(s);
     return () => {
@@ -386,7 +411,7 @@ const WebServices = () => {
 
       {/* Hero Section */}
       <section
-        className="relative min-h-screen flex items-start justify-center py-8 md:py-16 text-center bg-[#0a0a0f] overflow-hidden"
+        className="relative h-screen flex items-start justify-center py-8 md:py-16 text-center bg-[#0a0a0f] overflow-hidden"
         ref={heroRef}
       >
         {/* Background video */}
@@ -476,460 +501,210 @@ const WebServices = () => {
         </div>
       </section>
 
-      {/* Services Grid */}
-      <section className="md:pl-24 px-4 md:px-6 py-16 md:py-24 bg-gradient-to-b from-[#0a0a0f] via-[#0d0d14] to-[#0a0a0f]" ref={servicesRef}>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-block mb-4 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/20">
-              <span className="text-sm font-medium bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                What we offer
-              </span>
-            </div>
-            <h2 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
-              OUR WEB CAPABILITIES
-            </h2>
-            <p className="text-white/60 max-w-2xl mx-auto text-lg">
-              Cutting-edge solutions tailored to your digital needs
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {[
-              {
-                icon: Code2,
-                title: "LANDING PAGE",
-                desc: "A landing page is a single-page website that is designed to promote a specific product, service, or idea.",
-                gradient: "from-purple-900/50 via-purple-800/30 to-purple-950/20",
-                iconColor: "text-purple-400",
-                glowColor: "group-hover:shadow-purple-500/20"
-              },
-              {
-                icon: Palette,
-                title: "STATIC WEBSITE",
-                desc: "A static website is a website that is not dynamic and does not change based on user input.",
-                gradient: "from-blue-900/50 via-blue-800/30 to-blue-950/20",
-                iconColor: "text-blue-400",
-                glowColor: "group-hover:shadow-blue-500/20"
-              },
-              {
-                icon: Zap,
-                title: "DYNAMIC WEBSITE",
-                desc: "A dynamic website is a website that is interactive and changes based on user input.",
-                gradient: "from-indigo-900/50 via-indigo-800/30 to-indigo-950/20",
-                iconColor: "text-indigo-400",
-                glowColor: "group-hover:shadow-indigo-500/20"
-              },
-              {
-                icon: Globe,
-                title: "E-COMMERCE WEBSITE",
-                desc: "An e-commerce website allows users to purchase products or services online and includes a payment gateway.",
-                gradient: "from-violet-900/50 via-violet-800/30 to-violet-950/20",
-                iconColor: "text-violet-400",
-                glowColor: "group-hover:shadow-violet-500/20"
-              },
-              {
-                icon: Smartphone,
-                title: "RESPONSIVE DESIGN",
-                desc: "Perfect experiences that adapt to any screen size.",
-                gradient: "from-cyan-900/50 via-cyan-800/30 to-cyan-950/20",
-                iconColor: "text-cyan-400",
-                glowColor: "group-hover:shadow-cyan-500/20"
-              },
-              {
-                icon: Rocket,
-                title: "SEO SERVICE",
-                desc: "Search engine optimization helps your website show up better in search results so more people can find it.",
-                gradient: "from-pink-900/50 via-pink-800/30 to-pink-950/20",
-                iconColor: "text-pink-400",
-                glowColor: "group-hover:shadow-pink-500/20"
-              },
-            ].map((service, index) => (
-              <div
-                key={index}
-                className="service-card group relative bg-[#0a0a0f] rounded-3xl p-8 md:p-10 border border-white/5 overflow-visible hover:z-10 transition-all duration-500 hover:-translate-y-2"
-              >
-                {/* 1. Dynamic Border Gradient (Pseudo-border effect) */}
-                <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-700 -z-10`}></div>
-
-                {/* 2. Glass Surface */}
-                <div className="absolute inset-[1px] bg-[#0a0a0f]/90 backdrop-blur-3xl rounded-[23px] overflow-hidden -z-10">
-                  {/* Inner Glow Mesh */}
-                  <div className={`absolute top-0 right-0 w-[400px] h-[400px] bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-700 blur-[100px] rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none`}></div>
-                  <div className={`absolute bottom-0 left-0 w-[300px] h-[300px] bg-gradient-to-tr ${service.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-700 blur-[80px] rounded-full -translate-x-1/3 translate-y-1/3 pointer-events-none`}></div>
-                </div>
-
-                {/* 3. Floating Icon Box */}
-                <div className="relative z-10 mb-10">
-                  <div className="relative inline-block">
-                    {/* Icon Glow Underlay */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} blur-xl opacity-0 group-hover:opacity-40 transition-opacity duration-500 rounded-2xl`}></div>
-
-                    {/* Main Icon Container */}
-                    <div className="relative w-18 h-18 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-b from-white/10 to-white/5 border border-white/10 flex items-center justify-center shadow-2xl backdrop-blur-md group-hover:scale-110 transition-transform duration-500">
-                      {/* Inner Reflection Highlight */}
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent opacity-50 pointer-events-none"></div>
-
-                      <service.icon className={`w-8 h-8 sm:w-10 sm:h-10 ${service.iconColor} drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-all duration-300`} />
-                    </div>
-                  </div>
-                </div>
-
-                {/* 4. Content */}
-                <div className="relative z-10">
-                  <h3 className="text-xl md:text-2xl font-black mb-4 text-white uppercase tracking-wider group-hover:tracking-widest transition-all duration-300">
-                    {service.title}
-                  </h3>
-
-                  <p className="text-white/50 group-hover:text-white/80 leading-relaxed text-sm sm:text-base transition-colors duration-300 font-medium">
-                    {service.desc}
-                  </p>
-                </div>
-
-                {/* 5. Bottom Shine Line */}
-                <div className={`absolute bottom-0 left-8 right-8 h-[2px] bg-gradient-to-r ${service.gradient} opacity-0 group-hover:opacity-100 transition-all duration-700 blur-[1px]`}></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Recent Work Section */}
-      <section className="md:pl-24 px-4 md:px-6 py-16 md:py-24 bg-gradient-to-b from-[#0a0a0f] via-[#0d0d14] to-[#0a0a0f] relative overflow-hidden" ref={projectsRef}>
-        {/* Background decorative elements */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-30"></div>
+      <section className="px-4 md:px-6 py-16 md:py-24 bg-gradient-to-b from-[#0a0a0f] via-[#0d0d14] to-[#0a0a0f] relative overflow-hidden" ref={projectsRef}>
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
 
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <div className="inline-block mb-4 px-4 py-2 rounded-full bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 border border-emerald-500/20">
-              <span className="text-sm font-medium bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-                Our Portfolio
-              </span>
-            </div>
-            <h2 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-emerald-200 to-cyan-200 bg-clip-text text-transparent">
-              RECENT WEB PROJECTS
+          {/* Header redesign - Enhanced */}
+          <div className="flex flex-col items-center justify-center mb-20 text-center">
+            {/* Small label above */}
+
+            {/* Main heading with gradient */}
+            <h2 className="text-5xl sm:text-6xl md:text-7xl font-black uppercase mb-4 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent tracking-tight">
+              Our Work
             </h2>
-            <p className="text-white/60 max-w-2xl mx-auto text-lg">
-              Explore our portfolio of successful web projects that showcase our expertise and creativity
-            </p>
+
+            {/* Decorative line */}
+            <div className="w-24 h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent mb-4"></div>
+
+            {/* Subtitle */}
           </div>
-          <div className="relative">
-            <div className="flex gap-8 overflow-x-auto project-scroll py-4 px-2 snap-x snap-mandatory scrollbar-hide">
-              {webProjects.map((project, index) => (
-                <article
-                  key={project.id}
-                  className="project-card group relative snap-start w-[380px] flex-shrink-0 rounded-3xl overflow-hidden bg-gradient-to-b from-[#1a1a2e]/95 to-[#16162a]/60 backdrop-blur-xl border border-white/10 hover:border-purple-400/60 transition-all duration-700 hover:scale-[1.02] shadow-2xl hover:shadow-[0_0_30px_rgba(168,85,247,0.4),0_0_60px_rgba(59,130,246,0.3)]"
-                  onMouseEnter={() => setHoveredProject(project.id)}
-                  onMouseLeave={() => setHoveredProject(null)}
-                >
-                  <div className="relative h-56 overflow-hidden">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
-                      loading="lazy"
-                    />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
-
-                    {/* Category badge with enhanced styling */}
-                    <div className="absolute top-4 left-4">
-                      <span className="px-4 py-2 rounded-full text-xs font-bold bg-black/70 text-white backdrop-blur-md border border-white/20 shadow-lg">
-                        {project.category}
-                      </span>
-                    </div>
-
-                    {/* Action buttons with enhanced styling */}
-                    <div className="absolute top-4 right-4 flex gap-3 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-x-4 group-hover:translate-x-0">
-                      {project.url && (
-                        <a
-                          href={project.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="w-11 h-11 bg-emerald-500/20 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-emerald-500/80 transition-all duration-300 border border-emerald-400/30 transform hover:scale-110 hover:rotate-12 shadow-lg"
-                          title="View Live Site"
-                        >
-                          <ExternalLink className="w-5 h-5 text-white" />
-                        </a>
-                      )}
-                      <button className="w-11 h-11 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-300 border border-white/30 transform hover:scale-110 hover:-rotate-12 shadow-lg">
-                        <Github className="w-5 h-5 text-white" />
-                      </button>
-                    </div>
-
-                    {/* Hover overlay effect */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-purple-500/20 via-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                  </div>
-
-                  <div className="p-6 relative">
-                    {/* Decorative corner */}
-                    <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-purple-500/10 to-transparent rounded-bl-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                    <h3 className="text-xl md:text-2xl font-bold mb-3 text-white group-hover:text-purple-300 transition-colors duration-300">
-                      {project.title}
-                    </h3>
-                    <p className="text-white/70 mb-4 text-sm leading-relaxed group-hover:text-white/90 transition-colors duration-300">
-                      {project.description}
-                    </p>
-
-                    {/* Tech stack pills */}
-                    <div className="flex flex-wrap gap-2 mb-5">
-                      {project.tech.map((tech, techIndex) => (
-                        <span
-                          key={techIndex}
-                          className="px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-white/10 to-white/5 text-white/90 border border-white/10 hover:border-purple-400/30 transition-all duration-300"
-                        >
-                          {tech}
+          <div className="relative group/carousel">
+            {/* Carousel Container */}
+            <div className="overflow-hidden px-4 -mx-4 md:mx-0">
+              <div
+                className="flex transition-transform duration-500 ease-out"
+                style={{ transform: `translateX(-${currentIndex * (isDesktop ? 50 : 100)}%)` }}
+              >
+                {webProjects.map((project, index) => (
+                  <div
+                    key={project.id}
+                    className="min-w-full md:min-w-[50%] px-2 md:px-6 box-border flex-shrink-0"
+                  >
+                    <article
+                      className="project-card group relative flex flex-col h-[400px] transition-all duration-700 ease-out hover:-translate-y-4 hover:scale-[1.02] w-full overflow-visible"
+                      onMouseEnter={() => setHoveredProject(project.id)}
+                      onMouseLeave={() => setHoveredProject(null)}
+                    >
+                      {/* Compact Folder Tab */}
+                      <div className="absolute -top-0 right-6 z-20 flex items-center gap-2 bg-black/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-white/10 transition-opacity duration-300 group-hover:opacity-0">
+                        <span className="text-white/90 text-[8px] uppercase font-bold tracking-[0.15em]">
+                          Branding
                         </span>
-                      ))}
-                    </div>
+                        <span className="text-white/50 text-[8px] font-bold hidden sm:inline-block">•</span>
+                        <span className="text-white/70 text-[8px] uppercase font-bold tracking-wide hidden sm:inline-block">
+                          Website
+                        </span>
+                        <span className="text-white/50 text-[8px] font-bold hidden md:inline-block">•</span>
+                        <span className="text-white/70 text-[8px] uppercase font-bold tracking-wide hidden md:inline-block">
+                          Marketing
+                        </span>
+                      </div>
 
-                    {/* Action footer */}
-                    <div className="flex items-center justify-between pt-3 border-t border-white/10">
-                      <span className="text-sm text-white/60 group-hover:text-white/80 transition-colors duration-300 font-medium">View details</span>
-                      <a
-                        href={project.url || '#'}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 font-semibold group/link"
-                      >
-                        Open
-                        <ArrowRight className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300" />
-                      </a>
-                    </div>
+                      {/* Main Card Body - Clean & Modern */}
+                      <div className="w-full h-full bg-white flex flex-col relative z-10 rounded-[2.5rem] overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] group-hover:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.25)] transition-all duration-700">
+
+                        {/* Image Container with Clean Background */}
+                        <div className="relative h-[280px] w-full bg-[#0a0a0f] flex items-center justify-center p-0 overflow-hidden">
+                          {/* Decorative Background Elements */}
+                          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl"></div>
+                          <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl"></div>
+
+                          {/* Browser Frame Mockup */}
+                          <div className="relative w-full h-full bg-transparent overflow-hidden border-b border-gray-200/50">
+                            {/* Browser Top Bar */}
+                            <div className="h-8 bg-gradient-to-b from-gray-100 to-gray-50 border-b border-gray-200 flex items-center px-3 gap-2 transition-all duration-500 group-hover:h-0 group-hover:opacity-0 overflow-hidden">
+                              <div className="flex gap-1.5">
+                                <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+                                <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+                                <div className="w-2.5 h-2.5 rounded-full bg-green-400"></div>
+                              </div>
+                              <div className="flex-1 flex justify-center">
+                                <div className="bg-white/60 px-3 py-0.5 rounded text-[7px] text-gray-400 font-medium">
+                                  {project.url || 'project-preview.com'}
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* Project Image/Video */}
+                            <div className="w-full h-[calc(100%-2rem)] group-hover:h-full bg-transparent overflow-hidden relative transition-all duration-500">
+                              {/* Show video on hover for first card (Metabull Universe) */}
+                              {project.id === 1 && (
+                                <video
+                                  className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 ${hoveredProject === project.id ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                                    }`}
+                                  autoPlay
+                                  muted
+                                  loop
+                                  playsInline
+                                >
+                                  <source src={webVideo} type="video/mp4" />
+                                </video>
+                              )}
+
+                              {/* Static image - fades out on hover for first card */}
+                              <img
+                                src={project.image}
+                                alt={project.title}
+                                className={`w-full h-full object-cover object-top grayscale transition-all duration-700 ease-out ${project.id === 1 && hoveredProject === project.id
+                                  ? 'opacity-0 scale-105'
+                                  : 'group-hover:grayscale-0 group-hover:scale-105'
+                                  }`}
+                                loading="lazy"
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Content Footer - Clean & Spacious */}
+                        <div className="flex-1 flex items-center justify-between p-6 bg-white">
+                          <div className="flex flex-col gap-2">
+                            {/* Project Title - Bold & Modern */}
+                            <div className="flex flex-col gap-0">
+                              <h3 className="text-[2rem] font-black text-gray-900 uppercase tracking-[-0.02em] leading-[0.9]">
+                                {project.title.split(' ')[0]}
+                              </h3>
+                              {project.title.split(' ').slice(1).length > 0 && (
+                                <h3 className="text-[2rem] font-black text-gray-900 uppercase tracking-[-0.02em] leading-[0.9]">
+                                  {project.title.split(' ').slice(1).join(' ')}
+                                </h3>
+                              )}
+                            </div>
+
+                            {/* Subtitle - Refined */}
+                            <p className="text-gray-400 text-[9px] font-semibold uppercase tracking-[0.2em] mt-1">
+                              DESIGN • 2025
+                            </p>
+                          </div>
+
+                          {/* CTA Button - Premium & Clean */}
+                          <a
+                            href={project.url || '#'}
+                            target="_blank"
+                            className="relative flex items-center justify-center w-[60px] h-[60px] bg-[#FF4D4D] hover:bg-[#ff3333] text-white rounded-full transition-all duration-500 shadow-[0_10px_30px_rgba(255,77,77,0.35)] hover:shadow-[0_15px_40px_rgba(255,77,77,0.5)] group-hover:scale-110 shrink-0 overflow-hidden"
+                          >
+                            {/* Shine effect on hover */}
+                            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+
+                            <ArrowRight className="w-6 h-6 -rotate-45 stroke-[3] relative z-10" />
+                          </a>
+                        </div>
+                      </div>
+                    </article>
                   </div>
-                </article>
-              ))}
+                ))}
+              </div>
+            </div>
+
+            {/* Navigation Arrows */}
+            {/* Left Box Arrow */}
+            <button
+              onClick={prevSlide}
+              className="hidden md:flex absolute top-1/2 -left-12 -translate-y-1/2 w-12 h-12 bg-[#1a1a2e] border border-white/10 rounded-xl items-center justify-center text-white hover:bg-white/10 hover:scale-110 transition-all duration-300 z-20 group disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={currentIndex === 0}
+            >
+              <ChevronLeft className="w-6 h-6 group-hover:-translate-x-0.5 transition-transform" />
+            </button>
+
+            {/* Right Box Arrow */}
+            <button
+              onClick={nextSlide}
+              className="hidden md:flex absolute top-1/2 -right-12 -translate-y-1/2 w-12 h-12 bg-[#1a1a2e] border border-white/10 rounded-xl items-center justify-center text-white hover:bg-white/10 hover:scale-110 transition-all duration-300 z-20 group disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={currentIndex >= webProjects.length - 2}
+            >
+              <ChevronRight className="w-6 h-6 group-hover:translate-x-0.5 transition-transform" />
+            </button>
+
+            {/* Mobile Controls (Optional, usually swipe is enough but customer asked for arrows) */}
+            <div className="flex md:hidden justify-center gap-4 mt-8">
+              <button
+                onClick={prevSlide}
+                className="w-10 h-10 bg-[#1a1a2e] border border-white/10 rounded-full flex items-center justify-center text-white active:bg-white/20"
+                disabled={currentIndex === 0}
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button
+                onClick={nextSlide}
+                className="w-10 h-10 bg-[#1a1a2e] border border-white/10 rounded-full flex items-center justify-center text-white active:bg-white/20"
+                disabled={currentIndex >= webProjects.length - 1} // Mobile shows 1 at a time
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
             </div>
           </div>
         </div>
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="relative md:pl-24 px-4 md:px-6 py-16 md:py-24 overflow-hidden">
-        {/* Background decorative elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.03)_1px,transparent_1px)] bg-[size:64px_64px]"></div>
-          <div className="absolute top-20 left-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
-        </div>
+      <section id="pricing" className="relative px-4 md:px-6 py-16 md:py-24 overflow-hidden">
 
-        {pricingPlans.map((service, serviceIndex) => (
-          <div key={serviceIndex} className="max-w-7xl mx-auto relative z-10">
-            {/* Enhanced header */}
-            <div className="text-center mb-12 md:mb-16">
-              <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-purple-500/10 border border-purple-500/20 backdrop-blur-sm mb-6">
-                <service.icon className="w-5 h-5 text-purple-400" />
-                <span className="text-sm font-semibold text-purple-400">Premium Plans</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-                <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  {service.category} Pricing
-                </span>
-              </h2>
-              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Professional web development services tailored to your needs
-              </p>
-            </div>
-            {/* Pricing cards grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {service.plans.map((plan, planIndex) => (
-                <div
-                  key={planIndex}
-                  className={`pricing-card relative bg-gradient-to-br from-[#1a1a2e]/95 to-[#16162a]/70 backdrop-blur-xl rounded-3xl p-5 sm:p-6 border ${plan.popular
-                    ? 'border-purple-500/50 shadow-2xl shadow-purple-500/20 popular-neon'
-                    : "border-white/10 hover:border-purple-400/30"
-                    } transition-all duration-500 transform hover:scale-[1.02] hover:shadow-xl overflow-visible group`}
-                >
-                  {/* Decorative corner gradient */}
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-500/10 via-blue-500/5 to-transparent rounded-bl-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                  {/* Animated background pattern */}
-                  <div className="absolute inset-0 opacity-[0.02] group-hover:opacity-[0.04] transition-opacity duration-500">
-                    <div className="absolute inset-0 bg-[linear-gradient(rgba(168,85,247,0.5)_1px,transparent_1px),linear-gradient(90deg,rgba(168,85,247,0.5)_1px,transparent_1px)] bg-[size:32px_32px]"></div>
-                  </div>
 
-                  {/* Most popular ribbon */}
-                  {plan.popular && (
-                    <div className="ribbon">
-                      <Star className="w-4 h-4" /> MOST POPULAR
-                    </div>
-                  )}
 
-                  {/* Project pill badge */}
-                  <div className="absolute right-6 top-6">
-                    <span className="project-pill">Project</span>
-                  </div>
 
-                  {/* Card content */}
-                  <div className="relative z-10 mt-8">
-                    {/* Plan name and description */}
-                    <div className="mb-3">
-                      <h3 className="text-xl sm:text-2xl font-bold mb-2 text-white group-hover:text-purple-300 transition-colors duration-300">
-                        {plan.name}
-                      </h3>
-                      <p className="text-sm sm:text-base text-muted-foreground group-hover:text-white/70 transition-colors duration-300">
-                        {plan.description}
-                      </p>
-                    </div>
+        <PricingDemo />
 
-                    {/* Pricing */}
-                    <div className="flex items-baseline mb-5 pb-5 border-b border-white/10">
-                      <span className="price-large bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                        {plan.price}
-                      </span>
-                      <span className="price-small ml-2">{plan.period}</span>
-                    </div>
 
-                    {/* Features list */}
-                    <div className="mb-6 space-y-2.5">
-                      {plan.features.map((feature, featureIndex) => (
-                        <div key={featureIndex} className="feature-row group/feature">
-                          <div className="feature-icon group-hover/feature:scale-110 transition-transform duration-300">
-                            <Check className="w-4 h-4 text-white" />
-                          </div>
-                          <div className="text-sm sm:text-base text-white/80 group-hover/feature:text-white transition-colors duration-300">{feature}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
 
-                  {/* CTA Button */}
-                  <div className="mt-auto pt-4">
-                    <Link to="/contact" className="w-full block">
-                      <button className={`w-full cta-pill ${plan.popular
-                        ? 'bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white shadow-lg hover:shadow-purple-500/30'
-                        : 'bg-white/5 hover:bg-white/10 text-foreground border border-white/10'
-                        } transition-all duration-300`}>
-                        Get Started <ArrowRight className="w-4 h-4 inline-block ml-2 btn-arrow" />
-                      </button>
-                    </Link>
-                  </div>
-
-                  {/* Bottom accent line */}
-                  <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500/50 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
-                </div>
-              ))}
-            </div>
-
-            {/* Trust indicators */}
-            <div className="mt-16 flex flex-wrap items-center justify-center gap-8 text-center">
-              <div className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors duration-300">
-                <Zap className="w-5 h-5 text-purple-400" />
-                <span className="text-sm font-medium">Fast Delivery</span>
-              </div>
-              <div className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors duration-300">
-                <Check className="w-5 h-5 text-purple-400" />
-                <span className="text-sm font-medium">Quality Guaranteed</span>
-              </div>
-              <div className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors duration-300">
-                <Users className="w-5 h-5 text-purple-400" />
-                <span className="text-sm font-medium">100+ Projects Delivered</span>
-              </div>
-            </div>
-          </div>
-        ))}
       </section>
 
-      {/* CTA Section */}
-      <section className="md:pl-24 px-4 md:px-6 py-16 md:py-24 text-center bg-gradient-to-b from-[#0a0a0f] via-[#0d0d14] to-[#0a0a0f] relative overflow-hidden">
-        {/* Enhanced background elements */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-20"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-purple-500/10 via-blue-500/5 to-transparent blur-3xl"></div>
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px]"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px]"></div>
-
-        <div className="max-w-5xl mx-auto relative z-10">
-          <div className="relative bg-gradient-to-br from-[#1a1a2e]/90 via-[#16162a]/70 to-[#0d0d14]/50 backdrop-blur-xl rounded-3xl p-10 md:p-16 border-2 border-white/10 shadow-2xl overflow-hidden group hover:border-purple-500/30 transition-all duration-500">
-            {/* Animated gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-            {/* Decorative corner accents */}
-            <div className="absolute top-0 left-0 w-40 h-40 bg-gradient-to-br from-purple-500/10 to-transparent rounded-br-[120px] opacity-50"></div>
-            <div className="absolute bottom-0 right-0 w-40 h-40 bg-gradient-to-tl from-blue-500/10 to-transparent rounded-tl-[120px] opacity-50"></div>
-
-            {/* Floating decorative elements */}
-            <div className="absolute top-10 right-10 w-3 h-3 bg-purple-400/60 rounded-full animate-pulse shadow-lg shadow-purple-400/50"></div>
-            <div className="absolute top-20 right-24 w-2 h-2 bg-blue-400/40 rounded-full animate-pulse delay-150"></div>
-            <div className="absolute bottom-16 left-12 w-2.5 h-2.5 bg-purple-400/50 rounded-full animate-pulse delay-300"></div>
-            <div className="absolute top-1/2 left-10 w-2 h-2 bg-blue-400/30 rounded-full animate-pulse delay-500"></div>
-
-            {/* Decorative lines */}
-            <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-500">
-              <div className="absolute top-1/3 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-400/40 to-transparent"></div>
-              <div className="absolute top-2/3 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-400/40 to-transparent"></div>
-            </div>
-
-            <div className="relative z-10">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-purple-500/15 to-blue-500/15 border border-purple-500/30 backdrop-blur-xl mb-6 shadow-lg">
-                <Rocket className="w-5 h-5 text-purple-400" />
-                <span className="text-sm font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                  LET'S COLLABORATE
-                </span>
-              </div>
-
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 tracking-tight leading-tight">
-                <span className="bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
-                  READY TO BUILD THE
-                </span>
-                <br />
-                <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 bg-clip-text text-transparent animate-pulse">
-                  FUTURE?
-                </span>
-              </h2>
-
-              <p className="text-lg md:text-xl text-white/70 mb-10 max-w-2xl mx-auto leading-relaxed">
-                Let's create a web experience that defines tomorrow's digital landscape and brings your vision to life.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
-                <Link to="/contact" className="w-full sm:w-auto">
-                  <button className="group/btn relative w-full sm:w-auto cta-pill bg-gradient-to-r from-purple-600 via-purple-500 to-blue-500 hover:from-purple-500 hover:via-blue-500 hover:to-purple-600 text-white px-10 py-4 rounded-full font-bold text-base tracking-wide transition-all duration-500 shadow-2xl shadow-purple-500/40 hover:shadow-purple-500/60 border-2 border-white/20 overflow-hidden">
-                    <span className="relative z-10 flex items-center justify-center gap-2">
-                      START YOUR PROJECT
-                      <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform duration-300" />
-                    </span>
-                    {/* Button shine effect */}
-                    <div className="absolute inset-0 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500">
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-1000"></div>
-                    </div>
-                  </button>
-                </Link>
-
-                <Link to="/services" className="w-full sm:w-auto">
-                  <button className="group/btn w-full sm:w-auto bg-white/5 hover:bg-white/10 text-white px-10 py-4 rounded-full font-bold text-base tracking-wide transition-all duration-300 border-2 border-white/20 hover:border-purple-400/40 hover:shadow-lg hover:shadow-purple-500/20 backdrop-blur-sm relative overflow-hidden">
-                    <span className="relative z-10 flex items-center justify-center gap-2">
-                      VIEW ALL SERVICES
-                      <ExternalLink className="w-5 h-5 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform duration-300" />
-                    </span>
-                  </button>
-                </Link>
-              </div>
-
-              {/* Trust indicators */}
-              <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-sm text-white/60">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  <span className="font-medium">Free Consultation</span>
-                </div>
-                <div className="w-px h-5 bg-white/20 hidden sm:block"></div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse delay-150"></div>
-                  <span className="font-medium">Quick Response</span>
-                </div>
-                <div className="w-px h-5 bg-white/20 hidden sm:block"></div>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse delay-300"></div>
-                  <span className="font-medium">Expert Team</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
 
 export default WebServices;
+
