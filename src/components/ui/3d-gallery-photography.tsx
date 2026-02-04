@@ -427,7 +427,7 @@ function GalleryScene({
         // Track loops (only count forward wraps for first plane)
         if (i === 0) {
           loopCount.current += wrapsForward;
-          if (loopCount.current >= 2) {
+          if (loopCount.current >= 1) {
             setAnimationComplete(true);
             if (onAnimationComplete) {
               onAnimationComplete(true);

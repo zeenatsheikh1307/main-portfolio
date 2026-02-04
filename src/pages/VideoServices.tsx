@@ -14,9 +14,10 @@ import { gsap } from "gsap";
 import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Navigation from "@/components/Navigation";
-import PricingDemo from "./PricingDemo";
+import { PricingSection } from "@/components/ui/pricing";
 import CoverflowCarousel from "@/components/ui/coverflow-carousel";
 import InfiniteGallery from "@/components/ui/3d-gallery-photography";
+import { ReadyToBuild } from "@/components/ui/ready-to-build";
 
 import v1 from "./assets/assests/original-b8969bc781998cd5a622d584dcb359a6.mp4";
 import v2 from "./assets/assests/Video.mp4";
@@ -233,10 +234,10 @@ const VideoServices = () => {
         <div className="absolute inset-0 pointer-events-none flex items-center justify-center text-center px-4 mix-blend-exclusion text-white z-10">
           <div>
             <h1 className="font-serif text-4xl md:text-7xl lg:text-8xl tracking-tight mb-4">
-              <span className="italic">Cinematic</span> Excellence
+              <span className="italic">Crafting</span> Visual Stories
             </h1>
             <p className="text-lg md:text-2xl font-light tracking-wide opacity-80">
-              Where Vision Meets Reality
+              Your Vision, Our Lens
             </p>
           </div>
         </div>
@@ -256,11 +257,11 @@ const VideoServices = () => {
       {/* Our Work */}
       <section
         id="projects"
-        className="md:pl-24 px-4 md:px-6 py-16 md:py-24 bg-[#0a0a0f] relative overflow-hidden"
+        className="md:pl-24 px-4 md:px-6 py-8 md:py-12 bg-[#0a0a0f] relative overflow-hidden"
       >
         <div className="max-w-7xl mx-auto">
           {/* Header redesign - Enhanced */}
-          <div className="flex flex-col items-center justify-center mb-20 text-center">
+          <div className="flex flex-col items-center justify-center mb-4 text-center">
             {/* Main heading with gradient */}
             <h2 className="text-5xl sm:text-6xl md:text-7xl font-black uppercase mb-4 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent tracking-tight">
               Our Work
@@ -270,7 +271,7 @@ const VideoServices = () => {
             <div className="w-24 h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent mb-4"></div>
           </div>
         </div>
-        <div className="relative group/carousel">
+        <div className="relative group/carousel -mt-8">
           <CoverflowCarousel
             items={videoProjects.map((p) => ({
               id: p.id,
@@ -288,7 +289,83 @@ const VideoServices = () => {
 
       {/* Pricing Section */}
       <section className="relative px-4 md:px-6 py-16 md:py-24 overflow-hidden">
-        <PricingDemo />
+        <PricingSection
+          className="text-white w-full"
+          heading="Pricing"
+          description="Professional video services at competitive rates"
+          plans={[
+            {
+              name: 'Video Editing',
+              info: 'Professional editing for your content',
+              price: {
+                monthly: 0,
+                yearly: 0,
+              },
+              priceFormatted: '₹800-1000',
+              accent: 'text-purple-400',
+              buttonVariant: 'outline',
+              buttonClass: 'border-purple-400/20 hover:bg-purple-400/10 text-purple-400',
+              features: [
+                { text: 'Color grading & correction' },
+                { text: 'Professional transitions' },
+                { text: 'Audio mixing' },
+                { text: 'Motion graphics' },
+                { text: 'Fast turnaround' },
+              ],
+              btn: {
+                text: 'Get Started',
+                href: '/contact',
+              },
+            },
+            {
+              highlighted: true,
+              name: 'AI Model Videos',
+              info: 'Advanced AI-generated video content',
+              price: {
+                monthly: 0,
+                yearly: 0,
+              },
+              priceFormatted: '₹1500-2000',
+              accent: 'text-blue-400',
+              buttonVariant: 'default',
+              buttonClass: 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20',
+              features: [
+                { text: 'AI-generated avatars' },
+                { text: 'Custom voice synthesis' },
+                { text: 'Script to video' },
+                { text: 'Multiple languages' },
+                { text: 'Brand customization' },
+              ],
+              btn: {
+                text: 'Get Started',
+                href: '/contact',
+              },
+            },
+            {
+              name: 'UGC Content',
+              info: 'User-generated content style videos',
+              price: {
+                monthly: 0,
+                yearly: 0,
+              },
+              priceFormatted: '₹3000',
+              accent: 'text-emerald-400',
+              buttonVariant: 'outline',
+              buttonClass: 'border-emerald-400/20 hover:bg-emerald-400/10 text-emerald-400',
+              features: [
+                { text: 'Authentic creator content' },
+                { text: 'Platform-optimized' },
+                { text: 'High engagement style' },
+                { text: 'Multiple formats' },
+                { text: 'Quick delivery' },
+              ],
+              btn: {
+                text: 'Get Started',
+                href: '/contact',
+              },
+            },
+          ]}
+        />
       </section>
 
       {/* Video Modal */}
@@ -317,6 +394,9 @@ const VideoServices = () => {
           </div>
         </div>
       )}
+
+      {/* Ready to Build CTA Section */}
+      <ReadyToBuild />
     </div>
   );
 };

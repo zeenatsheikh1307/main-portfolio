@@ -13,7 +13,7 @@ const LoadingScreen = () => {
   const { setLoaded } = useLoading();
 
   useEffect(() => {
-    // High-precision numerical counter
+    // High-precision numerical counter - Speeded up
     const interval = setInterval(() => {
       setPercent((prev) => {
         if (prev >= 100) {
@@ -21,11 +21,11 @@ const LoadingScreen = () => {
           return 100;
         }
         const remains = 100 - prev;
-        const speed = remains < 15 ? 40 : 70;
-        const step = remains < 10 ? 1 : Math.floor(Math.random() * 3 + 1);
+        // Much faster steps
+        const step = remains < 5 ? 1 : Math.floor(Math.random() * 8 + 3);
         return Math.min(100, prev + step);
       });
-    }, 60);
+    }, 25); // Faster interval (was 60ms)
     return () => clearInterval(interval);
   }, []);
 

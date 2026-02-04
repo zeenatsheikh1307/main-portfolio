@@ -93,7 +93,7 @@ function FlipCard({ src, index, total, phase, target }: FlipCardProps) {
 
 // --- Main Hero Component ---
 const TOTAL_IMAGES = 20;
-const MAX_SCROLL = 2000; // Reduced virtual scroll range
+const MAX_SCROLL = 1500; // Reduced virtual scroll range
 
 // Social Media Themed Unsplash Images
 const IMAGES = [
@@ -181,8 +181,10 @@ export default function ScrollMorphHero() {
       e.preventDefault();
       e.stopPropagation();
 
+      // Asymmetric velocity: Normal forward, Fast reverse
+      const velocity = e.deltaY < 0 ? 15 : 4;
       const newScroll = Math.min(
-        Math.max(scrollRef.current + e.deltaY * 3, 0),
+        Math.max(scrollRef.current + e.deltaY * velocity, 0),
         MAX_SCROLL,
       );
       scrollRef.current = newScroll;
@@ -219,8 +221,9 @@ export default function ScrollMorphHero() {
 
       e.preventDefault();
 
+      const velocity = deltaY < 0 ? 12 : 3;
       const newScroll = Math.min(
-        Math.max(scrollRef.current + deltaY * 2, 0),
+        Math.max(scrollRef.current + deltaY * velocity, 0),
         MAX_SCROLL,
       );
       scrollRef.current = newScroll;
@@ -255,7 +258,7 @@ export default function ScrollMorphHero() {
   const smoothMorph = useSpring(morphProgress, { stiffness: 50, damping: 25 });
 
   // 2. Scroll Rotation (Shuffling)
-  const scrollRotate = useTransform(virtualScroll, [600, 2000], [0, 180]);
+  const scrollRotate = useTransform(virtualScroll, [600, 1500], [0, 180]);
   const smoothScrollRotate = useSpring(scrollRotate, {
     stiffness: 50,
     damping: 25,
@@ -348,7 +351,7 @@ export default function ScrollMorphHero() {
       {/* Container */}
       <div className="flex h-full w-full flex-col items-center justify-center perspective-1000">
         {/* Intro Text (Fades out) */}
-        <div className="absolute z-0 flex flex-col items-center justify-center text-center pointer-events-none top-1/2 -translate-y-1/2">
+        <div className="absolute z-0 flex flex-col items-center justify-center text-center pointer-events-none top-1/2 -translate-y-1/2 mt-10">
           <motion.h1
             initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
             animate={
@@ -357,9 +360,9 @@ export default function ScrollMorphHero() {
                 : { opacity: 0, filter: "blur(10px)" }
             }
             transition={{ duration: 1 }}
-            className="text-2xl font-medium tracking-tight text-white md:text-4xl"
+            className="text-2xl font-medium tracking-tight text-white md:text-3xl lg:text-4xl"
           >
-            Grow Your Social Presence
+            Grow Your <br /> Social Presence
           </motion.h1>
           <motion.p
             initial={{ opacity: 0 }}
@@ -378,7 +381,7 @@ export default function ScrollMorphHero() {
         {/* Arc Active Content (Fades in) */}
         <motion.div
           style={{ opacity: contentOpacity, y: contentY }}
-          className="absolute top-[10%] z-10 flex flex-col items-center justify-center text-center pointer-events-none px-4"
+          className="absolute top-[20%] z-10 flex flex-col items-center justify-center text-center pointer-events-none px-4"
         >
           <h2 className="text-3xl md:text-5xl font-semibold text-white tracking-tight mb-4">
             Our Social Media Expertise
@@ -415,9 +418,10 @@ export default function ScrollMorphHero() {
               const circleRadius = Math.min(minDimension * 0.35, 350);
               const circleAngle = (i / TOTAL_IMAGES) * 360;
               const circleRad = (circleAngle * Math.PI) / 180;
+              // Added vertical offset (+40) to move it below nav
               const circlePos = {
                 x: Math.cos(circleRad) * circleRadius,
-                y: Math.sin(circleRad) * circleRadius,
+                y: Math.sin(circleRad) * circleRadius + 40,
                 rotation: circleAngle + 90,
               };
 
