@@ -76,7 +76,7 @@ export function Testimonial() {
   const current = testimonials[activeIndex];
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-white overflow-hidden p-4">
+    <div className="flex items-center justify-center py-32 pb-24 bg-white overflow-visible p-4">
       <div
         ref={containerRef}
         className="relative w-full max-w-5xl"
@@ -84,7 +84,7 @@ export function Testimonial() {
       >
         {/* Oversized index number - positioned to bleed off left edge */}
         <motion.div
-          className="absolute -left-8 top-1/2 -translate-y-1/2 text-[12rem] md:text-[20rem] lg:text-[28rem] font-bold text-black/[0.03] select-none pointer-events-none leading-none tracking-tighter"
+          className="absolute -left-8 top-1/2 -translate-y-1/2 text-[8rem] md:text-[14rem] lg:text-[18rem] font-bold text-black/[0.03] select-none pointer-events-none leading-none tracking-tighter"
           style={{ x: numberX, y: numberY }}
         >
           <AnimatePresence mode="wait">
@@ -141,7 +141,7 @@ export function Testimonial() {
               >
                 <span className="inline-flex items-center gap-2 text-xs font-mono text-gray-600 border border-gray-200 rounded-full px-3 py-1 bg-white/50 backdrop-blur-sm">
                   <span className="w-1.5 h-1.5 rounded-full bg-black" />
-                  {current.company}
+                  {String(activeIndex + 1).padStart(2, '0')}
                 </span>
               </motion.div>
             </AnimatePresence>

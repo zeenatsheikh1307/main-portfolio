@@ -47,41 +47,44 @@ const AdsService = () => {
   const pricingPlans = [
     {
       name: "Starter Campaign",
-      price: "₹4,999",
-      period: "per month",
-      desc: "Perfect for small businesses starting ads journey",
+      price: "₹10,620",
+      period: "per week",
+      desc: "₹1,000/day budget - Perfect for small businesses",
       features: [
         "Google & Meta Ads Setup",
         "Basic Audience Targeting",
-        "Ad Creative Suggestions",
-        "Weekly Report",
+        "Free Landing Page",
+        "Free Graphics",
+        "Ad Handling",
       ],
       color: "purple",
     },
     {
       name: "Growth Plan",
-      price: "₹14,999",
-      period: "per month",
-      desc: "For brands aiming to scale performance marketing",
+      price: "₹19,180",
+      period: "per week",
+      desc: "₹2,000/day budget - For brands aiming to scale",
       features: [
         "Google, Meta & LinkedIn Ads",
         "A/B Testing & Optimization",
-        "Conversion Tracking",
-        "Bi-weekly Strategy Calls",
+        "Free Landing Page",
+        "Free Graphics",
+        "Ad Handling",
       ],
       color: "blue",
       popular: true,
     },
     {
       name: "Enterprise",
-      price: "₹39,999",
-      period: "per month",
-      desc: "Full-funnel growth marketing with analytics support",
+      price: "₹46,256",
+      period: "per week",
+      desc: "₹5,000/day budget - Full-funnel growth marketing",
       features: [
         "Multi-platform Ad Management",
         "Dynamic Retargeting",
-        "Advanced Analytics Dashboard",
-        "Dedicated Ad Manager",
+        "Free Landing Page",
+        "Free Graphics",
+        "Ad Handling",
       ],
       color: "emerald",
     },
@@ -612,7 +615,7 @@ const AdsService = () => {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="relative px-4 md:px-6 py-16 md:py-24 overflow-hidden">
+      <section id="pricing" className="relative px-4 md:px-6 py-8 md:py-12 overflow-hidden">
         <PricingDemo />
       </section>
     </div>

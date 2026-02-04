@@ -107,7 +107,7 @@ export default function AboutUs() {
           <div className="absolute inset-0 bg-[radial-gradient(650px_320px_at_50%_0%,rgba(255,255,255,0.10),transparent)] animate-pulse" />
         </div>
 
-  <div className="mx-auto max-w-7xl px-8 md:px-12 lg:px-20 pt-28 md:pt-32 lg:pt-36 hero-full flex items-center">
+        <div className="mx-auto max-w-7xl px-8 md:px-12 lg:px-20 pt-28 md:pt-32 lg:pt-36 hero-full flex items-center">
           <div className="mx-auto max-w-6xl text-center reveal opacity-0 translate-y-6 relative z-10 pb-16 md:pb-20 lg:pb-24">
             {/* soft radial spotlight */}
             <div aria-hidden="true" className="pointer-events-none absolute inset-0 flex justify-center">
@@ -206,19 +206,19 @@ export default function AboutUs() {
           {/* Abstract visual (no stock photo) */}
           <div className="order-1 reveal opacity-0 translate-y-6 md:order-2">
             <div className="relative mx-auto aspect-[16/10] w-full max-w-xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.07] to-white/[0.02] p-1 backdrop-blur-xl">
-                {/* Replace abstract visual with a team photo from Unsplash (public image) */}
-                <div className="relative h-full w-full rounded-2xl bg-[#06060a] overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1400&auto=format&fit=crop"
-                    alt="Our team"
-                    className="w-full h-full object-cover object-center"
-                  />
+              {/* Replace abstract visual with a team photo from Unsplash (public image) */}
+              <div className="relative h-full w-full rounded-2xl bg-[#06060a] overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1400&auto=format&fit=crop"
+                  alt="Our team"
+                  className="w-full h-full object-cover object-center"
+                />
 
-                  {/* subtle gradient overlay to match site style */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#000000]/20 via-transparent to-[#000000]/30" />
-                </div>
-                <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-white/10" />
+                {/* subtle gradient overlay to match site style */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#000000]/20 via-transparent to-[#000000]/30" />
               </div>
+              <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-white/10" />
+            </div>
           </div>
         </div>
       </section>

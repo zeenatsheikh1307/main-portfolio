@@ -5,12 +5,10 @@ import {
   Zap,
   Globe,
   Smartphone,
-  Rocket,
   ExternalLink,
   Github,
-  ChevronLeft,
-  ChevronRight,
 } from "lucide-react";
+import CoverflowCarousel from "@/components/ui/coverflow-carousel";
 import { gsap } from "gsap";
 import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -32,6 +30,7 @@ import serviceHeroVideo from "./assets/assests/service hero.mp4";
 import webVideo from "./assets/assests/web .mp4";
 import { PricingSection } from "@/components/ui/pricing";
 import PricingDemo from "./PricingDemo";
+import { ReadyToBuild } from "@/components/ui/ready-to-build";
 
 const Spline = lazy(() => import("@splinetool/react-spline"));
 
@@ -127,27 +126,9 @@ const WebServices = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
   const projectsRef = useRef<HTMLDivElement>(null);
-  const [hoveredProject, setHoveredProject] = useState<number | null>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isDesktop, setIsDesktop] = useState(true);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    setIsDesktop(window.innerWidth >= 768);
-    const handleResize = () => setIsDesktop(window.innerWidth >= 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
-  const nextSlide = () => {
-    const maxIndex = webProjects.length - (isDesktop ? 2 : 1);
-    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
-  };
 
-  const prevSlide = () => {
-    const maxIndex = webProjects.length - (isDesktop ? 2 : 1);
-    setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
-  };
 
   // Inject small CSS snippets that were previously using styled-jsx (avoids TSX/styled-jsx errors)
   useEffect(() => {
@@ -274,24 +255,7 @@ const WebServices = () => {
         );
       }
 
-      // Projects animation
-      if (projectsRef.current) {
-        gsap.fromTo(
-          projectsRef.current.querySelectorAll(".project-card"),
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            stagger: 0.1,
-            scrollTrigger: {
-              trigger: projectsRef.current,
-              start: "top 70%",
-              end: "bottom 30%",
-            },
-          },
-        );
-      }
+
     };
 
     animationFrame = requestAnimationFrame(animateElements);
@@ -320,77 +284,10 @@ const WebServices = () => {
       });
     });
 
-    // Project card tilt on mousemove
-    const cards = projectsRef.current?.querySelectorAll(".project-card") || [];
-    const listeners: Array<{ el: Element; move: any; leave: any }> = [];
 
-    cards.forEach((card: Element) => {
-      const move = (e: MouseEvent) => {
-        const rect = (card as HTMLElement).getBoundingClientRect();
-        const px = (e.clientX - rect.left) / rect.width;
-        const py = (e.clientY - rect.top) / rect.height;
-        const rotateY = (px - 0.5) * 6; // degrees
-        const rotateX = (0.5 - py) * 6;
-        gsap.to(card, {
-          rotateX,
-          rotateY,
-          transformPerspective: 800,
-          transformOrigin: "center",
-          duration: 0.5,
-          ease: "power3.out",
-        });
-      };
-
-      const leave = () => {
-        gsap.to(card, {
-          rotateX: 0,
-          rotateY: 0,
-          duration: 0.6,
-          ease: "power3.out",
-        });
-      };
-
-      card.addEventListener("mousemove", move as EventListener);
-      card.addEventListener("mouseleave", leave as EventListener);
-      listeners.push({ el: card, move, leave });
-    });
-
-    return () => {
-      listeners.forEach((l) => {
-        l.el.removeEventListener("mousemove", l.move as EventListener);
-        l.el.removeEventListener("mouseleave", l.leave as EventListener);
-      });
-    };
   }, []);
 
-  // animate project cards as they scroll into view (horizontal reveal)
-  useEffect(() => {
-    if (!projectsRef.current) return;
-    const cards = Array.from(
-      projectsRef.current.querySelectorAll(".project-card"),
-    ) as HTMLElement[];
-    cards.forEach((card) => {
-      gsap.fromTo(
-        card,
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: card,
-            scroller: projectsRef.current as any,
-            start: "left center",
-          },
-        },
-      );
-    });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
-  }, []);
 
   const pricingPlans = [
     {
@@ -400,27 +297,27 @@ const WebServices = () => {
       plans: [
         {
           name: "Static Website",
-          price: "₹8,000",
+          price: "₹4,999",
           period: "one time",
           description: "Perfect for small businesses getting online",
           features: [
-            "5 Page Website",
+            "1 Page Website",
             "Mobile Responsive, fast loading",
-            "Free domain & hosting (1 year)",
+            "Free hosting (1 year)",
             "WhatsApp chat & contact form",
-            "3-month free support",
+            "1-month free support",
           ],
           popular: false,
         },
         {
           name: "Dynamic website",
-          price: "₹15,000",
+          price: "₹10,500",
           period: "one time",
           description: "Complete solution for growing businesses",
           features: [
             "8-12 pages",
             "Include admin panel",
-            "Free hosting & domain (1 year)",
+            "Free hosting (1 year)",
             "SEO Ready + Whatsapp form ",
             "1-month free corrections (Rs.150/change after)",
           ],
@@ -434,7 +331,7 @@ const WebServices = () => {
           features: [
             "Product listing, cart, checkout",
             "Payment gateway + Admin panel",
-            "Free domain & hosting (1 year)",
+            "Free hosting (1 year)",
             "Responsive & secure design",
             "Dedicated Team",
           ],
@@ -451,19 +348,14 @@ const WebServices = () => {
       {/* Hero Section - Glassmorphism Trust Hero */}
       <HeroSection />
 
-      {/* Recent Work Section */}
+      {/* Our Work Section - Matched to Video Services UI */}
       <section
-        className="px-4 md:px-6 py-16 md:py-24 bg-gradient-to-b from-[#0a0a0f] via-[#0d0d14] to-[#0a0a0f] relative overflow-hidden"
-        ref={projectsRef}
+        id="projects"
+        className="px-4 md:px-6 py-8 md:py-12 bg-[#0a0a0f] relative overflow-hidden"
       >
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
-
-        <div className="max-w-7xl mx-auto relative z-10">
+        <div className="max-w-7xl mx-auto">
           {/* Header redesign - Enhanced */}
-          <div className="flex flex-col items-center justify-center mb-20 text-center">
-            {/* Small label above */}
-
+          <div className="flex flex-col items-center justify-center mb-2 text-center">
             {/* Main heading with gradient */}
             <h2 className="text-5xl sm:text-6xl md:text-7xl font-black uppercase mb-4 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent tracking-tight">
               Our Work
@@ -471,194 +363,60 @@ const WebServices = () => {
 
             {/* Decorative line */}
             <div className="w-24 h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent mb-4"></div>
-
-            {/* Subtitle */}
           </div>
+        </div>
 
-          <div className="relative group/carousel">
-            {/* Carousel Container */}
-            <div className="overflow-hidden px-4 -mx-4 md:mx-0">
-              <div
-                className="flex transition-transform duration-500 ease-out"
-                style={{
-                  transform: `translateX(-${currentIndex * (isDesktop ? 50 : 100)}%)`,
-                }}
-              >
-                {webProjects.map((project, index) => (
-                  <div
-                    key={project.id}
-                    className="min-w-full md:min-w-[50%] px-2 md:px-6 box-border flex-shrink-0"
-                  >
-                    <article
-                      className="project-card group relative flex flex-col h-[400px] transition-all duration-700 ease-out hover:-translate-y-4 hover:scale-[1.02] w-full overflow-visible"
-                      onMouseEnter={() => setHoveredProject(project.id)}
-                      onMouseLeave={() => setHoveredProject(null)}
-                    >
-                      {/* Compact Folder Tab */}
-                      <div className="absolute -top-0 right-6 z-20 flex items-center gap-2 bg-black/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-white/10 transition-opacity duration-300 group-hover:opacity-0">
-                        <span className="text-white/90 text-[8px] uppercase font-bold tracking-[0.15em]">
-                          Branding
-                        </span>
-                        <span className="text-white/50 text-[8px] font-bold hidden sm:inline-block">
-                          •
-                        </span>
-                        <span className="text-white/70 text-[8px] uppercase font-bold tracking-wide hidden sm:inline-block">
-                          Website
-                        </span>
-                        <span className="text-white/50 text-[8px] font-bold hidden md:inline-block">
-                          •
-                        </span>
-                        <span className="text-white/70 text-[8px] uppercase font-bold tracking-wide hidden md:inline-block">
-                          Marketing
-                        </span>
-                      </div>
-
-                      {/* Main Card Body - Clean & Modern */}
-                      <div className="w-full h-full bg-white flex flex-col relative z-10 rounded-[2.5rem] overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] group-hover:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.25)] transition-all duration-700">
-                        {/* Image Container with Clean Background */}
-                        <div className="relative h-[280px] w-full bg-[#0a0a0f] flex items-center justify-center p-0 overflow-hidden">
-                          {/* Decorative Background Elements */}
-                          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl"></div>
-                          <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl"></div>
-
-                          {/* Browser Frame Mockup */}
-                          <div className="relative w-full h-full bg-transparent overflow-hidden border-b border-gray-200/50">
-                            {/* Browser Top Bar */}
-                            <div className="h-8 bg-gradient-to-b from-gray-100 to-gray-50 border-b border-gray-200 flex items-center px-3 gap-2 transition-all duration-500 group-hover:h-0 group-hover:opacity-0 overflow-hidden">
-                              <div className="flex gap-1.5">
-                                <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
-                                <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
-                                <div className="w-2.5 h-2.5 rounded-full bg-green-400"></div>
-                              </div>
-                              <div className="flex-1 flex justify-center">
-                                <div className="bg-white/60 px-3 py-0.5 rounded text-[7px] text-gray-400 font-medium">
-                                  {project.url || "project-preview.com"}
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Project Image/Video */}
-                            <div className="w-full h-[calc(100%-2rem)] group-hover:h-full bg-transparent overflow-hidden relative transition-all duration-500">
-                              {/* Show video on hover for first card (Metabull Universe) */}
-                              {project.id === 1 && (
-                                <video
-                                  className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 ${
-                                    hoveredProject === project.id
-                                      ? "opacity-100"
-                                      : "opacity-0 pointer-events-none"
-                                  }`}
-                                  autoPlay
-                                  muted
-                                  loop
-                                  playsInline
-                                >
-                                  <source src={webVideo} type="video/mp4" />
-                                </video>
-                              )}
-
-                              {/* Static image - fades out on hover for first card */}
-                              <img
-                                src={project.image}
-                                alt={project.title}
-                                className={`w-full h-full object-cover object-top grayscale transition-all duration-700 ease-out ${
-                                  project.id === 1 &&
-                                  hoveredProject === project.id
-                                    ? "opacity-0 scale-105"
-                                    : "group-hover:grayscale-0 group-hover:scale-105"
-                                }`}
-                                loading="lazy"
-                              />
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Content Footer - Clean & Spacious */}
-                        <div className="flex-1 flex items-center justify-between p-6 bg-white">
-                          <div className="flex flex-col gap-2">
-                            {/* Project Title - Bold & Modern */}
-                            <div className="flex flex-col gap-0">
-                              <h3 className="text-[2rem] font-black text-gray-900 uppercase tracking-[-0.02em] leading-[0.9]">
-                                {project.title.split(" ")[0]}
-                              </h3>
-                              {project.title.split(" ").slice(1).length > 0 && (
-                                <h3 className="text-[2rem] font-black text-gray-900 uppercase tracking-[-0.02em] leading-[0.9]">
-                                  {project.title.split(" ").slice(1).join(" ")}
-                                </h3>
-                              )}
-                            </div>
-
-                            {/* Subtitle - Refined */}
-                            <p className="text-gray-400 text-[9px] font-semibold uppercase tracking-[0.2em] mt-1">
-                              DESIGN • 2025
-                            </p>
-                          </div>
-
-                          {/* CTA Button - Premium & Clean */}
-                          <a
-                            href={project.url || "#"}
-                            target="_blank"
-                            className="relative flex items-center justify-center w-[60px] h-[60px] bg-[#FF4D4D] hover:bg-[#ff3333] text-white rounded-full transition-all duration-500 shadow-[0_10px_30px_rgba(255,77,77,0.35)] hover:shadow-[0_15px_40px_rgba(255,77,77,0.5)] group-hover:scale-110 shrink-0 overflow-hidden"
-                          >
-                            {/* Shine effect on hover */}
-                            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-
-                            <ArrowRight className="w-6 h-6 -rotate-45 stroke-[3] relative z-10" />
-                          </a>
-                        </div>
-                      </div>
-                    </article>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Navigation Arrows */}
-            {/* Left Box Arrow */}
-            <button
-              onClick={prevSlide}
-              className="hidden md:flex absolute top-1/2 -left-12 -translate-y-1/2 w-12 h-12 bg-[#1a1a2e] border border-white/10 rounded-xl items-center justify-center text-white hover:bg-white/10 hover:scale-110 transition-all duration-300 z-20 group disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={currentIndex === 0}
-            >
-              <ChevronLeft className="w-6 h-6 group-hover:-translate-x-0.5 transition-transform" />
-            </button>
-
-            {/* Right Box Arrow */}
-            <button
-              onClick={nextSlide}
-              className="hidden md:flex absolute top-1/2 -right-12 -translate-y-1/2 w-12 h-12 bg-[#1a1a2e] border border-white/10 rounded-xl items-center justify-center text-white hover:bg-white/10 hover:scale-110 transition-all duration-300 z-20 group disabled:opacity-50 disabled:cursor-not-allowed"
-              disabled={currentIndex >= webProjects.length - 2}
-            >
-              <ChevronRight className="w-6 h-6 group-hover:translate-x-0.5 transition-transform" />
-            </button>
-
-            {/* Mobile Controls (Optional, usually swipe is enough but customer asked for arrows) */}
-            <div className="flex md:hidden justify-center gap-4 mt-8">
-              <button
-                onClick={prevSlide}
-                className="w-10 h-10 bg-[#1a1a2e] border border-white/10 rounded-full flex items-center justify-center text-white active:bg-white/20"
-                disabled={currentIndex === 0}
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                onClick={nextSlide}
-                className="w-10 h-10 bg-[#1a1a2e] border border-white/10 rounded-full flex items-center justify-center text-white active:bg-white/20"
-                disabled={currentIndex >= webProjects.length - 1} // Mobile shows 1 at a time
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
+        <div className="relative group/carousel -mt-8">
+          <CoverflowCarousel
+            items={webProjects.map((p) => ({
+              id: p.id,
+              title: p.title,
+              description: p.description,
+              image: p.image,
+              // Add video for Metabull Universe (id 1)
+              video: p.id === 1 ? webVideo : undefined,
+              category: p.category,
+              tech: p.tech,
+              url: p.url,
+            }))}
+          />
         </div>
       </section>
 
       {/* Pricing Section */}
       <section
         id="pricing"
-        className="relative px-4 md:px-6 py-16 md:py-24 overflow-hidden"
+        className="relative px-4 md:px-6 py-16 md:py-24 bg-[#0a0a0f] overflow-hidden"
       >
-        <PricingDemo />
+        <PricingSection
+          className="text-white w-full"
+          heading="Pricing"
+          description="Choose the perfect plan for your business needs"
+          plans={pricingPlans[0].plans.map((plan) => ({
+            name: plan.name,
+            info: plan.description,
+            price: {
+              monthly: 0,
+              yearly: 0,
+            },
+            priceFormatted: plan.price,
+            accent: plan.color === "blue" ? "text-blue-400" : "text-purple-400",
+            buttonVariant: plan.popular ? "default" : "outline",
+            buttonClass: plan.popular
+              ? "bg-purple-600 hover:bg-purple-700 text-white shadow-lg shadow-purple-500/20"
+              : "border-blue-400/20 hover:bg-blue-400/10 text-blue-400",
+            features: plan.features.map((f) => ({ text: f })),
+            btn: {
+              text: "Get Started",
+              href: "/contact",
+            },
+            highlighted: plan.popular,
+          }))}
+        />
       </section>
+
+      {/* Ready to Build CTA Section */}
+      <ReadyToBuild />
     </div>
   );
 };
