@@ -1,11 +1,23 @@
-import React, { useEffect, useRef, Suspense, lazy, useState } from 'react';
-import { Code2, Palette, Zap, Globe, Smartphone, Rocket, ExternalLink, Github, ChevronLeft, ChevronRight } from 'lucide-react';
-import { gsap } from 'gsap';
+import React, { useEffect, useRef, Suspense, lazy, useState } from "react";
+import {
+  Code2,
+  Palette,
+  Zap,
+  Globe,
+  Smartphone,
+  Rocket,
+  ExternalLink,
+  Github,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { gsap } from "gsap";
 import { Link } from "react-router-dom";
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Navigation from '@/components/Navigation';
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Navigation from "@/components/Navigation";
 import Threads from "./Threads";
-import { Code, Video, Users, Check, ArrowRight, Star, } from "lucide-react";
+import { Code, Video, Users, Check, ArrowRight, Star } from "lucide-react";
+import HeroSection from "@/components/ui/glassmorphism-trust-hero";
 import refokus from "./assets/assests/r (1).png";
 import cuberto from "./assets/assests/r (2).png";
 import homer from "./assets/assests/r (3).png";
@@ -18,10 +30,10 @@ import fresco from "./assets/assests/r(10).png";
 // hero background video
 import serviceHeroVideo from "./assets/assests/service hero.mp4";
 import webVideo from "./assets/assests/web .mp4";
-import { PricingSection } from '@/components/ui/pricing';
-import PricingDemo from './PricingDemo';
+import { PricingSection } from "@/components/ui/pricing";
+import PricingDemo from "./PricingDemo";
 
-const Spline = lazy(() => import('@splinetool/react-spline'));
+const Spline = lazy(() => import("@splinetool/react-spline"));
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -120,11 +132,11 @@ const WebServices = () => {
   const [isDesktop, setIsDesktop] = useState(true);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
     setIsDesktop(window.innerWidth >= 768);
     const handleResize = () => setIsDesktop(window.innerWidth >= 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const nextSlide = () => {
@@ -139,10 +151,10 @@ const WebServices = () => {
 
   // Inject small CSS snippets that were previously using styled-jsx (avoids TSX/styled-jsx errors)
   useEffect(() => {
-    if (typeof document === 'undefined') return;
-    const styleId = 'webservices-extra-styles';
+    if (typeof document === "undefined") return;
+    const styleId = "webservices-extra-styles";
     if (document.getElementById(styleId)) return;
-    const s = document.createElement('style');
+    const s = document.createElement("style");
     s.id = styleId;
     s.innerHTML = `
       .bg-grid-pattern { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgba(255,255,255,0.05)'%3e%3cpath d='M0 .5H31.5V32'/%3e%3c/svg%3e"); }
@@ -230,15 +242,23 @@ const WebServices = () => {
     const animateElements = () => {
       // Hero animations
       if (heroRef.current) {
-        gsap.fromTo(heroRef.current.children,
+        gsap.fromTo(
+          heroRef.current.children,
           { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.8, stagger: 0.15, ease: "power2.out" }
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: "power2.out",
+          },
         );
       }
 
       // Services grid animation
       if (servicesRef.current) {
-        gsap.fromTo(servicesRef.current.querySelectorAll('.service-card'),
+        gsap.fromTo(
+          servicesRef.current.querySelectorAll(".service-card"),
           { opacity: 0, scale: 0.9 },
           {
             opacity: 1,
@@ -249,14 +269,15 @@ const WebServices = () => {
               trigger: servicesRef.current,
               start: "top 80%",
               end: "bottom 20%",
-            }
-          }
+            },
+          },
         );
       }
 
       // Projects animation
       if (projectsRef.current) {
-        gsap.fromTo(projectsRef.current.querySelectorAll('.project-card'),
+        gsap.fromTo(
+          projectsRef.current.querySelectorAll(".project-card"),
           { opacity: 0, y: 20 },
           {
             opacity: 1,
@@ -267,8 +288,8 @@ const WebServices = () => {
               trigger: projectsRef.current,
               start: "top 70%",
               end: "bottom 30%",
-            }
-          }
+            },
+          },
         );
       }
     };
@@ -277,7 +298,7 @@ const WebServices = () => {
 
     return () => {
       cancelAnimationFrame(animationFrame);
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 
@@ -287,20 +308,20 @@ const WebServices = () => {
 
     // ambient float
     const hero = heroRef.current;
-    const floatEls = hero.querySelectorAll('.float-ambient');
+    const floatEls = hero.querySelectorAll(".float-ambient");
     floatEls.forEach((el, i) => {
       gsap.to(el, {
-        y: (i % 2 === 0 ? -12 : 12),
-        x: (i % 2 === 0 ? -6 : 6),
+        y: i % 2 === 0 ? -12 : 12,
+        x: i % 2 === 0 ? -6 : 6,
         duration: 6 + i,
         repeat: -1,
         yoyo: true,
-        ease: 'sine.inOut',
+        ease: "sine.inOut",
       });
     });
 
     // Project card tilt on mousemove
-    const cards = projectsRef.current?.querySelectorAll('.project-card') || [];
+    const cards = projectsRef.current?.querySelectorAll(".project-card") || [];
     const listeners: Array<{ el: Element; move: any; leave: any }> = [];
 
     cards.forEach((card: Element) => {
@@ -310,22 +331,34 @@ const WebServices = () => {
         const py = (e.clientY - rect.top) / rect.height;
         const rotateY = (px - 0.5) * 6; // degrees
         const rotateX = (0.5 - py) * 6;
-        gsap.to(card, { rotateX, rotateY, transformPerspective: 800, transformOrigin: 'center', duration: 0.5, ease: 'power3.out' });
+        gsap.to(card, {
+          rotateX,
+          rotateY,
+          transformPerspective: 800,
+          transformOrigin: "center",
+          duration: 0.5,
+          ease: "power3.out",
+        });
       };
 
       const leave = () => {
-        gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.6, ease: 'power3.out' });
+        gsap.to(card, {
+          rotateX: 0,
+          rotateY: 0,
+          duration: 0.6,
+          ease: "power3.out",
+        });
       };
 
-      card.addEventListener('mousemove', move as EventListener);
-      card.addEventListener('mouseleave', leave as EventListener);
+      card.addEventListener("mousemove", move as EventListener);
+      card.addEventListener("mouseleave", leave as EventListener);
       listeners.push({ el: card, move, leave });
     });
 
     return () => {
-      listeners.forEach(l => {
-        l.el.removeEventListener('mousemove', l.move as EventListener);
-        l.el.removeEventListener('mouseleave', l.leave as EventListener);
+      listeners.forEach((l) => {
+        l.el.removeEventListener("mousemove", l.move as EventListener);
+        l.el.removeEventListener("mouseleave", l.leave as EventListener);
       });
     };
   }, []);
@@ -333,23 +366,29 @@ const WebServices = () => {
   // animate project cards as they scroll into view (horizontal reveal)
   useEffect(() => {
     if (!projectsRef.current) return;
-    const cards = Array.from(projectsRef.current.querySelectorAll('.project-card')) as HTMLElement[];
+    const cards = Array.from(
+      projectsRef.current.querySelectorAll(".project-card"),
+    ) as HTMLElement[];
     cards.forEach((card) => {
-      gsap.fromTo(card, { opacity: 0, y: 20 }, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: card,
-          scroller: projectsRef.current as any,
-          start: 'left center',
-        }
-      });
+      gsap.fromTo(
+        card,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: card,
+            scroller: projectsRef.current as any,
+            start: "left center",
+          },
+        },
+      );
     });
 
     return () => {
-      ScrollTrigger.getAll().forEach(t => t.kill());
+      ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);
 
@@ -409,100 +448,14 @@ const WebServices = () => {
     <div className="min-h-screen bg-[#0a0a0f] text-foreground font-sans overflow-x-hidden transition-colors duration-300 scroll-smooth">
       <Navigation />
 
-      {/* Hero Section */}
-      <section
-        className="relative h-screen flex items-start justify-center py-8 md:py-16 text-center bg-[#0a0a0f] overflow-hidden"
-        ref={heroRef}
-      >
-        {/* Background video */}
-        <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-          <video
-            className="w-full h-full object-cover"
-            autoPlay
-            loop
-            muted
-            playsInline
-            style={{
-              objectFit: 'cover',
-              opacity: 0.8
-            }}
-          >
-            <source src={serviceHeroVideo} type="video/mp4" />
-          </video>
-          {/* Dark overlay for better text readability */}
-          <div className="absolute inset-0 bg-black/20"></div>
-        </div>
-
-        {/* Gradient merge overlay at bottom for seamless transition */}
-        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent via-[#0a0a0f]/50 to-[#0a0a0f] pointer-events-none z-[5]"></div>
-
-        <div className="relative z-10 max-w-5xl mx-auto w-full flex flex-col items-center justify-center text-center min-h-screen px-4">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full text-sm sm:text-base font-semibold mb-8 backdrop-blur-md border border-white/20 bg-white/10" style={{
-            background: 'linear-gradient(90deg, #2BC0E4 0%, #5D31D8 48%, #FF8A00 100%)',
-            WebkitBackgroundClip: 'text',
-            backgroundClip: 'text',
-            color: 'transparent',
-            fontWeight: 600
-          }}>
-            ✨ Our craft is innovation, precision & performance
-          </div>
-
-          {/* Main Heading - Larger */}
-          <h1 className="tracking-tight mb-6 leading-[1.05] text-[clamp(2.5rem,6vw,4.5rem)] font-bold" style={{
-            color: '#fff',
-            letterSpacing: '-0.02em',
-            fontFamily: 'system-ui, -apple-system, sans-serif'
-          }}>
-            We build digital experiences
-            <br />
-            <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              with hyperfocus
-            </span>
-          </h1>
-
-          {/* Description paragraph */}
-          <p className="text-white/80 text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto mb-10 leading-relaxed font-light" style={{
-            fontFamily: 'system-ui, -apple-system, sans-serif',
-            fontWeight: 300,
-            letterSpacing: '-0.01em'
-          }}>
-            Professional websites built with <span className="text-cyan-400 font-semibold">Next.js</span>, <span className="text-purple-400 font-semibold">WordPress</span>, or <span className="text-pink-400 font-semibold">Shopify</span>.
-            <br className="hidden md:block" />
-            Transform your online presence with fast, SEO-optimized websites.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mb-12">
-            <Link to="/contact" className="group relative px-8 py-4 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-full font-bold text-white text-base sm:text-lg shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 hover:scale-105 flex items-center gap-2">
-              <span>🚀 Start Your Project</span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <a href="#pricing" className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/30 rounded-full font-semibold text-white text-base sm:text-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 inline-block">
-              View Our Plans →
-            </a>
-          </div>
-
-          {/* Feature highlights */}
-          <div className="flex flex-wrap gap-3 sm:gap-4 justify-center items-center max-w-3xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all">
-              <span className="text-sm sm:text-base text-white/90" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>⚡ Fast Loading</span>
-            </div>
-            <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all">
-              <span className="text-sm sm:text-base text-white/90" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>🎯 SEO Ready</span>
-            </div>
-            <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all">
-              <span className="text-sm sm:text-base text-white/90" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>📱 Responsive</span>
-            </div>
-            <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all">
-              <span className="text-sm sm:text-base text-white/90" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>💎 Premium Design</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section - Glassmorphism Trust Hero */}
+      <HeroSection />
 
       {/* Recent Work Section */}
-      <section className="px-4 md:px-6 py-16 md:py-24 bg-gradient-to-b from-[#0a0a0f] via-[#0d0d14] to-[#0a0a0f] relative overflow-hidden" ref={projectsRef}>
+      <section
+        className="px-4 md:px-6 py-16 md:py-24 bg-gradient-to-b from-[#0a0a0f] via-[#0d0d14] to-[#0a0a0f] relative overflow-hidden"
+        ref={projectsRef}
+      >
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
 
@@ -527,7 +480,9 @@ const WebServices = () => {
             <div className="overflow-hidden px-4 -mx-4 md:mx-0">
               <div
                 className="flex transition-transform duration-500 ease-out"
-                style={{ transform: `translateX(-${currentIndex * (isDesktop ? 50 : 100)}%)` }}
+                style={{
+                  transform: `translateX(-${currentIndex * (isDesktop ? 50 : 100)}%)`,
+                }}
               >
                 {webProjects.map((project, index) => (
                   <div
@@ -544,11 +499,15 @@ const WebServices = () => {
                         <span className="text-white/90 text-[8px] uppercase font-bold tracking-[0.15em]">
                           Branding
                         </span>
-                        <span className="text-white/50 text-[8px] font-bold hidden sm:inline-block">•</span>
+                        <span className="text-white/50 text-[8px] font-bold hidden sm:inline-block">
+                          •
+                        </span>
                         <span className="text-white/70 text-[8px] uppercase font-bold tracking-wide hidden sm:inline-block">
                           Website
                         </span>
-                        <span className="text-white/50 text-[8px] font-bold hidden md:inline-block">•</span>
+                        <span className="text-white/50 text-[8px] font-bold hidden md:inline-block">
+                          •
+                        </span>
                         <span className="text-white/70 text-[8px] uppercase font-bold tracking-wide hidden md:inline-block">
                           Marketing
                         </span>
@@ -556,7 +515,6 @@ const WebServices = () => {
 
                       {/* Main Card Body - Clean & Modern */}
                       <div className="w-full h-full bg-white flex flex-col relative z-10 rounded-[2.5rem] overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)] group-hover:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.25)] transition-all duration-700">
-
                         {/* Image Container with Clean Background */}
                         <div className="relative h-[280px] w-full bg-[#0a0a0f] flex items-center justify-center p-0 overflow-hidden">
                           {/* Decorative Background Elements */}
@@ -574,7 +532,7 @@ const WebServices = () => {
                               </div>
                               <div className="flex-1 flex justify-center">
                                 <div className="bg-white/60 px-3 py-0.5 rounded text-[7px] text-gray-400 font-medium">
-                                  {project.url || 'project-preview.com'}
+                                  {project.url || "project-preview.com"}
                                 </div>
                               </div>
                             </div>
@@ -584,8 +542,11 @@ const WebServices = () => {
                               {/* Show video on hover for first card (Metabull Universe) */}
                               {project.id === 1 && (
                                 <video
-                                  className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 ${hoveredProject === project.id ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                                    }`}
+                                  className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 ${
+                                    hoveredProject === project.id
+                                      ? "opacity-100"
+                                      : "opacity-0 pointer-events-none"
+                                  }`}
                                   autoPlay
                                   muted
                                   loop
@@ -599,10 +560,12 @@ const WebServices = () => {
                               <img
                                 src={project.image}
                                 alt={project.title}
-                                className={`w-full h-full object-cover object-top grayscale transition-all duration-700 ease-out ${project.id === 1 && hoveredProject === project.id
-                                  ? 'opacity-0 scale-105'
-                                  : 'group-hover:grayscale-0 group-hover:scale-105'
-                                  }`}
+                                className={`w-full h-full object-cover object-top grayscale transition-all duration-700 ease-out ${
+                                  project.id === 1 &&
+                                  hoveredProject === project.id
+                                    ? "opacity-0 scale-105"
+                                    : "group-hover:grayscale-0 group-hover:scale-105"
+                                }`}
                                 loading="lazy"
                               />
                             </div>
@@ -615,11 +578,11 @@ const WebServices = () => {
                             {/* Project Title - Bold & Modern */}
                             <div className="flex flex-col gap-0">
                               <h3 className="text-[2rem] font-black text-gray-900 uppercase tracking-[-0.02em] leading-[0.9]">
-                                {project.title.split(' ')[0]}
+                                {project.title.split(" ")[0]}
                               </h3>
-                              {project.title.split(' ').slice(1).length > 0 && (
+                              {project.title.split(" ").slice(1).length > 0 && (
                                 <h3 className="text-[2rem] font-black text-gray-900 uppercase tracking-[-0.02em] leading-[0.9]">
-                                  {project.title.split(' ').slice(1).join(' ')}
+                                  {project.title.split(" ").slice(1).join(" ")}
                                 </h3>
                               )}
                             </div>
@@ -632,7 +595,7 @@ const WebServices = () => {
 
                           {/* CTA Button - Premium & Clean */}
                           <a
-                            href={project.url || '#'}
+                            href={project.url || "#"}
                             target="_blank"
                             className="relative flex items-center justify-center w-[60px] h-[60px] bg-[#FF4D4D] hover:bg-[#ff3333] text-white rounded-full transition-all duration-500 shadow-[0_10px_30px_rgba(255,77,77,0.35)] hover:shadow-[0_15px_40px_rgba(255,77,77,0.5)] group-hover:scale-110 shrink-0 overflow-hidden"
                           >
@@ -690,21 +653,14 @@ const WebServices = () => {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="relative px-4 md:px-6 py-16 md:py-24 overflow-hidden">
-
-
-
-
-
+      <section
+        id="pricing"
+        className="relative px-4 md:px-6 py-16 md:py-24 overflow-hidden"
+      >
         <PricingDemo />
-
-
-
       </section>
-
     </div>
   );
 };
 
 export default WebServices;
-
