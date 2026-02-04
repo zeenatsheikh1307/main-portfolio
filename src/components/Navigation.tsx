@@ -226,7 +226,7 @@ const Navigation = () => {
         }
       `}</style>
 
-      <div className={`mb-nav ${scrolled ? "mb-nav--shrink" : ""}`}>
+      <div className={`mb-nav relative z-[70] ${scrolled ? "mb-nav--shrink" : ""}`}>
         {/* Grid layout: Left / Center / Right */}
         <div className="grid grid-cols-2 md:grid-cols-[auto_1fr_auto] items-center gap-3">
           {/* LEFT: Brand */}
@@ -344,7 +344,7 @@ const Navigation = () => {
             </Link>
 
             <button
-              className="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-full border border-black/5 bg-white/80 backdrop-blur-xl shadow-sm active:scale-95 transition"
+              className="md:hidden inline-flex items-center justify-center w-11 h-11 rounded-full border border-black/5 bg-white/80 backdrop-blur-xl shadow-sm active:scale-95 transition text-black"
               onClick={() => setMobileOpen((v) => !v)}
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
             >
@@ -353,121 +353,122 @@ const Navigation = () => {
           </div>
         </div>
 
-        {/* MOBILE DRAWER */}
-        <div
-          className={`md:hidden fixed inset-0 z-[60] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
-          ${mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
-        >
-          {/* overlay */}
-          <div
-            className="absolute inset-0 bg-black/25"
-            onClick={() => setMobileOpen(false)}
-          />
+      </div>
 
-          {/* panel */}
-          <div
-            className={`absolute right-0 top-0 h-full w-[86%] max-w-[360px]
+      {/* MOBILE DRAWER */}
+      <div
+        className={`md:hidden fixed inset-0 z-[60] transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
+          ${mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+      >
+        {/* overlay */}
+        <div
+          className="absolute inset-0 bg-black/25"
+          onClick={() => setMobileOpen(false)}
+        />
+
+        {/* panel */}
+        <div
+          className={`absolute right-0 top-0 h-full w-[86%] max-w-[360px]
             bg-white/85 backdrop-blur-2xl border-l border-white/40
             shadow-[0_30px_80px_rgba(0,0,0,0.35)]
             transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
             ${mobileOpen ? "translate-x-0" : "translate-x-full"}`}
-          >
-            <div className="pt-20 px-5 pb-6 flex flex-col gap-2">
-              <div className="text-[12px] uppercase tracking-[0.18em] text-gray-400 font-semibold px-2 pb-2">
-                Menu
-              </div>
+        >
+          <div className="pt-20 px-5 pb-6 flex flex-col gap-2">
+            <div className="text-[12px] uppercase tracking-[0.18em] text-gray-400 font-semibold px-2 pb-2">
+              Menu
+            </div>
 
-              {/* Top links */}
-              <Link
-                to="/"
-                onClick={() => setMobileOpen(false)}
-                className={`flex items-center justify-between rounded-2xl px-4 py-4 border border-black/5 bg-white/60 hover:bg-white transition`}
+            {/* Top links */}
+            <Link
+              to="/"
+              onClick={() => setMobileOpen(false)}
+              className={`flex items-center justify-between rounded-2xl px-4 py-4 border border-black/5 bg-white/60 hover:bg-white transition`}
+            >
+              <span className="font-semibold text-[#181C32]">Home</span>
+              <span className="text-gray-400">→</span>
+            </Link>
+
+            {/* Services accordion */}
+            <div className="rounded-2xl border border-black/5 bg-white/60 overflow-hidden">
+              <button
+                onClick={() =>
+                  setOpenDropdown((p) =>
+                    p === "m_services" ? null : "m_services",
+                  )
+                }
+                className="w-full flex items-center justify-between px-4 py-4"
               >
-                <span className="font-semibold text-[#181C32]">Home</span>
-                <span className="text-gray-400">→</span>
-              </Link>
+                <span className="font-semibold text-[#181C32]">Services</span>
+                <ChevronDown
+                  size={18}
+                  className={`transition-transform duration-300 ${openDropdown === "m_services" ? "rotate-180" : ""}`}
+                />
+              </button>
 
-              {/* Services accordion */}
-              <div className="rounded-2xl border border-black/5 bg-white/60 overflow-hidden">
-                <button
-                  onClick={() =>
-                    setOpenDropdown((p) =>
-                      p === "m_services" ? null : "m_services",
-                    )
-                  }
-                  className="w-full flex items-center justify-between px-4 py-4"
-                >
-                  <span className="font-semibold text-[#181C32]">Services</span>
-                  <ChevronDown
-                    size={18}
-                    className={`transition-transform duration-300 ${openDropdown === "m_services" ? "rotate-180" : ""}`}
-                  />
-                </button>
-
-                <div
-                  className={`grid transition-all duration-300 ease-in-out ${openDropdown === "m_services"
-                      ? "grid-rows-[1fr] opacity-100"
-                      : "grid-rows-[0fr] opacity-0"
-                    }`}
-                >
-                  <div className="overflow-hidden px-2 pb-3">
-                    {navLinks
-                      .find((l) => l.label === "Services")
-                      ?.dropdown?.map((item) => (
-                        <Link
-                          key={item.path}
-                          to={item.path}
-                          onClick={() => {
-                            setMobileOpen(false);
-                            setOpenDropdown(null);
-                          }}
-                          className="flex items-center justify-between rounded-xl px-3 py-3 hover:bg-black/5 transition"
-                        >
-                          <span className="text-[14px] font-semibold text-[#181C32]">
-                            {item.label}
-                          </span>
-                          <span className="text-gray-400">→</span>
-                        </Link>
-                      ))}
-                  </div>
+              <div
+                className={`grid transition-all duration-300 ease-in-out ${openDropdown === "m_services"
+                  ? "grid-rows-[1fr] opacity-100"
+                  : "grid-rows-[0fr] opacity-0"
+                  }`}
+              >
+                <div className="overflow-hidden px-2 pb-3">
+                  {navLinks
+                    .find((l) => l.label === "Services")
+                    ?.dropdown?.map((item) => (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        onClick={() => {
+                          setMobileOpen(false);
+                          setOpenDropdown(null);
+                        }}
+                        className="flex items-center justify-between rounded-xl px-3 py-3 hover:bg-black/5 transition"
+                      >
+                        <span className="text-[14px] font-semibold text-[#181C32]">
+                          {item.label}
+                        </span>
+                        <span className="text-gray-400">→</span>
+                      </Link>
+                    ))}
                 </div>
               </div>
+            </div>
 
+            <Link
+              to="/about-us"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-between rounded-2xl px-4 py-4 border border-black/5 bg-white/60 hover:bg-white transition"
+            >
+              <span className="font-semibold text-[#181C32]">About</span>
+              <span className="text-gray-400">→</span>
+            </Link>
+
+            <Link
+              to="/team"
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center justify-between rounded-2xl px-4 py-4 border border-black/5 bg-white/60 hover:bg-white transition"
+            >
+              <span className="font-semibold text-[#181C32]">Team</span>
+              <span className="text-gray-400">→</span>
+            </Link>
+
+            <div className="pt-4">
               <Link
-                to="/about-us"
+                to="/contact"
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-between rounded-2xl px-4 py-4 border border-black/5 bg-white/60 hover:bg-white transition"
+                className="mb-btn-needle w-full inline-flex items-center justify-center rounded-2xl px-5 py-4 text-[15px] font-bold text-white shadow-lg active:scale-[0.98]"
               >
-                <span className="font-semibold text-[#181C32]">About</span>
-                <span className="text-gray-400">→</span>
+                Get Started
               </Link>
-
-              <Link
-                to="/team"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-between rounded-2xl px-4 py-4 border border-black/5 bg-white/60 hover:bg-white transition"
-              >
-                <span className="font-semibold text-[#181C32]">Team</span>
-                <span className="text-gray-400">→</span>
-              </Link>
-
-              <div className="pt-4">
-                <Link
-                  to="/contact"
-                  onClick={() => setMobileOpen(false)}
-                  className="mb-btn-needle w-full inline-flex items-center justify-center rounded-2xl px-5 py-4 text-[15px] font-bold text-white shadow-lg active:scale-[0.98]"
-                >
-                  Get Started
-                </Link>
-                <p className="text-[12px] text-gray-500 mt-3 px-1">
-                  Quick reply, clear process, premium delivery.
-                </p>
-              </div>
+              <p className="text-[12px] text-gray-500 mt-3 px-1">
+                Quick reply, clear process, premium delivery.
+              </p>
             </div>
           </div>
         </div>
       </div>
-    </nav>
+    </nav >
   );
 };
 
