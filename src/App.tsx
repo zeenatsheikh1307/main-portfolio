@@ -20,6 +20,7 @@ import TestimonialDemo from "./pages/TestimonialDemo";
 import PricingDemo from "./pages/PricingDemo";
 
 
+
 const queryClient = new QueryClient();
 
 const App = () => (
