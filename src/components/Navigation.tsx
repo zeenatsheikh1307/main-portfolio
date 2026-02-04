@@ -337,7 +337,8 @@ const Navigation = () => {
           <div className="flex items-center justify-end gap-2">
             <Link
               to="/contact"
-              className="mb-btn-needle hidden md:inline-flex items-center justify-center rounded-2xl px-6 py-2.5 text-[14px] font-bold text-white shadow-lg"
+              className={`mb-btn-needle hidden md:inline-flex items-center justify-center px-6 py-2.5 text-[14px] font-bold text-white shadow-lg transition-all duration-[600ms] ${scrolled ? 'rounded-full' : 'rounded-2xl'
+                }`}
             >
               Get Started
             </Link>
@@ -404,11 +405,10 @@ const Navigation = () => {
                 </button>
 
                 <div
-                  className={`grid transition-all duration-300 ease-in-out ${
-                    openDropdown === "m_services"
+                  className={`grid transition-all duration-300 ease-in-out ${openDropdown === "m_services"
                       ? "grid-rows-[1fr] opacity-100"
                       : "grid-rows-[0fr] opacity-0"
-                  }`}
+                    }`}
                 >
                   <div className="overflow-hidden px-2 pb-3">
                     {navLinks

@@ -22,6 +22,7 @@ export interface Plan {
         monthly: number;
         yearly: number;
     };
+    priceFormatted?: string;
     accent?: string;
     buttonVariant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
     buttonClass?: string;
@@ -60,7 +61,7 @@ export function PricingSection({
             )}
             {...props}
         >
-            <div className="absolute -top-6 left-1/2 -translate-x-1/2 select-none">
+            <div className="absolute -top-20 left-1/2 -translate-x-1/2 select-none">
                 <h1 className="text-[10rem] md:text-[13rem] font-black text-white/[0.03] tracking-tighter uppercase whitespace-nowrap">
                     Pricing
                 </h1>
@@ -149,7 +150,9 @@ export function PricingCard({
 
                 {/* Price */}
                 <div className="flex items-baseline gap-1">
-                    {plan.price[frequency] === 0 ? (
+                    {plan.priceFormatted ? (
+                        <span className="text-4xl font-bold tracking-tighter text-white">{plan.priceFormatted}</span>
+                    ) : plan.price[frequency] === 0 ? (
                         <span className="text-6xl font-bold tracking-tighter text-white">Free</span>
                     ) : (
                         <>

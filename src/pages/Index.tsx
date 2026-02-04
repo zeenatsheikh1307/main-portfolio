@@ -372,8 +372,8 @@ const Index = () => {
 
     /* Smooth section spacing across screens (no random gaps) */
     .section-pad-y {
-      padding-top: clamp(3rem, 6vw, 6.5rem);
-      padding-bottom: clamp(3rem, 6vw, 6.5rem);
+      padding-top: clamp(2rem, 4vw, 4rem);
+      padding-bottom: clamp(2rem, 4vw, 4rem);
     }
 
     /* HERO text helpers */
