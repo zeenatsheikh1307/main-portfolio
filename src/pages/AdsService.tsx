@@ -301,112 +301,312 @@ const AdsService = () => {
         </div>
       </section>
 
-      {/* Services Section */}
-      <section ref={servicesRef} className="md:pl-24 px-4 md:px-6 py-16 md:py-24 bg-gradient-to-b from-[#0a0a0f] via-[#0d0d14] to-[#0a0a0f]">
-        <div className="max-w-7xl mx-auto">
+      {/* Campaign Results Section */}
+      <section ref={servicesRef} className="md:pl-24 px-4 md:px-6 py-16 md:py-24 bg-[#0a0a0f] relative overflow-hidden">
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          {/* Section Header */}
           <div className="text-center mb-16">
-            <div className="inline-block mb-4 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/20">
-              <span className="text-sm font-medium bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                What we offer
-              </span>
-            </div>
-            <h2 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent">
-              OUR ADVERTISING EXPERTISE
+            <h2 className="text-4xl md:text-6xl font-bold mb-4 text-white">
+              CAMPAIGN SUCCESS STORIES
             </h2>
-            <p className="text-white/60 max-w-2xl mx-auto text-lg">
-              Data-driven strategies and precision targeting for maximum campaign performance
+            <p className="text-white/60 max-w-2xl mx-auto text-lg mt-6">
+              Real campaigns, real growth — see how we transformed ad performance for our clients
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {[
-              {
-                icon: Target,
-                title: "TARGETED CAMPAIGNS",
-                desc: "Reaching the right audience with precision targeting and behavioral data.",
-                gradient: "from-purple-900/50 via-purple-800/30 to-purple-950/20",
-                iconColor: "text-purple-400",
-                glowColor: "group-hover:shadow-purple-500/20"
-              },
-              {
-                icon: BarChart,
-                title: "PERFORMANCE OPTIMIZATION",
-                desc: "Real-time tracking, testing, and improving ad ROI with every impression.",
-                gradient: "from-blue-900/50 via-blue-800/30 to-blue-950/20",
-                iconColor: "text-blue-400",
-                glowColor: "group-hover:shadow-blue-500/20"
-              },
-              {
-                icon: PieChart,
-                title: "AD STRATEGY & FUNNEL",
-                desc: "Building structured ad funnels that move users from awareness to action.",
-                gradient: "from-indigo-900/50 via-indigo-800/30 to-indigo-950/20",
-                iconColor: "text-indigo-400",
-                glowColor: "group-hover:shadow-indigo-500/20"
-              },
-              {
-                icon: Users,
-                title: "AUDIENCE INTELLIGENCE",
-                desc: "Understanding user intent and crafting personalized messaging for engagement.",
-                gradient: "from-violet-900/50 via-violet-800/30 to-violet-950/20",
-                iconColor: "text-violet-400",
-                glowColor: "group-hover:shadow-violet-500/20"
-              },
-              {
-                icon: TrendingUp,
-                title: "GROWTH SCALING",
-                desc: "Expanding your campaigns profitably with high-performing lookalikes and retargeting.",
-                gradient: "from-cyan-900/50 via-cyan-800/30 to-cyan-950/20",
-                iconColor: "text-cyan-400",
-                glowColor: "group-hover:shadow-cyan-500/20"
-              },
-              {
-                icon: Check,
-                title: "AD COMPLIANCE",
-                desc: "Ensuring all creatives and copies meet Meta, Google, and LinkedIn policies.",
-                gradient: "from-pink-900/50 via-pink-800/30 to-pink-950/20",
-                iconColor: "text-pink-400",
-                glowColor: "group-hover:shadow-pink-500/20"
-              },
-            ].map((service, index) => (
-              <div
-                key={index}
-                className={`service-card group relative bg-gradient-to-br ${service.gradient} backdrop-blur-xl rounded-3xl p-8 md:p-10 border border-white/10 hover:border-white/30 transition-all duration-500 hover:scale-[1.02] hover:-translate-y-3 min-h-[320px] flex flex-col justify-between overflow-hidden shadow-xl ${service.glowColor}`}
-              >
-                {/* Animated gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                {/* Decorative animated stars/dots */}
-                <div className="absolute top-6 right-6 w-2 h-2 bg-white/60 rounded-full animate-pulse shadow-lg shadow-white/50"></div>
-                <div className="absolute top-12 right-12 w-1.5 h-1.5 bg-white/40 rounded-full animate-pulse delay-100"></div>
-                <div className="absolute bottom-8 left-8 w-2 h-2 bg-white/30 rounded-full animate-pulse delay-200"></div>
-                <div className="absolute top-20 left-6 w-1 h-1 bg-white/20 rounded-full animate-pulse delay-300"></div>
-
-                {/* Decorative lines with animation */}
-                <div className="absolute top-0 left-0 w-full h-full opacity-10 group-hover:opacity-20 transition-opacity duration-500">
-                  <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
-                  <div className="absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/30 to-transparent"></div>
-                  <div className="absolute top-3/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+          {/* Before/After Comparison Cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12">
+            {/* Case Study 1 - E-commerce */}
+            <div className="group relative">
+              {/* Client Info Header */}
+              <div className="mb-6 flex items-center justify-between">
+                <div>
+                  <h3 className="text-2xl font-bold text-white mb-1">E-commerce Fashion Brand</h3>
+                  <p className="text-white/60 text-sm">Meta Ads Campaign • 3 Months</p>
                 </div>
-
-                {/* Corner accent */}
-                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-white/10 to-transparent rounded-bl-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                <div className="relative z-10">
-                  <div className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
-                    <service.icon className={`w-7 h-7 md:w-8 md:h-8 ${service.iconColor} group-hover:scale-110 transition-transform duration-500`} />
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-bold mb-4 text-white leading-tight group-hover:text-white/90 transition-colors duration-300">
-                    {service.title}
-                  </h3>
-                  <p className="text-white/70 group-hover:text-white/80 leading-relaxed text-sm md:text-base transition-colors duration-300">
-                    {service.desc}
-                  </p>
+                <div className="px-4 py-2 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30">
+                  <span className="text-green-400 font-bold text-sm">+385% ROI</span>
                 </div>
-
-                {/* Bottom accent line */}
-                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-700"></div>
               </div>
-            ))}
+
+              {/* Before/After Cards Container */}
+              <div className="grid grid-cols-2 gap-4">
+                {/* BEFORE Card */}
+                <div className="relative bg-gradient-to-br from-gray-900/90 to-gray-800/70 backdrop-blur-xl rounded-3xl p-6 border-2 border-red-500/30 overflow-hidden group/before hover:scale-105 transition-transform duration-500">
+                  {/* Corner accent */}
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-red-500/20 to-transparent rounded-bl-3xl"></div>
+
+                  {/* Header */}
+                  <div className="mb-6">
+                    <span className="inline-block px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-400 text-xs font-bold mb-2">
+                      BEFORE
+                    </span>
+                    <div className="text-white/40 text-xs">Initial Performance</div>
+                  </div>
+
+                  {/* Metrics */}
+                  <div className="space-y-4">
+                    <div>
+                      <div className="text-white/50 text-xs mb-1">Ad Spend</div>
+                      <div className="text-white text-xl font-bold">₹50,000</div>
+                    </div>
+                    <div>
+                      <div className="text-white/50 text-xs mb-1">CTR</div>
+                      <div className="text-white text-xl font-bold">1.2%</div>
+                    </div>
+                    <div>
+                      <div className="text-white/50 text-xs mb-1">Conversion Rate</div>
+                      <div className="text-white text-xl font-bold">2.5%</div>
+                    </div>
+                    <div>
+                      <div className="text-white/50 text-xs mb-1">Revenue</div>
+                      <div className="text-white text-xl font-bold">₹75,000</div>
+                    </div>
+                  </div>
+
+                  {/* Issues List */}
+                  <div className="mt-6 pt-4 border-t border-white/10">
+                    <div className="space-y-2">
+                      <div className="flex items-start gap-2 text-xs text-red-400/80">
+                        <span className="mt-0.5">•</span>
+                        <span>Poor targeting</span>
+                      </div>
+                      <div className="flex items-start gap-2 text-xs text-red-400/80">
+                        <span className="mt-0.5">•</span>
+                        <span>Low engagement</span>
+                      </div>
+                      <div className="flex items-start gap-2 text-xs text-red-400/80">
+                        <span className="mt-0.5">•</span>
+                        <span>Generic creatives</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Decorative line chart */}
+                  <div className="absolute bottom-0 left-0 w-full h-16 opacity-20">
+                    <svg viewBox="0 0 100 40" className="w-full h-full" preserveAspectRatio="none">
+                      <path d="M0,35 L20,32 L40,30 L60,28 L80,30 L100,32" fill="none" stroke="#ef4444" strokeWidth="2" />
+                    </svg>
+                  </div>
+                </div>
+
+                {/* AFTER Card */}
+                <div className="relative bg-gradient-to-br from-emerald-900/40 to-green-800/30 backdrop-blur-xl rounded-3xl p-6 border-2 border-green-500/50 overflow-hidden group/after hover:scale-105 transition-transform duration-500 shadow-xl shadow-green-500/20">
+                  {/* Corner accent */}
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-green-500/30 to-transparent rounded-bl-3xl"></div>
+
+                  {/* Animated glow */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-transparent to-transparent opacity-0 group-hover/after:opacity-100 transition-opacity duration-500"></div>
+
+                  {/* Header */}
+                  <div className="mb-6 relative z-10">
+                    <span className="inline-block px-3 py-1 rounded-full bg-green-500/20 border border-green-500/40 text-green-400 text-xs font-bold mb-2">
+                      AFTER
+                    </span>
+                    <div className="text-white/40 text-xs">Optimized Results</div>
+                  </div>
+
+                  {/* Metrics */}
+                  <div className="space-y-4 relative z-10">
+                    <div>
+                      <div className="text-white/50 text-xs mb-1">Ad Spend</div>
+                      <div className="text-white text-xl font-bold">₹50,000</div>
+                    </div>
+                    <div>
+                      <div className="text-white/50 text-xs mb-1 flex items-center gap-1">
+                        CTR
+                        <span className="text-green-400 text-[10px]">↑300%</span>
+                      </div>
+                      <div className="text-green-400 text-xl font-bold">4.8%</div>
+                    </div>
+                    <div>
+                      <div className="text-white/50 text-xs mb-1 flex items-center gap-1">
+                        Conversion Rate
+                        <span className="text-green-400 text-[10px]">↑228%</span>
+                      </div>
+                      <div className="text-green-400 text-xl font-bold">8.2%</div>
+                    </div>
+                    <div>
+                      <div className="text-white/50 text-xs mb-1 flex items-center gap-1">
+                        Revenue
+                        <span className="text-green-400 text-[10px]">↑233%</span>
+                      </div>
+                      <div className="text-green-400 text-xl font-bold">₹2,50,000</div>
+                    </div>
+                  </div>
+
+                  {/* Improvements List */}
+                  <div className="mt-6 pt-4 border-t border-white/10 relative z-10">
+                    <div className="space-y-2">
+                      <div className="flex items-start gap-2 text-xs text-green-400">
+                        <Check className="w-3 h-3 mt-0.5" />
+                        <span>Precision targeting</span>
+                      </div>
+                      <div className="flex items-start gap-2 text-xs text-green-400">
+                        <Check className="w-3 h-3 mt-0.5" />
+                        <span>A/B tested creatives</span>
+                      </div>
+                      <div className="flex items-start gap-2 text-xs text-green-400">
+                        <Check className="w-3 h-3 mt-0.5" />
+                        <span>Retargeting funnel</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Decorative line chart */}
+                  <div className="absolute bottom-0 left-0 w-full h-16 opacity-30">
+                    <svg viewBox="0 0 100 40" className="w-full h-full" preserveAspectRatio="none">
+                      <path d="M0,35 L20,28 L40,20 L60,12 L80,8 L100,5" fill="none" stroke="#10b981" strokeWidth="2" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Case Study 2 - SaaS */}
+            <div className="group relative">
+              {/* Client Info Header */}
+              <div className="mb-6 flex items-center justify-between">
+                <div>
+                  <h3 className="text-2xl font-bold text-white mb-1">B2B SaaS Platform</h3>
+                  <p className="text-white/60 text-sm">Google Ads + LinkedIn • 4 Months</p>
+                </div>
+                <div className="px-4 py-2 rounded-full bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-500/30">
+                  <span className="text-blue-400 font-bold text-sm">+520% Leads</span>
+                </div>
+              </div>
+
+              {/* Before/After Cards Container */}
+              <div className="grid grid-cols-2 gap-4">
+                {/* BEFORE Card */}
+                <div className="relative bg-gradient-to-br from-gray-900/90 to-gray-800/70 backdrop-blur-xl rounded-3xl p-6 border-2 border-red-500/30 overflow-hidden group/before hover:scale-105 transition-transform duration-500">
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-red-500/20 to-transparent rounded-bl-3xl"></div>
+
+                  <div className="mb-6">
+                    <span className="inline-block px-3 py-1 rounded-full bg-red-500/20 border border-red-500/30 text-red-400 text-xs font-bold mb-2">
+                      BEFORE
+                    </span>
+                    <div className="text-white/40 text-xs">Initial Performance</div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <div className="text-white/50 text-xs mb-1">Monthly Budget</div>
+                      <div className="text-white text-xl font-bold">₹1,20,000</div>
+                    </div>
+                    <div>
+                      <div className="text-white/50 text-xs mb-1">Qualified Leads</div>
+                      <div className="text-white text-xl font-bold">48</div>
+                    </div>
+                    <div>
+                      <div className="text-white/50 text-xs mb-1">Cost Per Lead</div>
+                      <div className="text-white text-xl font-bold">₹2,500</div>
+                    </div>
+                    <div>
+                      <div className="text-white/50 text-xs mb-1">Demo Bookings</div>
+                      <div className="text-white text-xl font-bold">12</div>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 pt-4 border-t border-white/10">
+                    <div className="space-y-2">
+                      <div className="flex items-start gap-2 text-xs text-red-400/80">
+                        <span className="mt-0.5">•</span>
+                        <span>Broad keywords</span>
+                      </div>
+                      <div className="flex items-start gap-2 text-xs text-red-400/80">
+                        <span className="mt-0.5">•</span>
+                        <span>No lead scoring</span>
+                      </div>
+                      <div className="flex items-start gap-2 text-xs text-red-400/80">
+                        <span className="mt-0.5">•</span>
+                        <span>Weak landing pages</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="absolute bottom-0 left-0 w-full h-16 opacity-20">
+                    <svg viewBox="0 0 100 40" className="w-full h-full" preserveAspectRatio="none">
+                      <path d="M0,30 L25,28 L50,26 L75,27 L100,29" fill="none" stroke="#ef4444" strokeWidth="2" />
+                    </svg>
+                  </div>
+                </div>
+
+                {/* AFTER Card */}
+                <div className="relative bg-gradient-to-br from-blue-900/40 to-cyan-800/30 backdrop-blur-xl rounded-3xl p-6 border-2 border-blue-500/50 overflow-hidden group/after hover:scale-105 transition-transform duration-500 shadow-xl shadow-blue-500/20">
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-500/30 to-transparent rounded-bl-3xl"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent opacity-0 group-hover/after:opacity-100 transition-opacity duration-500"></div>
+
+                  <div className="mb-6 relative z-10">
+                    <span className="inline-block px-3 py-1 rounded-full bg-blue-500/20 border border-blue-500/40 text-blue-400 text-xs font-bold mb-2">
+                      AFTER
+                    </span>
+                    <div className="text-white/40 text-xs">Optimized Results</div>
+                  </div>
+
+                  <div className="space-y-4 relative z-10">
+                    <div>
+                      <div className="text-white/50 text-xs mb-1">Monthly Budget</div>
+                      <div className="text-white text-xl font-bold">₹1,20,000</div>
+                    </div>
+                    <div>
+                      <div className="text-white/50 text-xs mb-1 flex items-center gap-1">
+                        Qualified Leads
+                        <span className="text-blue-400 text-[10px]">↑520%</span>
+                      </div>
+                      <div className="text-blue-400 text-xl font-bold">298</div>
+                    </div>
+                    <div>
+                      <div className="text-white/50 text-xs mb-1 flex items-center gap-1">
+                        Cost Per Lead
+                        <span className="text-blue-400 text-[10px]">↓84%</span>
+                      </div>
+                      <div className="text-blue-400 text-xl font-bold">₹403</div>
+                    </div>
+                    <div>
+                      <div className="text-white/50 text-xs mb-1 flex items-center gap-1">
+                        Demo Bookings
+                        <span className="text-blue-400 text-[10px]">↑475%</span>
+                      </div>
+                      <div className="text-blue-400 text-xl font-bold">69</div>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 pt-4 border-t border-white/10 relative z-10">
+                    <div className="space-y-2">
+                      <div className="flex items-start gap-2 text-xs text-blue-400">
+                        <Check className="w-3 h-3 mt-0.5" />
+                        <span>Intent-based targeting</span>
+                      </div>
+                      <div className="flex items-start gap-2 text-xs text-blue-400">
+                        <Check className="w-3 h-3 mt-0.5" />
+                        <span>Optimized funnels</span>
+                      </div>
+                      <div className="flex items-start gap-2 text-xs text-blue-400">
+                        <Check className="w-3 h-3 mt-0.5" />
+                        <span>Multi-channel sync</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="absolute bottom-0 left-0 w-full h-16 opacity-30">
+                    <svg viewBox="0 0 100 40" className="w-full h-full" preserveAspectRatio="none">
+                      <path d="M0,30 L25,22 L50,15 L75,8 L100,3" fill="none" stroke="#3b82f6" strokeWidth="2" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom CTA */}
+          <div className="mt-16 text-center">
+            <p className="text-white/60 mb-6 text-lg">Ready to see similar results for your business?</p>
+            <Link to="/contact" className="inline-flex items-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-xl border border-white/20 hover:bg-white/20 hover:border-white/30 text-white rounded-full font-bold text-base tracking-wide transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105">
+              Start Your Success Story
+              <ArrowRight className="w-5 h-5" />
+            </Link>
           </div>
         </div>
       </section>

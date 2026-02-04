@@ -6,7 +6,7 @@ export function ReadyToBuild() {
             <div className="mx-auto max-w-7xl px-6 text-center relative z-10">
                 {/* Main Headline */}
                 <h2 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-1">
-                    One <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF0066] via-[#4300FF] to-[#2bc0e4] animate-gradient-x">partnership</span>
+                    One <span className="bg-clip-text text-transparent bg-[conic-gradient(from_180deg_at_50%_50%,#2BC0E4_0deg,#4300FF_120deg,#FF0066_240deg,#2BC0E4_360deg)] [background-size:200%_200%] animate-[gradient-x_6s_infinite_alternate]">partnership</span>
                 </h2>
                 <p className="font-serif italic text-4xl md:text-6xl text-muted-foreground/80 mb-5">
                     makes things easy.

@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navigation from '@/components/Navigation';
 import PricingDemo from './PricingDemo';
+import CoverflowCarousel from '@/components/ui/coverflow-carousel';
 
 import v1 from "./assets/assests/original-b8969bc781998cd5a622d584dcb359a6.mp4";
 import v2 from "./assets/assests/Video.mp4";
@@ -202,69 +203,35 @@ const VideoServices = () => {
         </div>
       </section>
 
-      {/* Services Grid (Preserved) */}
-      <section className="md:pl-24 px-4 md:px-6 py-16 md:py-24 bg-gradient-to-b from-[#0a0a0f] via-[#0d0d14] to-[#0a0a0f]" ref={servicesRef}>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-white via-purple-200 to-blue-200 bg-clip-text text-transparent mb-4">OUR VIDEO EXPERTISE</h2>
-            <p className="text-white/60 text-lg">Cinematic storytelling and professional video production</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {[
-              { icon: Camera, title: "CINEMATOGRAPHY", desc: "Professional video production with cinematic quality.", iconColor: "text-red-400" },
-              { icon: Edit, title: "POST-PRODUCTION", desc: "Advanced editing, color grading, and effects.", iconColor: "text-purple-400" },
-              { icon: Film, title: "MOTION DESIGN", desc: "Dynamic motion graphics and animations.", iconColor: "text-blue-400" },
-              { icon: Palette, title: "COLOR GRADING", desc: "Professional color correction and grading.", iconColor: "text-green-400" },
-              { icon: Music, title: "SOUND DESIGN", desc: "Immersive audio design and mixing.", iconColor: "text-yellow-400" },
-              { icon: Play, title: "DELIVERY", desc: "Multi-format export and optimization.", iconColor: "text-pink-400" },
-            ].map((service, i) => (
-              <div key={i} className="service-card group relative bg-gradient-to-br from-white/5 to-white/0 backdrop-blur-xl rounded-3xl p-8 border border-white/10 hover:border-white/30 transition-all hover:-translate-y-2 min-h-[300px] flex flex-col justify-between">
-                <div>
-                  <service.icon className={`w-8 h-8 mb-4 ${service.iconColor}`} />
-                  <h3 className="text-xl font-bold text-white mb-2">{service.title}</h3>
-                  <p className="text-white/70">{service.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Recent Video Projects */}
+
+      {/* Our Work */}
       <section id="projects" className="md:pl-24 px-4 md:px-6 py-16 md:py-24 bg-[#0a0a0f] relative overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-white via-emerald-200 to-cyan-200 bg-clip-text text-transparent mb-4">RECENT PROJECTS</h2>
+          {/* Header redesign - Enhanced */}
+          <div className="flex flex-col items-center justify-center mb-20 text-center">
+            {/* Main heading with gradient */}
+            <h2 className="text-5xl sm:text-6xl md:text-7xl font-black uppercase mb-4 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent tracking-tight">
+              Our Work
+            </h2>
+
+            {/* Decorative line */}
+            <div className="w-24 h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent mb-4"></div>
           </div>
-          <div ref={projectsRef} className="flex gap-8 overflow-x-auto py-4 px-2 snap-x snap-mandatory scrollbar-hide pb-12">
-            {videoProjects.map(project => (
-              <article key={project.id} className="video-card group relative snap-start w-[380px] flex-shrink-0 rounded-3xl overflow-hidden bg-gradient-to-b from-[#1a1a2e]/95 to-[#16162a]/60 backdrop-blur-xl border border-white/10 hover:border-purple-400/60 transition-all duration-500 shadow-2xl hover:scale-[1.02]">
-                <div className="relative h-56 overflow-hidden bg-black">
-                  <img src={project.thumbnail} alt={project.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" />
-                  <button onClick={() => setSelectedVideo(project.youtube || null)} className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 hover:scale-110 transition-transform">
-                      <Play className="w-8 h-8 text-white fill-white ml-1" />
-                    </div>
-                  </button>
-                  <div className="absolute top-4 left-4 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-xs font-bold text-white border border-white/10">{project.category}</div>
-                  <div className="absolute bottom-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full text-xs font-bold text-white border border-white/10">{project.duration}</div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
-                  <p className="text-white/60 text-sm mb-4">{project.description}</p>
-                  <div className="flex justify-between items-center text-xs text-white/40">
-                    <span>{project.year}</span>
-                    <button onClick={() => setSelectedVideo(project.youtube || null)} className="text-purple-400 hover:text-purple-300 font-bold flex items-center gap-1">Watch <Play className="w-3 h-3" /></button>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-          {/* Awards - Simplified */}
-          <div className="mt-12 flex justify-center gap-8 text-white/50 text-sm">
-            <div className="flex items-center gap-2"><Award className="w-5 h-5" /> Festival Winner 2024</div>
-            <div className="flex items-center gap-2"><Award className="w-5 h-5" /> Best Editing</div>
-          </div>
+        </div>
+        <div className="relative group/carousel">
+          <CoverflowCarousel
+            items={videoProjects.map(p => ({
+              id: p.id,
+              title: p.title,
+              description: p.description,
+              image: p.thumbnail, // thumbnail is mp4, but we'll use it as placeholder for image slot if needed, or better, pass as video
+              video: p.thumbnail, // Pass the video file here
+              category: p.category,
+              tech: [p.duration, p.year], // Mapping duration/year to tech pills if needed, or just ignore
+              url: p.youtube
+            }))}
+          />
         </div>
       </section>
 
