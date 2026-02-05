@@ -295,7 +295,7 @@ const VideoServices = () => {
           description="Professional video services at competitive rates"
           plans={[
             {
-              name: 'Video Editing',
+              name: 'Video Creation',
               info: 'Professional editing for your content',
               price: {
                 monthly: 0,
@@ -306,6 +306,7 @@ const VideoServices = () => {
               buttonVariant: 'outline',
               buttonClass: 'border-purple-400/20 hover:bg-purple-400/10 text-purple-400',
               features: [
+                { text: 'Script Writing' },
                 { text: 'Color grading & correction' },
                 { text: 'Professional transitions' },
                 { text: 'Audio mixing' },
@@ -330,6 +331,7 @@ const VideoServices = () => {
               buttonVariant: 'default',
               buttonClass: 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20',
               features: [
+                { text: 'Script Writing' },
                 { text: 'AI-generated avatars' },
                 { text: 'Custom voice synthesis' },
                 { text: 'Script to video' },
@@ -348,11 +350,13 @@ const VideoServices = () => {
                 monthly: 0,
                 yearly: 0,
               },
+              pricePrefix: 'Starting from',
               priceFormatted: '₹3000',
               accent: 'text-emerald-400',
               buttonVariant: 'outline',
               buttonClass: 'border-emerald-400/20 hover:bg-emerald-400/10 text-emerald-400',
               features: [
+                { text: 'Script Writing' },
                 { text: 'Authentic creator content' },
                 { text: 'Platform-optimized' },
                 { text: 'High engagement style' },

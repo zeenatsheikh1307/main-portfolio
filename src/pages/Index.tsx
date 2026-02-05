@@ -888,21 +888,21 @@ const Index = () => {
                     },
                     {
                       tag: "02",
-                      title: "Social Media Management",
-                      text: "Strategic visual identities that tell your story.",
-                      img: brandingImg,
-                    },
-                    {
-                      tag: "03",
                       title: "Video Production",
                       text: "High-impact video content for brands that want to stand out.",
                       img: socialImg,
                     },
                     {
-                      tag: "04",
+                      tag: "03",
                       title: "Web Platforms",
                       text: "High-performance, scalable web ecosystems.",
                       img: adsImg,
+                    },
+                    {
+                      tag: "04",
+                      title: "Social Media Management",
+                      text: "Strategic visual identities that tell your story.",
+                      img: brandingImg,
                     },
                   ].map((c, idx) => (
                     <div

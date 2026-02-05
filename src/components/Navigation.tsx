@@ -16,9 +16,9 @@ const Navigation = () => {
       path: "/services",
       label: "Services",
       dropdown: [
-        { path: "/web-services", label: "Web Development" },
         { path: "/ads-service", label: "Ads / Performance Marketing" },
         { path: "/video-services", label: "Video Editing & Production" },
+        { path: "/web-services", label: "Web Development" },
         { path: "/social-services", label: "Social Media Marketing" },
       ],
     },

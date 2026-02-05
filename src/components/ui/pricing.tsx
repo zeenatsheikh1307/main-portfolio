@@ -23,6 +23,8 @@ export interface Plan {
         yearly: number;
     };
     priceFormatted?: string;
+    pricePrefix?: string;
+    priceSubtext?: string;
     accent?: string;
     buttonVariant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
     buttonClass?: string;
@@ -41,12 +43,14 @@ interface PricingSectionProps extends React.ComponentProps<'div'> {
     plans: Plan[];
     heading: string;
     description?: string;
+    layoutMode?: 'grid' | 'scroll';
 }
 
 export function PricingSection({
     plans,
     heading,
     description,
+    layoutMode = 'grid',
     ...props
 }: PricingSectionProps) {
     const [frequency, setFrequency] = React.useState<'monthly' | 'yearly'>(
@@ -66,11 +70,25 @@ export function PricingSection({
                     Pricing
                 </h1>
             </div>
-            <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-6 md:grid-cols-3 lg:gap-8">
-                {plans.map((plan) => (
-                    <PricingCard plan={plan} key={plan.name} frequency={frequency} />
-                ))}
-            </div>
+
+            {layoutMode === 'scroll' ? (
+                <div className="w-full flex overflow-x-auto gap-6 pb-8 pt-4 px-4 snap-x snap-mandatory scrollbar-hide">
+                    {plans.map((plan) => (
+                        <div key={plan.name} className="min-w-[320px] md:min-w-[360px] max-w-[400px] shrink-0 snap-center">
+                            <PricingCard plan={plan} frequency={frequency} className="h-full" />
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <div className={cn(
+                    "mx-auto grid w-full max-w-[1400px] grid-cols-1 gap-6",
+                    plans.length === 4 ? "md:grid-cols-2 lg:grid-cols-4 lg:gap-5" : "md:grid-cols-3 lg:gap-8 max-w-6xl"
+                )}>
+                    {plans.map((plan) => (
+                        <PricingCard plan={plan} key={plan.name} frequency={frequency} />
+                    ))}
+                </div>
+            )}
         </div>
     );
 }
@@ -127,7 +145,7 @@ export function PricingCard({
         <div
             key={plan.name}
             className={cn(
-                'relative flex w-full flex-col rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.08] to-transparent p-8 text-foreground transition-all duration-300 hover:shadow-2xl hover:border-white/20 hover:-translate-y-1',
+                'relative flex w-full flex-col rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.08] to-transparent p-6 text-foreground transition-all duration-300 hover:shadow-2xl hover:border-white/20 hover:-translate-y-1',
                 plan.highlighted && 'shadow-purple-900/10 border-purple-500/20',
                 className,
             )}
@@ -149,7 +167,10 @@ export function PricingCard({
                 </div>
 
                 {/* Price */}
-                <div className="flex items-baseline gap-1">
+                <div className="flex items-baseline gap-1 flex-wrap">
+                    {plan.pricePrefix && (
+                        <span className="text-sm font-medium text-muted-foreground mr-1">{plan.pricePrefix}</span>
+                    )}
                     {plan.priceFormatted ? (
                         <span className="text-4xl font-bold tracking-tighter text-white">{plan.priceFormatted}</span>
                     ) : plan.price[frequency] === 0 ? (
@@ -161,6 +182,11 @@ export function PricingCard({
                         </>
                     )}
                 </div>
+                {plan.priceSubtext && (
+                    <div className="text-[10px] text-muted-foreground/80 font-medium -mt-4 mb-2">
+                        {plan.priceSubtext}
+                    </div>
+                )}
 
                 {/* CTA Button - Placed in middle as per reference */}
                 <div className="w-full">
