@@ -884,25 +884,25 @@ const Index = () => {
                       tag: "01",
                       title: "Strategic Marketing",
                       text: "ROI-focused performance marketing campaigns.",
-                      img: websiteImg,
+                      img: adsImg,
                     },
                     {
                       tag: "02",
                       title: "Video Production",
                       text: "High-impact video content for brands that want to stand out.",
-                      img: socialImg,
+                      img: brandingImg,
                     },
                     {
                       tag: "03",
                       title: "Web Platforms",
                       text: "High-performance, scalable web ecosystems.",
-                      img: adsImg,
+                      img: websiteImg,
                     },
                     {
                       tag: "04",
                       title: "Social Media Management",
                       text: "Strategic visual identities that tell your story.",
-                      img: brandingImg,
+                      img: socialImg,
                     },
                   ].map((c, idx) => (
                     <div
@@ -1044,6 +1044,7 @@ const Index = () => {
             </section>
 
             {/* WHY (white section) */}
+            {/* 
             <section
               aria-label="Why EternaCloud"
               className="px-4 sm:px-6 lg:px-8 section-pad-y relative overflow-hidden text-slate-900"
@@ -1138,6 +1139,7 @@ const Index = () => {
                 </div>
               </div>
             </section>
+            */}
 
             <Testimonial />
 
