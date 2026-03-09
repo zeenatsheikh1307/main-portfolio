@@ -1,380 +1,393 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
 interface VideoCard {
-    src: string;
-    label?: string;
+  src: string;
+  label?: string;
+  image?: string;
 }
 
 interface HoloHeroProps {
-    badge?: string;
-    title?: string;
-    subtitle?: string;
-    primaryAction?: {
-        label: string;
-        onClick: () => void;
-    };
-    cards?: VideoCard[];
+  badge?: string;
+  title?: string;
+  subtitle?: string;
+  primaryAction?: { label: string; onClick: () => void };
+  cards?: VideoCard[];
 }
 
-// Base card dimensions
-const CARD_W = 190;
-const CARD_H = 310;
-const GAP = 16;
-const SPEED = 1.3;
+const CARD_W = 180;
+const CARD_H = 340;
+const GAP = 32;
+const SPEED = 1.0;
+
+const DEFAULT_CARDS: VideoCard[] = [
+  {
+    src: "",
+    label: "Brand Documentary",
+    image:
+      "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&h=800&fit=crop",
+  },
+  {
+    src: "",
+    label: "Product Showcase",
+    image:
+      "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600&h=800&fit=crop",
+  },
+  {
+    src: "",
+    label: "Cinematic Reel",
+    image:
+      "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=600&h=800&fit=crop",
+  },
+  {
+    src: "",
+    label: "Social Content",
+    image:
+      "https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=600&h=800&fit=crop",
+  },
+  {
+    src: "",
+    label: "AI Model Video",
+    image:
+      "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&h=800&fit=crop",
+  },
+  {
+    src: "",
+    label: "UGC Campaign",
+    image:
+      "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?w=600&h=800&fit=crop",
+  },
+  {
+    src: "",
+    label: "Event Highlight",
+    image:
+      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=800&fit=crop",
+  },
+  {
+    src: "",
+    label: "Testimonial Film",
+    image:
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=800&fit=crop",
+  },
+];
 
 export function HoloHero({
-    badge = "Video Production & AI Content",
-    title = "The fastest way to create professional videos for your brand",
-    subtitle =
-    "We craft authentic, high-performing video content that captivates your audience and drives real results. From concept to delivery.",
-    primaryAction,
-    cards = [],
+  badge = "Video Production & AI Content",
+  title = "The fastest way to create\nprofessional videos for your brand",
+  subtitle = "We craft authentic, high-performing video content that captivates your audience and drives real results.",
+  primaryAction,
+  cards = [],
 }: HoloHeroProps) {
-    return (
-        <section
+  const display = cards.length > 0 ? cards : DEFAULT_CARDS;
+
+  return (
+    <section
+      style={{
+        position: "relative",
+        width: "100%",
+        background: "#07070e",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        paddingBottom: "0px",
+        fontFamily: "Inter, sans-serif",
+      }}
+    >
+      <div
+        style={{
+          marginTop: "80px",
+          textAlign: "center",
+          zIndex: 10,
+          position: "relative",
+        }}
+      >
+        {badge && (
+          <div
             style={{
-                position: "relative",
-                width: "100%",
-                overflow: "hidden",
-                background: "#08080f",
-                paddingBottom: "64px",
-                display: "flex",
-                flexDirection: "column",
+              display: "inline-block",
+              padding: "6px 16px",
+              borderRadius: "999px",
+              background: "rgba(255, 255, 255, 0.05)",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              color: "#a855f7",
+              fontSize: "12px",
+              fontWeight: 600,
+              letterSpacing: "0.05em",
+              textTransform: "uppercase",
+              marginBottom: "24px",
             }}
-            role="banner"
-            aria-label="Hero section"
-        >
-            {/* ── Text Block ── */}
-            <div
-                style={{
-                    position: "relative",
-                    zIndex: 10,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    textAlign: "center",
-                    padding: "88px 16px 0px", // Reduced bottom padding to bring cards closer
-                }}
-            >
-                {/* Pill badge */}
-                <motion.div
-                    initial={{ opacity: 0, y: -12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        borderRadius: "999px",
-                        padding: "6px 18px",
-                        marginBottom: "26px",
-                        background: "#fff",
-                        border: "1.5px solid transparent",
-                        backgroundImage:
-                            "linear-gradient(#fff,#fff),linear-gradient(135deg,#a855f7,#ec4899,#f97316)",
-                        backgroundOrigin: "border-box",
-                        backgroundClip: "padding-box,border-box",
-                        boxShadow: "0 2px 16px rgba(168,85,247,0.14)",
-                    }}
-                >
-                    <span
-                        style={{
-                            fontFamily: "Inter,sans-serif",
-                            fontSize: "13px",
-                            fontWeight: 600,
-                            background: "linear-gradient(135deg,#a855f7,#ec4899)",
-                            WebkitBackgroundClip: "text",
-                            WebkitTextFillColor: "transparent",
-                        }}
-                    >
-                        {badge}
-                    </span>
-                </motion.div>
+          >
+            {badge}
+          </div>
+        )}
 
-                {/* Headline */}
-                <motion.h1
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.08 }}
-                    style={{
-                        fontFamily: "Inter,sans-serif",
-                        fontWeight: 800,
-                        fontSize: "clamp(28px,4.8vw,62px)",
-                        lineHeight: 1.07,
-                        color: "#ffffff",
-                        letterSpacing: "-0.03em",
-                        maxWidth: "720px",
-                        margin: "0 auto",
-                    }}
-                >
-                    {title}
-                </motion.h1>
+        {title && (
+          <h1
+            style={{
+              fontSize: "clamp(40px, 6vw, 72px)",
+              fontWeight: 800,
+              color: "#fff",
+              lineHeight: 1.1,
+              letterSpacing: "-0.02em",
+              whiteSpace: "pre-line",
+              marginBottom: "24px",
+              textShadow: "0 10px 30px rgba(0,0,0,0.5)",
+            }}
+          >
+            {title}
+          </h1>
+        )}
 
-                {/* Subtitle */}
-                <motion.p
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.16 }}
-                    style={{
-                        fontFamily: "Inter,sans-serif",
-                        fontWeight: 400,
-                        fontSize: "clamp(13px,1.5vw,18px)",
-                        lineHeight: 1.72,
-                        color: "#aaa",
-                        maxWidth: "480px",
-                        margin: "18px auto 0",
-                    }}
-                >
-                    {subtitle}
-                </motion.p>
+        {subtitle && (
+          <p
+            style={{
+              fontSize: "18px",
+              color: "rgba(255, 255, 255, 0.6)",
+              maxWidth: "600px",
+              margin: "0 auto 40px auto",
+              lineHeight: 1.5,
+            }}
+          >
+            {subtitle}
+          </p>
+        )}
 
-                {/* CTA */}
-                {primaryAction && (
-                    <motion.button
-                        initial={{ opacity: 0, scale: 0.93 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.5, delay: 0.28 }}
-                        whileHover={{ scale: 1.06 }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={primaryAction.onClick}
-                        style={{
-                            marginTop: "32px",
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: "8px",
-                            padding: "13px 30px",
-                            borderRadius: "999px",
-                            background: "linear-gradient(135deg,#a855f7 0%,#ec4899 100%)",
-                            color: "#fff",
-                            fontFamily: "Inter,sans-serif",
-                            fontSize: "16px",
-                            fontWeight: 600,
-                            letterSpacing: "-0.01em",
-                            boxShadow: "0 8px 26px rgba(168,85,247,0.3)",
-                            border: "none",
-                            cursor: "pointer",
-                        }}
-                    >
-                        {primaryAction.label}
-                        <ArrowRight style={{ width: 18, height: 18, strokeWidth: 2.5 }} />
-                    </motion.button>
-                )}
-            </div>
+        {primaryAction && (
+          <motion.button
+            whileHover={{ scale: 1.06 }}
+            onClick={primaryAction.onClick}
+            style={{
+              padding: "16px 40px",
+              borderRadius: "999px",
+              background:
+                "linear-gradient(135deg, #a855f7 0%, #ec4899 55%, #f97316 100%)",
+              color: "#fff",
+              fontWeight: 700,
+              fontSize: "16px",
+              border: "none",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "10px",
+              cursor: "pointer",
+              boxShadow: "0 14px 44px rgba(168,85,247,0.5)",
+              margin: "0 auto",
+            }}
+          >
+            {primaryAction.label}
+            <ArrowRight size={18} />
+          </motion.button>
+        )}
+      </div>
 
-            {/* ── Marquee Strip ── */}
-            {cards.length > 0 && <HoloMarquee cards={cards} />}
-        </section>
-    );
+      <CylinderCarousel cards={display} marginTopOverride="-160px" />
+    </section>
+  );
 }
 
-/* ──────────────────────────────────────────────────────────
-   Marquee with JS-driven viewport-position scaling
-────────────────────────────────────────────────────────── */
-function HoloMarquee({ cards }: { cards: VideoCard[] }) {
-    const stripRef = useRef<HTMLDivElement>(null);
-    const trackRef = useRef<HTMLDivElement>(null);
-    const posRef = useRef(0);
-    const pausedRef = useRef(false);
-    const rafRef = useRef<number>(0);
+function CylinderCarousel({ cards, marginTopOverride }: { cards: VideoCard[]; marginTopOverride?: string }) {
+  const cylinderRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number>(0);
+  const angleRef = useRef(0);
 
-    // Duplicate enough to fill viewport + loop seamlessly
-    const looped = [...cards, ...cards, ...cards, ...cards, ...cards];
+  // We need enough cards to form a smooth immersive 3D cylinder wall.
+  // We duplicate the cards until we have at least 18 cards to create a very tight, circular wall.
+  const minCards = 18; // Smaller physical circle = sharper arc curve
+  const multiplier = Math.max(1, Math.ceil(minCards / cards.length));
+  const totalCards = cards.length * multiplier;
 
-    // Calculate single-set width (card + gap) × original card count
-    const singleW = cards.length * (CARD_W + GAP);
+  const displayCards: VideoCard[] = [];
+  for (let i = 0; i < multiplier; i++) {
+    displayCards.push(...cards);
+  }
 
-    const applyScales = useCallback(() => {
-        const track = trackRef.current;
-        const strip = stripRef.current;
-        if (!track || !strip) return;
+  // 3D Geometry
+  const theta = 360 / totalCards;
+  // Calculate exact radius required so the cards form a seamless circle
+  const radius = Math.round(
+    (CARD_W + GAP) / 2 / Math.tan((Math.PI * 2) / (totalCards * 2)),
+  );
 
-        const vw = window.innerWidth;
-        const vcx = vw / 2;
+  useEffect(() => {
+    const cylinder = cylinderRef.current;
+    if (!cylinder) return;
 
-        const stripRect = strip.getBoundingClientRect();
-        const startX = stripRect.left - posRef.current;
+    const tick = () => {
+      // Always rotate — no pause on hover
+      angleRef.current -= SPEED * 0.08;
+      cylinder.style.transform = `translateZ(${radius - 300}px) rotateY(${angleRef.current}deg)`;
+      rafRef.current = requestAnimationFrame(tick);
+    };
 
-        const cardEls = track.children;
-        for (let i = 0; i < cardEls.length; i++) {
-            const el = cardEls[i] as HTMLElement;
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [radius]);
 
-            const untransformedLeft = startX + (i * (CARD_W + GAP));
-            const cardCx = untransformedLeft + (CARD_W / 2);
+  // Pure mathematical rendering without any custom scale hacks.
+  // Shrinking the perspective and forcing the Z-depth pushes the CSS engine
+  // to organically scale the cylinder wall smoothly along the elliptical arc.
 
-            // Normalized distance: 0 at center, 1 at viewport edge
-            const normalizedDist = (cardCx - vcx) / (vw / 2);
-            const distAbs = Math.abs(normalizedDist);
-            const sign = Math.sign(normalizedDist);
-
-            // To mimic the exact 7-card shape, we break the screen into 3 zones radially
-            // Zone 1: Center (distAbs < 0.25) -> Flat, minimal scaling
-            // Zone 2: Mid-Edge (0.25 < distAbs < 0.6) -> Gentle slope up
-            // Zone 3: Far Edge (distAbs > 0.6) -> Aggressive spike
-
-            let scale = 0.7; // Base size for center 3 cards
-            let translateX = 0;
-            let rotateY = 0;
-
-            if (distAbs > 0.15) {
-                // Smooth exponential curve pushing cards outwards and scaling them up
-                // Start growing slowly, then ramp up fast towards edges
-                const curve = Math.pow(distAbs - 0.15, 1.8);
-                scale = 0.7 + (curve * 2.5);
-
-                // Rotation increases the further out they go
-                rotateY = sign * curve * -90;
-
-                // Very importantly, push the outward cards AWAY from the center
-                // so they don't crush the center cards when they scale up
-                translateX = sign * curve * 400;
-            }
-
-            el.style.transform = `translate(${translateX}px, 0px) scale(${scale}) rotateY(${rotateY}deg)`;
-            el.style.transformOrigin = "center center";
-
-            // The huge edge cards must be visually above the flat center cards
-            el.style.zIndex = distAbs > 0.4 ? "2" : "1";
-        }
-    }, [GAP]);
-
-    useEffect(() => {
-        const track = trackRef.current;
-        if (!track) return;
-
-        const animate = () => {
-            if (!pausedRef.current) {
-                posRef.current += SPEED;
-                if (posRef.current >= singleW) {
-                    posRef.current -= singleW;
-                }
-                track.style.transform = `translateX(-${posRef.current}px)`;
-            }
-            applyScales();
-            rafRef.current = requestAnimationFrame(animate);
-        };
-
-        rafRef.current = requestAnimationFrame(animate);
-        return () => cancelAnimationFrame(rafRef.current);
-    }, [singleW, applyScales]);
-
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.35 }}
-            ref={stripRef}
-            onMouseEnter={() => { pausedRef.current = true; }}
-            onMouseLeave={() => { pausedRef.current = false; }}
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: `${CARD_H + 280}px`,
+        marginTop: marginTopOverride ?? "0px",
+        // A much shorter perspective creates an extreme fisheye/ultra-wide angle lens.
+        // This forces the top and bottom edges of the cylinder to bow heavily, rounding the arc.
+        perspective: "380px",
+        perspectiveOrigin: "center center",
+        overflow: "hidden",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        WebkitMaskImage:
+          "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
+        maskImage:
+          "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
+      }}
+    >
+      <div
+        ref={cylinderRef}
+        style={{
+          width: CARD_W,
+          height: CARD_H,
+          position: "relative",
+          // preserve-3d ensures the cards physically bow out into space
+          transformStyle: "preserve-3d",
+          // Initialize at the exact translated coordinate to prevent render-pop
+          transform: `translateZ(${radius - 300}px)`,
+          willChange: "transform",
+        }}
+      >
+        {displayCards.map((card, i) => (
+          <div
+            key={i}
             style={{
-                width: "100%",
-                marginTop: "-100px", // Pull up even more to engulf text block
-                overflow: "hidden",
-                WebkitMaskImage:
-                    "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
-                maskImage:
-                    "linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)",
-                perspective: "1100px",
-                // Increase height so the 2.2x scaled cards (310 * 2.2 = 682) don't get cropped
-                height: `${Math.round(CARD_H * 2.2) + 120}px`,
-                display: "flex",
-                alignItems: "center",
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: CARD_W,
+              height: CARD_H,
+              // Fan cards out in a pure U-circle mapping. No arbitrary scalar noise.
+              transform: `rotateY(${i * theta}deg) translateZ(${-radius}px)`,
+              backfaceVisibility: "hidden",
+              transformOrigin: "center center",
             }}
-        >
-            <div
-                ref={trackRef}
-                style={{
-                    display: "flex",
-                    gap: `${GAP}px`,
-                    width: "max-content",
-                    alignItems: "center",  // center-align cards
-                    transformStyle: "preserve-3d",
-                    willChange: "transform",
-                }}
-            >
-                {looped.map((card, i) => (
-                    <MarqueeCard key={i} card={card} />
-                ))}
-            </div>
-        </motion.div>
-    );
+          >
+            <VideoTile card={card} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
-/* ──────────────────────────────────────────────────────────
-   Single card (scale applied from parent JS loop)
-────────────────────────────────────────────────────────── */
-function MarqueeCard({ card }: { card: VideoCard }) {
-    const videoRef = useRef<HTMLVideoElement>(null);
-    const [hovered, setHovered] = useState(false);
+function VideoTile({ card }: { card: VideoCard }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [hover, setHover] = useState(false);
 
-    return (
+  const isVideo = Boolean(card.src && card.src.endsWith(".mp4"));
+
+  return (
+    <div
+      onMouseEnter={() => {
+        setHover(true);
+        videoRef.current?.play().catch(() => {});
+      }}
+      onMouseLeave={() => {
+        setHover(false);
+        videoRef.current?.pause();
+      }}
+      style={{
+        width: "100%",
+        height: "100%",
+        borderRadius: "18px",
+        overflow: "hidden",
+        position: "relative",
+        background: "#111",
+        border: "1px solid rgba(255,255,255,0.08)",
+        backfaceVisibility: "hidden",
+        cursor: "pointer",
+        transition: "box-shadow 0.3s ease, border-color 0.3s ease",
+        boxShadow: hover
+          ? "0 0 0 1px rgba(255,255,255,0.20), 0 20px 60px rgba(0,0,0,0.7)"
+          : "none",
+      }}
+    >
+      {/* Background image always shown */}
+      {card.image && (
+        <img
+          src={card.image}
+          alt={card.label || ""}
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            transition: "opacity 0.4s ease",
+            opacity: hover && isVideo ? 0 : 1,
+          }}
+        />
+      )}
+
+      {/* Video plays on hover */}
+      {isVideo && (
+        <video
+          ref={videoRef}
+          muted
+          loop
+          playsInline
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            opacity: hover ? 1 : 0,
+            transition: "opacity 0.4s ease",
+          }}
+        >
+          <source src={card.src} type="video/mp4" />
+        </video>
+      )}
+
+      {/* Bottom gradient + label */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background:
+            "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 60%, transparent 100%)",
+        }}
+      />
+
+      {card.label && (
         <div
-            onMouseEnter={() => {
-                setHovered(true);
-                videoRef.current?.play().catch(() => { });
-            }}
-            onMouseLeave={() => {
-                setHovered(false);
-                videoRef.current?.pause();
-            }}
-            style={{
-                flexShrink: 0,
-                width: `${CARD_W}px`,
-                height: `${CARD_H}px`,
-                borderRadius: "16px",
-                overflow: "hidden",
-                border: "2.5px solid rgba(255,255,255,0.9)",
-                boxShadow: hovered
-                    ? "0 24px 44px rgba(0,0,0,0.22)"
-                    : "0 6px 20px rgba(0,0,0,0.14)",
-                background: "#1a1a1a",
-                cursor: "pointer",
-                position: "relative",
-                transition: "box-shadow 0.25s ease",
-            }}
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: "14px",
+          }}
         >
-            <video
-                ref={videoRef}
-                muted
-                playsInline
-                loop
-                style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    objectPosition: "center top",
-                    display: "block",
-                }}
-            >
-                <source src={card.src} type="video/mp4" />
-            </video>
-
-            {card.label && (
-                <div
-                    style={{
-                        position: "absolute",
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        padding: "28px 10px 10px",
-                        background:
-                            "linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%)",
-                    }}
-                >
-                    <span
-                        style={{
-                            fontFamily: "Inter,sans-serif",
-                            fontSize: "10px",
-                            fontWeight: 700,
-                            color: "#fff",
-                            textTransform: "uppercase",
-                            letterSpacing: "0.06em",
-                        }}
-                    >
-                        {card.label}
-                    </span>
-                </div>
-            )}
+          <span
+            style={{
+              fontSize: "11px",
+              fontWeight: 700,
+              color: "#fff",
+              letterSpacing: "0.07em",
+              textTransform: "uppercase",
+            }}
+          >
+            {card.label}
+          </span>
         </div>
-    );
+      )}
+    </div>
+  );
 }
