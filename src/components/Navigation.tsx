@@ -20,6 +20,7 @@ const Navigation = () => {
         { path: "/video-services", label: "Video Editing & Production" },
         { path: "/web-services", label: "Web Development" },
         { path: "/social-services", label: "Social Media Marketing" },
+        { path: "/graphic-services", label: "Graphic Design" },
       ],
     },
     { path: "/about-us", label: "About" },
@@ -71,6 +72,7 @@ const Navigation = () => {
     location.pathname.includes("ads-service") ||
     location.pathname.includes("social-services") ||
     location.pathname.includes("video-services") ||
+    location.pathname.includes("graphic-services") ||
     location.pathname.includes("web-services");
 
   return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Megaphone, BarChart, Target, PieChart, TrendingUp, Users, Check, ArrowRight, Star, Zap } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 // hero background image
 import adsBg from "./assets/assests/web.png";
+import adsWorkImg from "./assets/assests/ads work.png";
 import serviceHeroVideo from "./assets/assests/service hero.mp4";
 import PricingDemo from './PricingDemo';
 
@@ -13,7 +14,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 const AdsService = () => {
   const heroRef = useRef<HTMLDivElement>(null);
+  const proofRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -23,6 +26,23 @@ const AdsService = () => {
         heroRef.current.children,
         { opacity: 0, y: 40 },
         { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: "power3.out" }
+      );
+    }
+
+    if (proofRef.current) {
+      gsap.fromTo(
+        proofRef.current.children,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.2,
+          scrollTrigger: {
+            trigger: proofRef.current,
+            start: "top 80%",
+          },
+        }
       );
     }
 
@@ -212,6 +232,42 @@ const AdsService = () => {
     <div className="min-h-screen bg-[#0a0a0f] text-foreground overflow-x-hidden transition-colors duration-300">
       <Navigation />
 
+      {/* Lightbox Modal - at root level so not clipped by any parent overflow:hidden */}
+      {lightboxOpen && (
+        <div
+          className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setLightboxOpen(false)}
+        >
+          {/* Top controls - fixed to top right of screen */}
+          <div className="fixed top-5 right-5 flex items-center gap-3 z-[10000]" onClick={(e) => e.stopPropagation()}>
+            {/* Download button */}
+            <a
+              href={adsWorkImg}
+              download="ads-dashboard.png"
+              className="w-11 h-11 rounded-full bg-white/20 border border-white/40 text-white flex items-center justify-center hover:bg-white/30 transition-colors text-lg"
+              title="Download image"
+            >
+              ⬇
+            </a>
+            {/* Close button */}
+            <button
+              className="w-11 h-11 rounded-full bg-red-500/80 border border-red-400 text-white flex items-center justify-center hover:bg-red-500 transition-colors text-xl font-bold shadow-lg"
+              onClick={() => setLightboxOpen(false)}
+            >
+              ✕
+            </button>
+          </div>
+          <img
+            src={adsWorkImg}
+            alt="Ads Performance Dashboard"
+            className="max-w-full max-h-[90vh] rounded-xl shadow-2xl object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
+
+
+
       {/* Hero Section */}
       <section
         className="relative min-h-screen flex items-start justify-center py-8 md:py-16 text-center bg-[#0a0a0f] overflow-hidden"
@@ -304,8 +360,127 @@ const AdsService = () => {
         </div>
       </section>
 
+      {/* Proven Results Section */}
+      <section className="relative px-8 py-24 bg-[#0a0a0f] overflow-hidden">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div className="max-w-7xl mx-auto relative z-10" ref={proofRef}>
+          {/* Heading */}
+          <div className="text-center mb-14">
+            <h2 className="text-5xl font-black text-white mb-4 tracking-tight">
+              Don't Just Take Our Word For It
+            </h2>
+            <p className="text-white/50 text-lg">
+              Real screenshots from actual client dashboards. Numbers don't lie.
+            </p>
+          </div>
+
+          {/* 2-col layout */}
+          <div className="grid grid-cols-2 gap-16 items-center">
+
+            {/* Left — Screenshot */}
+            <div className="relative group">
+              <div className="absolute -inset-2 bg-gradient-to-tr from-cyan-500/25 via-purple-500/15 to-transparent rounded-3xl blur-2xl opacity-60 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative rounded-2xl overflow-hidden border border-white/10 bg-[#0d0d1a] shadow-2xl">
+                {/* Browser bar */}
+                <div className="flex items-center gap-3 px-4 py-3 border-b border-white/10 bg-white/[0.03]">
+                  <div className="flex gap-1.5">
+                    <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+                    <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                    <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+                  </div>
+                  <div className="bg-black/40 text-white/40 text-xs px-3 py-1 rounded-md">
+                    🔒 adsmanager.facebook.com
+                  </div>
+                </div>
+
+                {/* Image */}
+                <div
+                  className="relative cursor-zoom-in"
+                  onClick={() => setLightboxOpen(true)}
+                >
+                  <img
+                    src={adsWorkImg}
+                    alt="Ads Dashboard"
+                    className="w-full h-auto object-cover"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 bg-black/20 pointer-events-none">
+                    <span className="bg-black/70 text-white text-sm px-4 py-2 rounded-full border border-white/20">🔍 Click to expand</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating badge */}
+              <div className="absolute -right-5 -bottom-5 bg-gradient-to-br from-purple-600 to-blue-700 rounded-2xl px-5 py-4 shadow-2xl border border-purple-400/30">
+                <div className="text-white/60 text-xs font-semibold mb-1">Lowest CPL</div>
+                <div className="text-white text-2xl font-black">₹10.92</div>
+              </div>
+            </div>
+
+            {/* Right — Text */}
+            <div className="space-y-8">
+              <div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold mb-5 tracking-widest">
+                  ✦ VERIFIED RESULTS
+                </div>
+                <h3 className="text-4xl font-black text-white mb-5 leading-tight">
+                  Real campaigns. <br />
+                  <span className="bg-clip-text text-transparent bg-[conic-gradient(from_180deg_at_50%_50%,#2BC0E4_0deg,#4300FF_120deg,#FF0066_240deg,#2BC0E4_360deg)] [background-size:200%_200%] animate-[gradient-x_6s_infinite_alternate]">Real numbers.</span>
+                </h3>
+                <p className="text-white/60 text-base leading-relaxed">
+                  This is a live screenshot from our Meta Ads Manager — across <span className="text-white font-semibold">8 active campaigns</span>, we generated massive scale at ultra-low cost-per-lead.
+                </p>
+              </div>
+
+              {/* Key stats inline */}
+              <div className="grid grid-cols-3 gap-6">
+                <div className="border-l-2 border-[#2BC0E4]/50 pl-4">
+                  <div className="text-2xl font-black text-white">14,081</div>
+                  <div className="text-white/50 text-xs mt-1">Leads — Stock Expert</div>
+                </div>
+                <div className="border-l-2 border-[#5D31D8]/50 pl-4">
+                  <div className="text-2xl font-black text-white">₹15.79</div>
+                  <div className="text-white/50 text-xs mt-1">CPL — Raj King</div>
+                </div>
+                <div className="border-l-2 border-[#4300FF]/50 pl-4">
+                  <div className="text-2xl font-black text-white">69.52L</div>
+                  <div className="text-white/50 text-xs mt-1">Total Impressions</div>
+                </div>
+              </div>
+
+              {/* Features */}
+              <div className="space-y-4">
+                <div className="flex gap-4 items-start">
+                  <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center flex-shrink-0">
+                    <TrendingUp className="w-5 h-5 text-cyan-400" />
+                  </div>
+                  <div>
+                    <div className="text-white font-bold mb-1">₹10.92 Cost Per Lead</div>
+                    <p className="text-white/50 text-sm">Stock Expert campaign: 14,081 leads delivered at the industry's lowest CPL.</p>
+                  </div>
+                </div>
+                <div className="flex gap-4 items-start">
+                  <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center flex-shrink-0">
+                    <Target className="w-5 h-5 text-purple-400" />
+                  </div>
+                  <div>
+                    <div className="text-white font-bold mb-1">6.09L People Reached</div>
+                    <p className="text-white/50 text-sm">Raj King: 4,268 leads at ₹15.79 each with just ₹249/day budget.</p>
+                  </div>
+                </div>
+              </div>
+
+              <a href="#pricing" className="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-black font-bold rounded-full hover:bg-gray-100 transition-colors">
+                View Our Plans →
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Campaign Results Section */}
-      <section ref={servicesRef} className="md:pl-24 px-4 md:px-6 py-16 md:py-24 bg-[#0a0a0f] relative overflow-hidden">
+      < section ref={servicesRef} className="md:pl-24 px-4 md:px-6 py-16 md:py-24 bg-[#0a0a0f] relative overflow-hidden" >
 
         <div className="max-w-7xl mx-auto relative z-10">
           {/* Section Header */}
@@ -618,6 +793,40 @@ const AdsService = () => {
       <section id="pricing" className="relative px-4 md:px-6 py-8 md:py-12 overflow-hidden">
         <PricingDemo />
       </section>
+
+      {/* Lightbox Modal */}
+      {lightboxOpen && (
+        <div
+          className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-sm flex items-center justify-center"
+          onClick={() => setLightboxOpen(false)}
+        >
+          {/* Close button */}
+          <button
+            onClick={() => setLightboxOpen(false)}
+            className="fixed top-5 right-5 z-[10000] w-11 h-11 flex items-center justify-center rounded-full bg-red-600 hover:bg-red-500 text-white text-xl font-bold shadow-xl transition-all"
+          >
+            ✕
+          </button>
+
+          {/* Download button */}
+          <a
+            href={adsWorkImg}
+            download="ads-work.png"
+            onClick={(e) => e.stopPropagation()}
+            className="fixed top-5 right-20 z-[10000] w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white text-lg shadow-xl transition-all"
+          >
+            ⬇
+          </a>
+
+          {/* Image */}
+          <img
+            src={adsWorkImg}
+            alt="Ads Dashboard Fullscreen"
+            className="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -9,6 +9,7 @@ import { ScrollSmoother } from "gsap/ScrollSmoother";
 import Navigation from "@/components/Navigation";
 import { useLoading } from "@/contexts/LoadingContext";
 import TestimonialDemo from "@/pages/TestimonialDemo";
+import CircularGalleryDemo from "@/components/ui/circular-gallery-demo";
 
 import heroPoster from "./assets/assests/hero bg.png";
 import servicesBg from "./assets/assests/service bg.png";
@@ -948,7 +949,8 @@ const Index = () => {
                         <img
                           src={c.img}
                           alt={c.title}
-                          className="w-4/5 h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-transform duration-700"
+                          className="service-img w-[85%] h-[85%] object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)]"
+                          loading="lazy"
                         />
                       </div>
                     </div>
@@ -1141,6 +1143,7 @@ const Index = () => {
             </section>
             */}
 
+            <CircularGalleryDemo />
             <Testimonial />
 
             {/* CTA */}

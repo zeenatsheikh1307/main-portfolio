@@ -81,8 +81,8 @@ export function PricingSection({
                 </div>
             ) : (
                 <div className={cn(
-                    "mx-auto grid w-full max-w-[1400px] grid-cols-1 gap-6",
-                    plans.length === 4 ? "md:grid-cols-2 lg:grid-cols-4 lg:gap-5" : "md:grid-cols-3 lg:gap-8 max-w-6xl"
+                    "mx-auto grid w-full max-w-[1400px] grid-cols-1 gap-10",
+                    plans.length === 4 ? "md:grid-cols-2 lg:grid-cols-4 lg:gap-10" : "md:grid-cols-3 lg:gap-14 max-w-6xl"
                 )}>
                     {plans.map((plan) => (
                         <PricingCard plan={plan} key={plan.name} frequency={frequency} />
@@ -145,7 +145,7 @@ export function PricingCard({
         <div
             key={plan.name}
             className={cn(
-                'relative flex w-full flex-col rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.08] to-transparent p-6 text-foreground transition-all duration-300 hover:shadow-2xl hover:border-white/20 hover:-translate-y-1',
+                'relative flex w-full flex-col rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.08] to-transparent p-8 text-foreground transition-all duration-300 hover:shadow-2xl hover:border-white/20 hover:-translate-y-1',
                 plan.highlighted && 'shadow-purple-900/10 border-purple-500/20',
                 className,
             )}
@@ -155,43 +155,45 @@ export function PricingCard({
                 <div className="absolute inset-0 z-0 bg-gradient-to-b from-purple-500/5 to-transparent rounded-3xl pointer-events-none" />
             )}
 
-            <div className="relative z-10 flex flex-col gap-6 h-full">
+            <div className="relative z-10 flex flex-col gap-8 h-full">
                 {/* Header */}
-                <div className="space-y-2">
-                    <h3 className={cn("text-2xl font-medium tracking-wide", plan.accent)}>
+                <div className="space-y-3">
+                    <h3 className={cn("text-2xl font-bold tracking-wide", plan.accent)}>
                         {plan.name}
                     </h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed max-w-[90%]">
+                    <p className="text-muted-foreground text-sm leading-relaxed">
                         {plan.info}
                     </p>
                 </div>
 
                 {/* Price */}
-                <div className="flex items-baseline gap-1 flex-wrap">
-                    {plan.pricePrefix && (
-                        <span className="text-sm font-medium text-muted-foreground mr-1">{plan.pricePrefix}</span>
-                    )}
-                    {plan.priceFormatted ? (
-                        <span className="text-4xl font-bold tracking-tighter text-white">{plan.priceFormatted}</span>
-                    ) : plan.price[frequency] === 0 ? (
-                        <span className="text-6xl font-bold tracking-tighter text-white">Free</span>
-                    ) : (
-                        <>
-                            <span className="text-3xl font-bold align-top text-muted-foreground">$</span>
-                            <span className="text-6xl font-bold tracking-tighter text-white">{plan.price[frequency]}</span>
-                        </>
+                <div className="space-y-1">
+                    <div className="flex items-baseline gap-1 flex-wrap">
+                        {plan.pricePrefix && (
+                            <span className="text-sm font-medium text-muted-foreground mr-1">{plan.pricePrefix}</span>
+                        )}
+                        {plan.priceFormatted ? (
+                            <span className="text-4xl font-black tracking-tight text-white">{plan.priceFormatted}</span>
+                        ) : plan.price[frequency] === 0 ? (
+                            <span className="text-5xl font-black tracking-tight text-white">Free</span>
+                        ) : (
+                            <>
+                                <span className="text-2xl font-bold align-top text-muted-foreground">$</span>
+                                <span className="text-5xl font-black tracking-tight text-white">{plan.price[frequency]}</span>
+                            </>
+                        )}
+                    </div>
+                    {plan.priceSubtext && (
+                        <div className="text-[11px] text-muted-foreground/70 font-medium">
+                            {plan.priceSubtext}
+                        </div>
                     )}
                 </div>
-                {plan.priceSubtext && (
-                    <div className="text-[10px] text-muted-foreground/80 font-medium -mt-4 mb-2">
-                        {plan.priceSubtext}
-                    </div>
-                )}
 
-                {/* CTA Button - Placed in middle as per reference */}
+                {/* CTA Button */}
                 <div className="w-full">
                     <Button
-                        className={cn("w-full h-10 rounded-full text-base font-medium transition-all duration-300 bg-white/5 border border-white/10 border-b-white/20 hover:bg-white/10 hover:border-white/20 text-white shadow-lg shadow-black/20", plan.buttonClass)}
+                        className={cn("w-full h-11 rounded-full text-base font-semibold transition-all duration-300 bg-white/5 border border-white/10 border-b-white/20 hover:bg-white/10 hover:border-white/20 text-white shadow-lg shadow-black/20", plan.buttonClass)}
                         variant="ghost"
                         asChild
                     >
@@ -203,13 +205,13 @@ export function PricingCard({
                 <div className="w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
 
                 {/* Features */}
-                <div className="space-y-4 mt-auto">
+                <div className="space-y-5 mt-auto">
                     {plan.features.map((feature, index) => (
-                        <div key={index} className="flex items-start gap-3">
-                            <div className={cn("mt-1 flex items-center justify-center rounded-full p-1", plan.accent?.replace('text-', 'bg-'))}>
+                        <div key={index} className="flex items-center gap-3">
+                            <div className={cn("flex-shrink-0 flex items-center justify-center rounded-full p-1", plan.accent?.replace('text-', 'bg-'))}>
                                 <Check className="h-3 w-3 text-black font-bold" strokeWidth={3} />
                             </div>
-                            <span className="text-base text-muted-foreground/80 font-medium">{feature.text}</span>
+                            <span className="text-sm text-muted-foreground/90 font-medium">{feature.text}</span>
                         </div>
                     ))}
                 </div>

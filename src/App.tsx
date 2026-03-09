@@ -9,6 +9,7 @@ import Services from "./pages/Services";
 import WebServices from "./pages/WebServices";
 import VideoServices from "./pages/VideoServices";
 import SocialServices from "./pages/SocialServices";
+import GraphicServices from "./pages/GraphicServices";
 import NotFound from "./pages/NotFound";
 import Contact from "./pages/contact";
 import AdsService from "./pages/AdsService";
@@ -38,6 +39,7 @@ const App = () => (
               <Route path="/web-services" element={<WebServices />} />
               <Route path="/video-services" element={<VideoServices />} />
               <Route path="/social-services" element={<SocialServices />} />
+              <Route path="/graphic-services" element={<GraphicServices />} />
 
               <Route path="/ads-service" element={<AdsService />} />
 
