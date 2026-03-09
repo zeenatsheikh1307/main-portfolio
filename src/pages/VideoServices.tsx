@@ -11,12 +11,13 @@ import {
   Check,
 } from "lucide-react";
 import { gsap } from "gsap";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Navigation from "@/components/Navigation";
 import { PricingSection } from "@/components/ui/pricing";
 import CoverflowCarousel from "@/components/ui/coverflow-carousel";
-import InfiniteGallery from "@/components/ui/3d-gallery-photography";
+import { HoloHero } from "@/components/ui/holo-hero";
 import { ReadyToBuild } from "@/components/ui/ready-to-build";
 
 import v1 from "./assets/assests/original-b8969bc781998cd5a622d584dcb359a6.mp4";
@@ -28,6 +29,39 @@ import v6 from "./assets/assests/osmo.mp4";
 import serviceHeroVideo from "./assets/assests/service hero.mp4";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const heroPrograms = [
+  {
+    image: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=400&h=500&fit=crop",
+    category: "CINEMA",
+    title: "Brand Documentary",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=400&h=500&fit=crop",
+    category: "POST-PRODUCTION",
+    title: "Editing & Color Grading",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=400&h=500&fit=crop",
+    category: "COMMERCIAL",
+    title: "Product Showcase Film",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=400&h=500&fit=crop",
+    category: "STUDIO",
+    title: "Studio Production",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&h=500&fit=crop",
+    category: "CONTENT",
+    title: "UGC & Social Content",
+  },
+  {
+    image: "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?w=400&h=500&fit=crop",
+    category: "EVENTS",
+    title: "Live Event Coverage",
+  },
+];
 
 const videoProjects = [
   {
@@ -160,99 +194,27 @@ const VideoServices = () => {
   }, [selectedVideo]);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] text-foreground font-sans overflow-x-hidden transition-colors duration-300">
+    <div className="min-h-screen text-foreground font-sans transition-colors duration-300" style={{ background: "#08080f" }}>
       <Navigation />
 
-      {/* Hero Section - 3D Gallery */}
-      <section className="relative h-screen overflow-hidden bg-[#0a0a0f]">
-        <InfiniteGallery
-          images={[
-            {
-              src: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1200&q=80",
-              alt: "Professional cinema camera",
-            },
-            {
-              src: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=1200&q=80",
-              alt: "Film production set",
-            },
-            {
-              src: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=1200&q=80",
-              alt: "Video editing workspace",
-            },
-            {
-              src: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1200&q=80",
-              alt: "Film clapperboard",
-            },
-            {
-              src: "https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=1200&q=80",
-              alt: "Studio lighting setup",
-            },
-            {
-              src: "https://images.unsplash.com/photo-1579547621113-e4bb2a19bdd6?w=1200&q=80",
-              alt: "Cinematography behind the scenes",
-            },
-            {
-              src: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=1200&q=80",
-              alt: "Camera operator filming",
-            },
-            {
-              src: "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?w=1200&q=80",
-              alt: "Film production crew",
-            },
-            {
-              src: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=1200&q=80",
-              alt: "Vintage film reels",
-            },
-            {
-              src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80",
-              alt: "Video analytics dashboard",
-            },
-            {
-              src: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=1200&q=80",
-              alt: "Social media content",
-            },
-            {
-              src: "https://images.unsplash.com/photo-1533750516457-a7f992034fec?w=1200&q=80",
-              alt: "Content creation setup",
-            },
-          ]}
-          speed={1.2}
-          visibleCount={12}
-          fadeSettings={{
-            fadeIn: { start: 0.05, end: 0.25 },
-            fadeOut: { start: 0.4, end: 0.43 },
-          }}
-          blurSettings={{
-            blurIn: { start: 0.0, end: 0.1 },
-            blurOut: { start: 0.4, end: 0.43 },
-            maxBlur: 8.0,
-          }}
-          className="h-screen w-full"
-        />
-
-        {/* Overlay Text */}
-        <div className="absolute inset-0 pointer-events-none flex items-center justify-center text-center px-4 mix-blend-exclusion text-white z-10">
-          <div>
-            <h1 className="font-serif text-4xl md:text-7xl lg:text-8xl tracking-tight mb-4">
-              <span className="italic">Crafting</span> Visual Stories
-            </h1>
-            <p className="text-lg md:text-2xl font-light tracking-wide opacity-80">
-              Your Vision, Our Lens
-            </p>
-          </div>
-        </div>
-
-        {/* Scroll Hint */}
-        {/* <div className="absolute bottom-10 left-0 right-0 text-center font-mono uppercase text-[11px] font-semibold text-white/60 z-10 pointer-events-none">
-          <p>Scroll through the gallery • 3 loops then page scrolls</p>
-          <p className="opacity-60 mt-1">
-            Auto-play resumes after 3 seconds of inactivity
-          </p>
-        </div> */}
-
-        {/* Gradient Merge to Next Section */}
-        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent via-[#0a0a0f]/50 to-[#0a0a0f] pointer-events-none z-[5]"></div>
-      </section>
+      {/* Hero Section — Holo Style */}
+      <HoloHero
+        badge="Video Production & AI Content"
+        title="The fastest way to create professional videos for your brand"
+        subtitle="We craft authentic, high-performing video content that captivates your audience and drives real results. From concept to delivery."
+        primaryAction={{
+          label: "Get Started",
+          onClick: () => { window.location.href = "/contact"; },
+        }}
+        cards={[
+          { src: v1, label: "Brand Documentary" },
+          { src: v2, label: "Product Showcase" },
+          { src: v3, label: "Cinematic Reel" },
+          { src: v4, label: "Social Content" },
+          { src: v5, label: "AI Model Video" },
+          { src: v6, label: "UGC Campaign" },
+        ]}
+      />
 
       {/* Our Work */}
       <section
@@ -272,18 +234,61 @@ const VideoServices = () => {
           </div>
         </div>
         <div className="relative group/carousel -mt-8">
-          <CoverflowCarousel
-            items={videoProjects.map((p) => ({
-              id: p.id,
-              title: p.title,
-              description: p.description,
-              image: p.thumbnail, // thumbnail is mp4, but we'll use it as placeholder for image slot if needed, or better, pass as video
-              video: p.thumbnail, // Pass the video file here
-              category: p.category,
-              tech: [p.duration, p.year], // Mapping duration/year to tech pills if needed, or just ignore
-              url: p.youtube,
-            }))}
-          />
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="relative z-10 w-full overflow-hidden"
+            style={{ paddingTop: "60px", paddingBottom: "60px" }}
+          >
+            <div
+              className="absolute left-0 top-0 bottom-0 z-10 pointer-events-none"
+              style={{ width: "200px", background: "linear-gradient(90deg, #0a0a0f 0%, rgba(10,10,15,0) 100%)" }}
+            />
+            <div
+              className="absolute right-0 top-0 bottom-0 z-10 pointer-events-none"
+              style={{ width: "200px", background: "linear-gradient(270deg, #0a0a0f 0%, rgba(10,10,15,0) 100%)" }}
+            />
+
+            <motion.div
+              className="flex items-center"
+              animate={{ x: [0, -((heroPrograms.length * 380) / 2)] }}
+              transition={{
+                x: { repeat: Infinity, repeatType: "loop", duration: heroPrograms.length * 3, ease: "linear" },
+              }}
+              style={{ gap: "24px", paddingLeft: "24px" }}
+            >
+              {[...heroPrograms, ...heroPrograms].map((program, index) => (
+                <motion.div
+                  key={index}
+                  whileHover={{ scale: 1.05, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                  onClick={() => { }}
+                  className="flex-shrink-0 cursor-pointer relative overflow-hidden"
+                  style={{ width: "356px", height: "480px", borderRadius: "24px", boxShadow: "0 12px 40px rgba(0, 0, 0, 0.4)", border: "1px solid rgba(255,255,255,0.05)" }}
+                >
+                  <img
+                    src={program.image}
+                    alt={program.title}
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                  <div
+                    className="absolute inset-0"
+                    style={{ background: "linear-gradient(180deg, rgba(10,10,15,0) 0%, rgba(10,10,15,0.85) 100%)" }}
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 p-6" style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                    <span style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 500, color: "rgba(255,255,255,0.8)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+                      {program.category}
+                    </span>
+                    <h3 style={{ fontFamily: "Inter, sans-serif", fontSize: "24px", fontWeight: 600, color: "#FFFFFF", lineHeight: "1.3" }}>
+                      {program.title}
+                    </h3>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
@@ -295,7 +300,7 @@ const VideoServices = () => {
           description="Professional video services at competitive rates"
           plans={[
             {
-              name: 'Video Editing',
+              name: 'Video Creation',
               info: 'Professional editing for your content',
               price: {
                 monthly: 0,
@@ -306,6 +311,7 @@ const VideoServices = () => {
               buttonVariant: 'outline',
               buttonClass: 'border-purple-400/20 hover:bg-purple-400/10 text-purple-400',
               features: [
+                { text: 'Script Writing' },
                 { text: 'Color grading & correction' },
                 { text: 'Professional transitions' },
                 { text: 'Audio mixing' },
@@ -330,6 +336,7 @@ const VideoServices = () => {
               buttonVariant: 'default',
               buttonClass: 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-500/20',
               features: [
+                { text: 'Script Writing' },
                 { text: 'AI-generated avatars' },
                 { text: 'Custom voice synthesis' },
                 { text: 'Script to video' },
@@ -348,11 +355,13 @@ const VideoServices = () => {
                 monthly: 0,
                 yearly: 0,
               },
+              pricePrefix: 'Starting from',
               priceFormatted: '₹3000',
               accent: 'text-emerald-400',
               buttonVariant: 'outline',
               buttonClass: 'border-emerald-400/20 hover:bg-emerald-400/10 text-emerald-400',
               features: [
+                { text: 'Script Writing' },
                 { text: 'Authentic creator content' },
                 { text: 'Platform-optimized' },
                 { text: 'High engagement style' },

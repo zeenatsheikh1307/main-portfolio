@@ -9,6 +9,7 @@ import { ScrollSmoother } from "gsap/ScrollSmoother";
 import Navigation from "@/components/Navigation";
 import { useLoading } from "@/contexts/LoadingContext";
 import TestimonialDemo from "@/pages/TestimonialDemo";
+import CircularGalleryDemo from "@/components/ui/circular-gallery-demo";
 
 import heroPoster from "./assets/assests/hero bg.png";
 import servicesBg from "./assets/assests/service bg.png";
@@ -884,25 +885,25 @@ const Index = () => {
                       tag: "01",
                       title: "Strategic Marketing",
                       text: "ROI-focused performance marketing campaigns.",
-                      img: websiteImg,
+                      img: adsImg,
                     },
                     {
                       tag: "02",
-                      title: "Social Media Management",
-                      text: "Strategic visual identities that tell your story.",
+                      title: "Video Production",
+                      text: "High-impact video content for brands that want to stand out.",
                       img: brandingImg,
                     },
                     {
                       tag: "03",
-                      title: "Video Production",
-                      text: "High-impact video content for brands that want to stand out.",
-                      img: socialImg,
+                      title: "Web Platforms",
+                      text: "High-performance, scalable web ecosystems.",
+                      img: websiteImg,
                     },
                     {
                       tag: "04",
-                      title: "Web Platforms",
-                      text: "High-performance, scalable web ecosystems.",
-                      img: adsImg,
+                      title: "Social Media Management",
+                      text: "Strategic visual identities that tell your story.",
+                      img: socialImg,
                     },
                   ].map((c, idx) => (
                     <div
@@ -948,7 +949,8 @@ const Index = () => {
                         <img
                           src={c.img}
                           alt={c.title}
-                          className="w-4/5 h-auto object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-transform duration-700"
+                          className="service-img w-[85%] h-[85%] object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)]"
+                          loading="lazy"
                         />
                       </div>
                     </div>
@@ -1044,6 +1046,7 @@ const Index = () => {
             </section>
 
             {/* WHY (white section) */}
+            {/* 
             <section
               aria-label="Why EternaCloud"
               className="px-4 sm:px-6 lg:px-8 section-pad-y relative overflow-hidden text-slate-900"
@@ -1138,7 +1141,9 @@ const Index = () => {
                 </div>
               </div>
             </section>
+            */}
 
+            <CircularGalleryDemo />
             <Testimonial />
 
             {/* CTA */}

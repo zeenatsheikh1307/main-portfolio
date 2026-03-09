@@ -296,6 +296,19 @@ const WebServices = () => {
       color: "blue",
       plans: [
         {
+          name: "Landing Page",
+          price: "₹2,999",
+          period: "one time",
+          description: "High-converting page for ads & campaigns",
+          features: [
+            "Single Scroll Design",
+            "Fast Loading Speed",
+            "Lead Capture Integration",
+            "SEO Friendly Structure",
+          ],
+          popular: false,
+        },
+        {
           name: "Static Website",
           price: "₹4,999",
           period: "one time",
@@ -303,7 +316,6 @@ const WebServices = () => {
           features: [
             "1 Page Website",
             "Mobile Responsive, fast loading",
-            "Free hosting (1 year)",
             "WhatsApp chat & contact form",
             "1-month free support",
           ],
@@ -317,7 +329,6 @@ const WebServices = () => {
           features: [
             "8-12 pages",
             "Include admin panel",
-            "Free hosting (1 year)",
             "SEO Ready + Whatsapp form ",
             "1-month free corrections (Rs.150/change after)",
           ],
@@ -331,7 +342,6 @@ const WebServices = () => {
           features: [
             "Product listing, cart, checkout",
             "Payment gateway + Admin panel",
-            "Free hosting (1 year)",
             "Responsive & secure design",
             "Dedicated Team",
           ],
@@ -400,7 +410,7 @@ const WebServices = () => {
               yearly: 0,
             },
             priceFormatted: plan.price,
-            accent: plan.color === "blue" ? "text-blue-400" : "text-purple-400",
+            accent: "text-purple-400",
             buttonVariant: plan.popular ? "default" : "outline",
             buttonClass: plan.popular
               ? "bg-purple-600 hover:bg-purple-700 text-white shadow-lg shadow-purple-500/20"
