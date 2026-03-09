@@ -21,6 +21,8 @@ type CoverflowCarouselProps = {
     options?: EmblaOptionsType;
     className?: string;
     variant?: "browser" | "dark";
+    containerHeight?: string;
+    cardHeight?: string;
 };
 
 const CoverflowCarousel: React.FC<CoverflowCarouselProps> = ({
@@ -28,6 +30,8 @@ const CoverflowCarousel: React.FC<CoverflowCarouselProps> = ({
     options,
     className,
     variant = "browser",
+    containerHeight = "h-[550px]",
+    cardHeight = "h-[350px] md:h-[420px]",
 }) => {
     const [emblaRef, emblaApi] = useEmblaCarousel({
         loop: true,
@@ -78,7 +82,7 @@ const CoverflowCarousel: React.FC<CoverflowCarouselProps> = ({
     return (
         <div className={cn("relative w-full max-w-[1400px] mx-auto py-12", className)}>
             <div className="overflow-hidden perspective-[1000px] px-4 md:px-12" ref={emblaRef}>
-                <div className="flex touch-pan-y -ml-4 items-center h-[550px]">
+                <div className={cn("flex touch-pan-y -ml-4 items-center", containerHeight)}>
                     {loopedItems.map((item, index) => (
                         <CarouselCard
                             key={`${item.id}-${index}`}
@@ -88,6 +92,7 @@ const CoverflowCarousel: React.FC<CoverflowCarouselProps> = ({
                             isSelected={selectedIndex === index}
                             isPausedRef={isPausedRef}
                             variant={variant}
+                            cardHeight={cardHeight}
                         />
                     ))}
                 </div>
@@ -105,7 +110,8 @@ const CarouselCard = ({
     emblaApi,
     isSelected,
     isPausedRef,
-    variant
+    variant,
+    cardHeight
 }: {
     item: Project;
     index: number;
@@ -113,6 +119,7 @@ const CarouselCard = ({
     isSelected?: boolean;
     isPausedRef: React.MutableRefObject<boolean>;
     variant: "browser" | "dark";
+    cardHeight: string;
 }) => {
     const videoRef = React.useRef<HTMLVideoElement>(null);
     const [style, setStyle] = useState<React.CSSProperties>({});
@@ -191,14 +198,14 @@ const CarouselCard = ({
         const zIndex = 50 - Math.round(absDist * 20);
 
         if (variant === "dark") {
-            // Matching the provided reference image (exact gaps and no overlap)
-            const scale = Math.max(0.85, 1 - absDist * 0.05); // Less aggressive scaling to match reference
-            const opacity = 1; // No fade in the reference image
-            const rotateY = dist * 22; // Rotate inwards towards center
-            const rotateZ = 0; // No tilt
-            const translateY = 0; // No vertical arc
-            const translateZ = -absDist * 20; // Very subtle depth push
-            const translateX = dist * -2; // Slight pull-in to create an extremely tight gap
+            // Matching the provided reference image (precise curvature and bold look)
+            const scale = Math.max(0.9, 1 - absDist * 0.03); // Even flatter scaling
+            const opacity = 1;
+            const rotateY = dist * 15; // Moderated rotation
+            const rotateZ = 0;
+            const translateY = 0;
+            const translateZ = -absDist * 15; // Subtle depth
+            const translateX = dist * -1; // Tighter but natural gap
 
             setStyle({
                 transform: `perspective(1200px) translateX(${translateX}%) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
@@ -255,7 +262,7 @@ const CarouselCard = ({
             >
                 {variant === "browser" ? (
                     <article
-                        className="project-card group relative flex flex-col h-[350px] md:h-[420px] w-full transition-all duration-700 ease-out overflow-visible"
+                        className={cn("project-card group relative flex flex-col w-full transition-all duration-700 ease-out overflow-visible", cardHeight)}
                         onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}
                     >
@@ -338,23 +345,23 @@ const CarouselCard = ({
                     </article>
                 ) : (
                     <article
-                        className="project-card group relative flex flex-col h-[350px] md:h-[420px] w-full rounded-[2rem] overflow-hidden shadow-2xl transition-all duration-700 ease-out cursor-pointer border border-white/5 bg-gradient-to-b from-[#161622] to-[#0a0a0f]"
+                        className={cn("project-card group relative flex flex-col w-full rounded-3xl overflow-hidden shadow-2xl transition-all duration-700 ease-out cursor-pointer border border-white/5 bg-[#0a0a0f]", cardHeight)}
                         onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}
                     >
-                        {/* Centered Image Container */}
-                        <div className="relative w-full flex-1 flex flex-col items-center justify-center p-8 pb-4 z-10 overflow-visible pointer-events-none">
+                        {/* Image Container */}
+                        <div className="relative w-full flex-1 flex flex-col items-center justify-center p-0 z-10 overflow-hidden pointer-events-none">
                             <img
                                 src={item.image}
                                 alt={item.title}
-                                className="w-full h-full object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)] transition-transform duration-700 ease-out scale-[1.15] group-hover:scale-[1.25]"
+                                className="w-full h-full object-cover drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)] transition-transform duration-700 ease-out scale-100 group-hover:scale-105"
                                 loading="lazy"
                             />
                             {item.video && (
-                                <div className={`absolute inset-0 flex items-center justify-center p-8 pb-4 transition-opacity duration-500 ${isHovered ? 'opacity-100 z-20' : 'opacity-0 -z-10'}`}>
+                                <div className={`absolute inset-0 flex items-center justify-center p-0 transition-opacity duration-500 ${isHovered ? 'opacity-100 z-20' : 'opacity-0 -z-10'}`}>
                                     <video
                                         ref={videoRef}
-                                        className="w-full h-full object-contain rounded-xl drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)] scale-[1.15] group-hover:scale-[1.25] transition-transform duration-700 ease-out"
+                                        className="w-full h-full object-cover rounded-xl drop-shadow-[0_20px_40px_rgba(0,0,0,0.5)] scale-100 group-hover:scale-105 transition-transform duration-700 ease-out"
                                         muted
                                         playsInline
                                         onEnded={handleVideoEnded}
@@ -365,15 +372,15 @@ const CarouselCard = ({
                             )}
                         </div>
 
-                        {/* Subtle Glow Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-0 pointer-events-none opacity-80 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        {/* High-Contrast Gradient Overlay (Matching reference) */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent z-20 pointer-events-none opacity-90 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-                        {/* Text Content at Bottom */}
-                        <div className="relative z-30 flex flex-col shrink-0 p-6 md:p-8 pt-0 mt-auto">
-                            <span className="text-[#a1a1aa] text-[10px] md:text-xs font-bold uppercase tracking-[0.15em] mb-1.5 md:mb-2 drop-shadow-md">
+                        {/* Text Content at Bottom (Matching reference typography) */}
+                        <div className="relative z-30 flex flex-col shrink-0 p-8 pt-0 mt-auto">
+                            <span className="text-[#a1a1aa] text-[11px] font-extrabold uppercase tracking-[0.2em] mb-2 drop-shadow-md">
                                 {item.category}
                             </span>
-                            <h3 className="text-xl md:text-2xl lg:text-[28px] font-bold text-white leading-tight tracking-tight drop-shadow-lg">
+                            <h3 className="text-2xl md:text-3xl font-bold text-white leading-tight tracking-tight drop-shadow-lg">
                                 {item.title}
                             </h3>
                         </div>
