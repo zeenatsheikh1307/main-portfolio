@@ -24,14 +24,16 @@ interface CircularGalleryProps extends HTMLAttributes<HTMLDivElement> {
     radius?: number;
     /** Controls the speed of auto-rotation when not scrolling. */
     autoRotateSpeed?: number;
+    hideTextOverlay?: boolean;
 }
 
 const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
-    ({ items, className, radius = 600, autoRotateSpeed = 0.02, ...props }, ref) => {
-        const [rotation, setRotation] = useState(0);
+    ({ items, className, radius = 600, autoRotateSpeed = 0.02, hideTextOverlay = false, ...props }, ref) => {
+        const containerRef = useRef<HTMLDivElement>(null);
+        const rotationRef = useRef(0);
         const [isDragging, setIsDragging] = useState(false);
         const [isPaused, setIsPaused] = useState(false);
-        const [lastX, setLastX] = useState(0);
+        const lastXRef = useRef(0);
         const dragDistance = useRef(0);
         const animationFrameRef = useRef<number | null>(null);
 
@@ -39,44 +41,43 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
             setIsDragging(true);
             dragDistance.current = 0;
             const clientX = 'touches' in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
-            setLastX(clientX);
+            lastXRef.current = clientX;
         };
 
         const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
             if (!isDragging) return;
             const clientX = 'touches' in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
-            const deltaX = clientX - lastX;
+            const deltaX = clientX - lastXRef.current;
             dragDistance.current += Math.abs(deltaX);
 
-            // Adjust sensitivity (0.3) so it feels natural when rotating.
-            // A positive deltaX (moving mouse right) rotate positive. Wait, rotateY rotates right when positive.
-            setRotation(prev => prev + deltaX * 0.3);
-            setLastX(clientX);
+            rotationRef.current += deltaX * 0.3;
+            if (containerRef.current) {
+                containerRef.current.style.transform = `rotateY(${rotationRef.current}deg)`;
+            }
+            lastXRef.current = clientX;
         };
 
         const handleDragEnd = () => {
             if (isDragging && dragDistance.current < 5) {
-                // Treated as a click, toggle pause!
                 setIsPaused(prev => !prev);
             }
             setIsDragging(false);
         };
 
-        // Effect for auto-rotation when not dragging
         useEffect(() => {
             const autoRotate = () => {
                 if (!isDragging && !isPaused) {
-                    setRotation(prev => prev + autoRotateSpeed);
+                    rotationRef.current += autoRotateSpeed;
+                    if (containerRef.current) {
+                        containerRef.current.style.transform = `rotateY(${rotationRef.current}deg)`;
+                    }
                 }
                 animationFrameRef.current = requestAnimationFrame(autoRotate);
             };
 
             animationFrameRef.current = requestAnimationFrame(autoRotate);
-
             return () => {
-                if (animationFrameRef.current) {
-                    cancelAnimationFrame(animationFrameRef.current);
-                }
+                if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
             };
         }, [isDragging, isPaused, autoRotateSpeed]);
 
@@ -102,22 +103,19 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
                 {...props}
             >
                 <div
+                    ref={containerRef}
                     className="relative w-full h-full"
                     style={{
-                        transform: `rotateY(${rotation}deg)`,
+                        transform: `rotateY(${rotationRef.current}deg)`,
                         transformStyle: 'preserve-3d',
+                        willChange: 'transform',
                     }}
                 >
                     {items.map((item, i) => {
                         const itemAngle = i * anglePerItem;
-                        const totalRotation = rotation % 360;
-                        const relativeAngle = (itemAngle + totalRotation + 360) % 360;
-                        const normalizedAngle = Math.abs(relativeAngle > 180 ? 360 - relativeAngle : relativeAngle);
-                        const opacity = Math.max(0.3, 1 - (normalizedAngle / 180));
-
                         return (
                             <div
-                                key={item.photo.url}
+                                key={`${item.photo.url}-${i}`}
                                 role="group"
                                 aria-label={item.common}
                                 className="absolute w-[300px] h-[400px]"
@@ -127,23 +125,40 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
                                     top: '50%',
                                     marginLeft: '-150px',
                                     marginTop: '-200px',
-                                    opacity: opacity,
-                                    transition: 'opacity 0.3s linear'
+                                    backfaceVisibility: 'hidden',
+                                    willChange: 'transform',
                                 }}
                             >
-                                <div className="relative w-full h-full rounded-lg shadow-2xl overflow-hidden group border border-slate-200 bg-white/70 backdrop-blur-lg select-none pointer-events-none">
-                                    <img
-                                        src={item.photo.url}
-                                        alt={item.photo.text}
-                                        className="absolute inset-0 w-full h-full object-cover"
-                                        style={{ objectPosition: item.photo.pos || 'center' }}
-                                    />
-                                    {/* Replaced text-primary-foreground with text-white for consistent color */}
-                                    <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-white/90 to-transparent text-slate-900">
-                                        <h2 className="text-xl font-bold">{item.common}</h2>
-                                        <em className="text-sm italic opacity-80">{item.binomial}</em>
-                                        <p className="text-xs mt-2 opacity-70">Photo by: {item.photo.by}</p>
-                                    </div>
+                                <div className="relative w-full h-full rounded-[1.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] overflow-hidden group border border-white/20 bg-[#0a0a0f] select-none pointer-events-none" style={{ transform: 'translateZ(0)' }}>
+                                    {item.photo.url.includes('.mp4') ? (
+                                        <video
+                                            ref={(el) => {
+                                                if (el) {
+                                                    el.playbackRate = 1.0;
+                                                    if (!isPaused && !isDragging) {
+                                                        el.play().catch(() => { });
+                                                    } else {
+                                                        el.pause();
+                                                    }
+                                                }
+                                            }}
+                                            src={item.photo.url}
+                                            loop
+                                            muted
+                                            playsInline
+                                            disablePictureInPicture
+                                            preload="auto"
+                                            className="absolute inset-0 w-full h-full object-cover"
+                                            style={{ objectPosition: item.photo.pos || 'center' }}
+                                        />
+                                    ) : (
+                                        <img
+                                            src={item.photo.url}
+                                            alt={item.photo.text}
+                                            className="absolute inset-0 w-full h-full object-cover"
+                                            style={{ objectPosition: item.photo.pos || 'center' }}
+                                        />
+                                    )}
                                 </div>
                             </div>
                         );

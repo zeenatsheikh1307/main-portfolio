@@ -949,7 +949,7 @@ const Index = () => {
                         <img
                           src={c.img}
                           alt={c.title}
-                          className="service-img w-[85%] h-[85%] object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)]"
+                          className="service-img w-[125%] h-[125%] object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)]"
                           loading="lazy"
                         />
                       </div>

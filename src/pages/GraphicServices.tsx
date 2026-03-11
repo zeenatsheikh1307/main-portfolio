@@ -19,7 +19,27 @@ import { ReadyToBuild } from "@/components/ui/ready-to-build";
 import Floating, { FloatingElement } from "@/components/ui/parallax-floating";
 import CoverflowCarousel from "@/components/ui/coverflow-carousel";
 
+import graphic1 from "./assets/assests/graphic1.png";
+import graphic2 from "./assets/assests/graphic2.png";
+import graphic3 from "./assets/assests/graphic3.png";
+import graphic4 from "./assets/assests/graphic4.png";
+import graphic5 from "./assets/assests/graphic5.png";
+import graphic6 from "./assets/assests/graphic 6.png";
+import graphic7 from "./assets/assests/graphic7.png";
+import graphic8 from "./assets/assests/graphic8.png";
+
 gsap.registerPlugin(ScrollTrigger);
+
+const workItems = [
+    { image: graphic1, category: "BRANDING", title: "Visual Identity" },
+    { image: graphic2, category: "SOCIAL", title: "Social Content" },
+    { image: graphic3, category: "UI/UX", title: "App Interface" },
+    { image: graphic4, category: "PRINT", title: "Marketing Material" },
+    { image: graphic5, category: "PACKAGING", title: "Product Packaging" },
+    { image: graphic6, category: "ILLUSTRATION", title: "Custom Concept Art" },
+    { image: graphic7, category: "LOGOS", title: "Brand Logo System" },
+    { image: graphic8, category: "CAMPAIGNS", title: "Digital Campaign" },
+];
 
 const floatingImages = [
     { url: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=500&fit=crop", alt: "Brand Identity" },
@@ -217,9 +237,9 @@ const GraphicServices = () => {
                     </div>
                 </div>
 
-                <div className="relative -mt-4 w-full h-[550px]">
+                <div className="relative -mt-4 w-full">
                     <CoverflowCarousel
-                        items={heroPrograms.map((p, i) => ({
+                        items={workItems.map((p, i) => ({
                             id: i,
                             title: p.title,
                             description: "Professional graphic design",
@@ -228,6 +248,8 @@ const GraphicServices = () => {
                         }))}
                         options={{ loop: true, align: "center" }}
                         variant="dark"
+                        containerHeight="h-[800px]"
+                        cardHeight="h-[600px] md:h-[700px]"
                     />
                 </div>
             </section>
