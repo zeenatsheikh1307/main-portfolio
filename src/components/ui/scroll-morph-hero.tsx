@@ -21,8 +21,8 @@ interface FlipCardProps {
 }
 
 // --- FlipCard Component ---
-const IMG_WIDTH = 60;
-const IMG_HEIGHT = 85;
+const IMG_WIDTH = 90;
+const IMG_HEIGHT = 127;
 
 function FlipCard({ src, index, total, phase, target }: FlipCardProps) {
   return (
@@ -45,6 +45,10 @@ function FlipCard({ src, index, total, phase, target }: FlipCardProps) {
         height: IMG_HEIGHT,
         transformStyle: "preserve-3d",
         perspective: "1000px",
+        left: '50%',
+        top: '50%',
+        marginLeft: -IMG_WIDTH / 2,
+        marginTop: -IMG_HEIGHT / 2,
       }}
       className="cursor-pointer group"
     >
@@ -78,7 +82,7 @@ function FlipCard({ src, index, total, phase, target }: FlipCardProps) {
           style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >
           <div className="text-center">
-            <p className="text-[8px] font-bold text-purple-300 uppercase tracking-widest mb-1">
+            <p className="text-[9px] font-bold text-purple-300 uppercase tracking-widest mb-1">
               Engage
             </p>
             <p className="text-xs font-medium text-white">
@@ -415,7 +419,7 @@ export default function ScrollMorphHero() {
               );
 
               // A. Calculate Circle Position
-              const circleRadius = Math.min(minDimension * 0.35, 350);
+              const circleRadius = Math.min(minDimension * 0.4, 380);
               const circleAngle = (i / TOTAL_IMAGES) * 360;
               const circleRad = (circleAngle * Math.PI) / 180;
               // Added vertical offset (+40) to move it below nav
@@ -453,7 +457,7 @@ export default function ScrollMorphHero() {
                 x: Math.cos(arcRad) * arcRadius + parallaxValue,
                 y: Math.sin(arcRad) * arcRadius + arcCenterY,
                 rotation: currentArcAngle + 90,
-                scale: isMobile ? 1.4 : 1.8,
+                scale: isMobile ? 1.3 : 1.4,
               };
 
               // C. Interpolate (Morph)

@@ -19,6 +19,7 @@ import { PricingSection } from "@/components/ui/pricing";
 import CoverflowCarousel from "@/components/ui/coverflow-carousel";
 import { HoloHero } from "@/components/ui/holo-hero";
 import { ReadyToBuild } from "@/components/ui/ready-to-build";
+import { PulseFitHero } from "@/components/ui/pulse-fit-hero";
 
 import v1 from "./assets/assests/original-b8969bc781998cd5a622d584dcb359a6.mp4";
 import v2 from "./assets/assests/Video.mp4";
@@ -138,29 +139,30 @@ const WorkCard = ({ program }: { program: WorkProgram }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   return (
     <div
-      className="flex-shrink-0 relative overflow-hidden"
+      className="flex-shrink-0 relative overflow-hidden cursor-none"
+      data-cursor="WATCH"
       style={{ width: "356px", height: "480px", borderRadius: "24px", boxShadow: "0 12px 40px rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.05)" }}
-      onMouseEnter={() => videoRef.current?.play().catch(() => {})}
+      onMouseEnter={() => videoRef.current?.play().catch(() => { })}
       onMouseLeave={() => { if (videoRef.current) { videoRef.current.pause(); videoRef.current.currentTime = 0; } }}
     >
-      <img src={program.image} alt={program.title} draggable={false} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} />
       {program.video && (
         <video
           ref={videoRef}
-          muted loop playsInline preload="none"
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0, transition: "opacity 0.4s ease", pointerEvents: "none" }}
-          onPlay={e => { (e.target as HTMLVideoElement).style.opacity = "1"; }}
-          onPause={e => { (e.target as HTMLVideoElement).style.opacity = "0"; }}
+          muted loop playsInline preload="auto"
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }}
         >
           <source src={program.video} type="video/mp4" />
         </video>
       )}
+      {!program.video && (
+        <img src={program.image} alt={program.title} draggable={false} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} />
+      )}
       <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(10,10,15,0) 0%, rgba(10,10,15,0.85) 100%)" }} />
       <div className="absolute bottom-0 left-0 right-0 p-6" style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-        <span style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 500, color: "rgba(255,255,255,0.8)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+        <span style={{ fontSize: "12px", fontWeight: 500, color: "rgba(255,255,255,0.8)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
           {program.category}
         </span>
-        <h3 style={{ fontFamily: "Inter, sans-serif", fontSize: "24px", fontWeight: 600, color: "#FFFFFF", lineHeight: "1.3" }}>
+        <h3 style={{ fontSize: "24px", fontWeight: 600, color: "#FFFFFF", lineHeight: "1.3" }}>
           {program.title}
         </h3>
       </div>
@@ -251,7 +253,7 @@ const OurWorkCarousel = () => {
         <div className="absolute right-0 top-0 bottom-0 z-10 pointer-events-none" style={{ width: "200px", background: "linear-gradient(270deg, #0a0a0f 0%, rgba(10,10,15,0) 100%)" }} />
 
         <div ref={stripRef} style={{ display: "flex", gap: "24px", paddingLeft: "24px", willChange: "transform" }}>
-        {programs.map((program, index) => (
+          {programs.map((program, index) => (
             <WorkCard key={index} program={program} />
           ))}
         </div>
@@ -333,59 +335,34 @@ const VideoServices = () => {
       style={{ background: "#08080f" }}
     >
       <Navigation />
-
-      {/* Hero Section — Holo Style */}
-      <HoloHero
-        badge="Video Production & AI Content"
-        title="The fastest way to create professional videos for your brand"
-        subtitle="We craft authentic, high-performing video content that captivates your audience and drives real results. From concept to delivery."
+      <PulseFitHero
+        hideHeader={true}
+        title="Create professional videos for your brand"
+        subtitle="We craft authentic, high-performing video content that captivates your audience and drives real results. From brand stories to social ads."
         primaryAction={{
           label: "Get Started",
-          onClick: () => {
-            window.location.href = "/contact";
-          },
+          onClick: () => window.location.href = "/contact",
         }}
-        cards={[
-          {
-            src: v1,
-            label: "Brand Documentary",
-            image:
-              "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600&h=800&fit=crop",
-          },
-          {
-            src: v2,
-            label: "Product Showcase",
-            image:
-              "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600&h=800&fit=crop",
-          },
-          {
-            src: v3,
-            label: "Cinematic Reel",
-            image:
-              "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=600&h=800&fit=crop",
-          },
-          {
-            src: v4,
-            label: "Social Content",
-            image:
-              "https://images.unsplash.com/photo-1598550476439-6847785fcea6?w=600&h=800&fit=crop",
-          },
-          {
-            src: v5,
-            label: "AI Model Video",
-            image:
-              "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600&h=800&fit=crop",
-          },
-          {
-            src: v6,
-            label: "UGC Campaign",
-            image:
-              "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?w=600&h=800&fit=crop",
-          },
-        ]}
+        secondaryAction={{
+          label: "View Portfolio",
+          onClick: () => { document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' }) },
+        }}
+        disclaimer="*Professional Production Within 48 Hours"
+        socialProof={{
+          avatars: [
+            "https://i.pravatar.cc/150?img=33",
+            "https://i.pravatar.cc/150?img=12",
+            "https://i.pravatar.cc/150?img=45",
+            "https://i.pravatar.cc/150?img=28",
+          ],
+          text: "Trusted by 50+ Brands Worldwide",
+        }}
+        programs={heroPrograms.map(p => ({
+          image: p.image,
+          category: p.category,
+          title: p.title
+        }))}
       />
-
-      <OurWorkCarousel />
 
       {/* Pricing Section */}
       <section className="relative px-4 md:px-6 py-16 md:py-24 overflow-hidden">

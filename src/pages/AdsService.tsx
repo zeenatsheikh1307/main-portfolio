@@ -5,7 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 // hero background image
-import adsBg from "./assets/assests/web.png";
+import adsBg from "./assets/assests/ads service.png";
 import adsWorkImg from "./assets/assests/ads work.png";
 import serviceHeroVideo from "./assets/assests/service hero.mp4";
 import PricingDemo from './PricingDemo';
@@ -273,88 +273,83 @@ const AdsService = () => {
         className="relative min-h-screen flex items-start justify-center py-8 md:py-16 text-center bg-[#0a0a0f] overflow-hidden"
         ref={heroRef}
       >
-        {/* Background video */}
+        <style>{`
+          .mb-btn-needle {
+            background: conic-gradient(from 180deg at 50% 50%, #2BC0E4 0deg, #4300FF 120deg, #FF0066 240deg, #2BC0E4 360deg);
+            background-size: 200% 200%;
+            animation: gradient-x 6s infinite alternate;
+            transition: all 400ms cubic-bezier(0.16, 1, 0.3, 1);
+          }
+          .mb-btn-needle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(67, 0, 255, 0.25);
+            filter: brightness(1.1);
+          }
+          @keyframes gradient-x { 
+            0%{ background-position: 0% 50%; } 
+            100%{ background-position: 100% 50%; } 
+          }
+        `}</style>
+        {/* Background image */}
         <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-          <video
+          <img
+            src={adsBg}
+            alt="Ads Service Background"
             className="w-full h-full object-cover"
-            autoPlay
-            loop
-            muted
-            playsInline
             style={{
-              objectFit: 'cover',
               opacity: 0.8
             }}
-          >
-            <source src={serviceHeroVideo} type="video/mp4" />
-          </video>
+          />
           {/* Dark overlay for better text readability */}
-          <div className="absolute inset-0 bg-black/20"></div>
+          <div className="absolute inset-0 bg-black/60"></div>
         </div>
 
         {/* Gradient merge overlay at bottom for seamless transition */}
         <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-b from-transparent via-[#0a0a0f]/50 to-[#0a0a0f] pointer-events-none z-[5]"></div>
 
-        <div className="relative z-10 max-w-5xl mx-auto w-full flex flex-col items-center justify-center text-center min-h-screen px-4">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 rounded-full text-sm sm:text-base font-semibold mb-8 backdrop-blur-md border border-white/20 bg-white/10" style={{
-            background: 'linear-gradient(90deg, #2BC0E4 0%, #5D31D8 48%, #FF8A00 100%)',
-            WebkitBackgroundClip: 'text',
-            backgroundClip: 'text',
-            color: 'transparent',
-            fontWeight: 600
-          }}>
-            ✨ Our craft is precision, performance & measurable growth
+        <div className="relative z-10 max-w-7xl w-full flex flex-col items-start justify-start text-left min-h-screen pt-24 md:pt-32 px-6 md:px-12 lg:px-14">
+          {/* Top Subtitle / Badge */}
+          <div className="text-white/60 text-xs md:text-sm font-bold tracking-[0.3em] uppercase mb-8" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+            Everything you need to scale
           </div>
 
-          {/* Main Heading - Larger */}
-          <h1 className="tracking-tight mb-6 leading-[1.05] text-[clamp(2.5rem,6vw,4.5rem)] font-bold" style={{
+          {/* Main Heading - Left Aligned, Bold White */}
+          <h1 className="tracking-tight mb-6 md:mb-10 leading-[1.1] text-[32px] sm:text-[40px] md:text-[clamp(2.5rem,7vw,5rem)] font-extrabold max-w-4xl" style={{
             color: '#fff',
             letterSpacing: '-0.02em',
             fontFamily: 'system-ui, -apple-system, sans-serif'
           }}>
-            We create growth-driven ads
+            Unlock Your
             <br />
-            <span className="bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              with hyperfocus
-            </span>
+            Business Growth
+            <br />
+            With Precision Ads
           </h1>
 
-          {/* Description paragraph */}
-          <p className="text-white/80 text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto mb-10 leading-relaxed font-light" style={{
-            fontFamily: 'system-ui, -apple-system, sans-serif',
-            fontWeight: 300,
-            letterSpacing: '-0.01em'
-          }}>
-            Maximize your ROI with <span className="text-cyan-400 font-semibold">Precision Targeting</span>, <span className="text-purple-400 font-semibold">Data-Driven Strategy</span>, and <span className="text-pink-400 font-semibold">High-Converting Creatives</span>.
-            <br className="hidden md:block" />
-            Scale your business with performance marketing that works.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mb-12">
-            <Link to="/contact" className="group relative px-8 py-4 bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 rounded-full font-bold text-white text-base sm:text-lg shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 hover:scale-105 flex items-center gap-2">
-              <span>🚀 Start Your Campaign</span>
+          {/* CTA Buttons - Left Aligned */}
+          <div className="flex flex-col sm:flex-row gap-5 items-center justify-start mb-12">
+            <Link to="/contact" className="mb-btn-needle group relative px-8 py-4 text-white rounded-full font-bold text-base sm:text-lg shadow-2xl flex items-center gap-2">
+              <span>Start Your Campaign</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
-            <a href="#services" className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/30 rounded-full font-semibold text-white text-base sm:text-lg hover:bg-white/20 transition-all duration-300 hover:scale-105 inline-block">
+            <a href="#pricing" className="px-8 py-4 bg-white/5 backdrop-blur-md border border-white/10 rounded-full font-semibold text-white text-base sm:text-lg hover:bg-white/10 transition-all duration-300 hover:scale-105 inline-block">
               View Plans →
             </a>
           </div>
 
-          {/* Feature highlights */}
-          <div className="flex flex-wrap gap-3 sm:gap-4 justify-center items-center max-w-3xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all">
-              <span className="text-sm sm:text-base text-white/90" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>🎯 Targeted Ads</span>
+          {/* Feature highlights - Left Aligned */}
+          <div className="flex flex-wrap gap-4 justify-start items-center">
+            <div className="flex items-center gap-2 text-white/50 text-sm font-medium tracking-wide">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-500"></span>
+              TARGETED ADS
             </div>
-            <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all">
-              <span className="text-sm sm:text-base text-white/90" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>📈 High ROI</span>
+            <div className="flex items-center gap-2 text-white/50 text-sm font-medium tracking-wide">
+              <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+              HIGH ROI
             </div>
-            <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all">
-              <span className="text-sm sm:text-base text-white/90" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>💹 Growth Scaling</span>
-            </div>
-            <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm hover:bg-white/10 transition-all">
-              <span className="text-sm sm:text-base text-white/90" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>📊 Analytics</span>
+            <div className="flex items-center gap-2 text-white/50 text-sm font-medium tracking-wide">
+              <span className="w-1.5 h-1.5 rounded-full bg-pink-500"></span>
+              SCALABLE GROWTH
             </div>
           </div>
         </div>
@@ -367,17 +362,17 @@ const AdsService = () => {
 
         <div className="max-w-7xl mx-auto relative z-10" ref={proofRef}>
           {/* Heading */}
-          <div className="text-center mb-14">
-            <h2 className="text-5xl font-black text-white mb-4 tracking-tight">
+          <div className="text-center mb-10 md:mb-14">
+            <h2 className="text-3xl md:text-5xl font-black text-white mb-4 tracking-tight">
               Don't Just Take Our Word For It
             </h2>
-            <p className="text-white/50 text-lg">
+            <p className="text-white/50 text-base md:text-lg">
               Real screenshots from actual client dashboards. Numbers don't lie.
             </p>
           </div>
 
           {/* 2-col layout */}
-          <div className="grid grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
 
             {/* Left — Screenshot */}
             <div className="relative group">
@@ -434,18 +429,18 @@ const AdsService = () => {
               </div>
 
               {/* Key stats inline */}
-              <div className="grid grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
                 <div className="border-l-2 border-[#2BC0E4]/50 pl-4">
-                  <div className="text-2xl font-black text-white">14,081</div>
-                  <div className="text-white/50 text-xs mt-1">Leads — Stock Expert</div>
+                  <div className="text-xl md:text-2xl font-black text-white">14,081</div>
+                  <div className="text-white/50 text-[10px] md:text-xs mt-1">Leads — Stock Expert</div>
                 </div>
                 <div className="border-l-2 border-[#5D31D8]/50 pl-4">
-                  <div className="text-2xl font-black text-white">₹15.79</div>
-                  <div className="text-white/50 text-xs mt-1">CPL — Raj King</div>
+                  <div className="text-xl md:text-2xl font-black text-white">₹15.79</div>
+                  <div className="text-white/50 text-[10px] md:text-xs mt-1">CPL — Raj King</div>
                 </div>
                 <div className="border-l-2 border-[#4300FF]/50 pl-4">
-                  <div className="text-2xl font-black text-white">69.52L</div>
-                  <div className="text-white/50 text-xs mt-1">Total Impressions</div>
+                  <div className="text-xl md:text-2xl font-black text-white">69.52L</div>
+                  <div className="text-white/50 text-[10px] md:text-xs mt-1">Total Impressions</div>
                 </div>
               </div>
 
@@ -480,7 +475,7 @@ const AdsService = () => {
       </section>
 
       {/* Campaign Results Section */}
-      < section ref={servicesRef} className="md:pl-24 px-4 md:px-6 py-16 md:py-24 bg-[#0a0a0f] relative overflow-hidden" >
+      <section ref={servicesRef} className="px-6 md:px-12 lg:px-24 py-16 md:py-24 bg-[#0a0a0f] relative overflow-hidden">
 
         <div className="max-w-7xl mx-auto relative z-10">
           {/* Section Header */}

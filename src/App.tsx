@@ -19,8 +19,8 @@ import LoadingScreen from "@/components/LoadingScreen";
 import { LoadingProvider } from "@/contexts/LoadingContext";
 import TestimonialDemo from "./pages/TestimonialDemo";
 import PricingDemo from "./pages/PricingDemo";
-
-
+import CustomCursor from "@/components/ui/custom-cursor";
+import PulseFitHeroDemoPage from "./pages/PulseFitHeroDemoPage";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +28,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <LoadingProvider>
       <LoadingScreen />
+      <CustomCursor />
       <ThemeProvider>
         <TooltipProvider>
           <Toaster />
@@ -48,6 +49,7 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/testimonial-demo" element={<TestimonialDemo />} />
               <Route path="/pricing-demo" element={<PricingDemo />} />
+              <Route path="/pulse-fit-hero" element={<PulseFitHeroDemoPage />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

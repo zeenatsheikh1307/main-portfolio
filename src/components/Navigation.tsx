@@ -376,8 +376,8 @@ const Navigation = () => {
             transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]
             ${mobileOpen ? "translate-x-0" : "translate-x-full"}`}
         >
-          <div className="pt-20 px-5 pb-6 flex flex-col gap-2">
-            <div className="text-[12px] uppercase tracking-[0.18em] text-gray-400 font-semibold px-2 pb-2">
+          <div className="pt-24 px-6 pb-8 flex flex-col gap-3">
+            <div className="text-[13px] uppercase tracking-[0.2em] text-gray-400 font-bold px-2 pb-3">
               Menu
             </div>
 
@@ -385,25 +385,25 @@ const Navigation = () => {
             <Link
               to="/"
               onClick={() => setMobileOpen(false)}
-              className={`flex items-center justify-between rounded-2xl px-4 py-4 border border-black/5 bg-white/60 hover:bg-white transition`}
+              className={`flex items-center justify-between rounded-2xl px-5 py-5 border border-black/5 bg-white/60 hover:bg-white transition shadow-sm`}
             >
-              <span className="font-semibold text-[#181C32]">Home</span>
-              <span className="text-gray-400">→</span>
+              <span className="font-bold text-[#181C32] text-lg">Home</span>
+              <span className="text-gray-400 group-hover:text-blue-600 transition-colors">→</span>
             </Link>
 
             {/* Services accordion */}
-            <div className="rounded-2xl border border-black/5 bg-white/60 overflow-hidden">
+            <div className="rounded-2xl border border-black/5 bg-white/60 overflow-hidden shadow-sm">
               <button
                 onClick={() =>
                   setOpenDropdown((p) =>
                     p === "m_services" ? null : "m_services",
                   )
                 }
-                className="w-full flex items-center justify-between px-4 py-4"
+                className="w-full flex items-center justify-between px-5 py-5"
               >
-                <span className="font-semibold text-[#181C32]">Services</span>
+                <span className="font-bold text-[#181C32] text-lg">Services</span>
                 <ChevronDown
-                  size={18}
+                  size={20}
                   className={`transition-transform duration-300 ${openDropdown === "m_services" ? "rotate-180" : ""}`}
                 />
               </button>
@@ -414,7 +414,7 @@ const Navigation = () => {
                   : "grid-rows-[0fr] opacity-0"
                   }`}
               >
-                <div className="overflow-hidden px-2 pb-3">
+                <div className="overflow-hidden px-2 pb-4">
                   {navLinks
                     .find((l) => l.label === "Services")
                     ?.dropdown?.map((item) => (
@@ -425,9 +425,9 @@ const Navigation = () => {
                           setMobileOpen(false);
                           setOpenDropdown(null);
                         }}
-                        className="flex items-center justify-between rounded-xl px-3 py-3 hover:bg-black/5 transition"
+                        className="flex items-center justify-between rounded-xl px-4 py-4 hover:bg-black/5 transition"
                       >
-                        <span className="text-[14px] font-semibold text-[#181C32]">
+                        <span className="text-[15px] font-semibold text-[#181C32]">
                           {item.label}
                         </span>
                         <span className="text-gray-400">→</span>
@@ -440,30 +440,30 @@ const Navigation = () => {
             <Link
               to="/about-us"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center justify-between rounded-2xl px-4 py-4 border border-black/5 bg-white/60 hover:bg-white transition"
+              className="flex items-center justify-between rounded-2xl px-5 py-5 border border-black/5 bg-white/60 hover:bg-white transition shadow-sm"
             >
-              <span className="font-semibold text-[#181C32]">About</span>
+              <span className="font-bold text-[#181C32] text-lg">About</span>
               <span className="text-gray-400">→</span>
             </Link>
 
             <Link
               to="/team"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center justify-between rounded-2xl px-4 py-4 border border-black/5 bg-white/60 hover:bg-white transition"
+              className="flex items-center justify-between rounded-2xl px-5 py-5 border border-black/5 bg-white/60 hover:bg-white transition shadow-sm"
             >
-              <span className="font-semibold text-[#181C32]">Team</span>
+              <span className="font-bold text-[#181C32] text-lg">Team</span>
               <span className="text-gray-400">→</span>
             </Link>
 
-            <div className="pt-4">
+            <div className="pt-6">
               <Link
                 to="/contact"
                 onClick={() => setMobileOpen(false)}
-                className="mb-btn-needle w-full inline-flex items-center justify-center rounded-2xl px-5 py-4 text-[15px] font-bold text-white shadow-lg active:scale-[0.98]"
+                className="mb-btn-needle w-full inline-flex items-center justify-center rounded-2xl px-6 py-5 text-[16px] font-black text-white shadow-xl active:scale-[0.98] tracking-tight uppercase"
               >
                 Get Started
               </Link>
-              <p className="text-[12px] text-gray-500 mt-3 px-1">
+              <p className="text-[13px] text-gray-500 mt-4 px-2 font-medium">
                 Quick reply, clear process, premium delivery.
               </p>
             </div>

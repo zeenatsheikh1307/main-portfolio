@@ -92,12 +92,11 @@ export function HoloHero({
         flexDirection: "column",
         alignItems: "center",
         paddingBottom: "0px",
-        fontFamily: "Inter, sans-serif",
       }}
     >
       <div
         style={{
-          marginTop: "80px",
+          marginTop: "140px",
           textAlign: "center",
           zIndex: 10,
           position: "relative",
@@ -107,16 +106,16 @@ export function HoloHero({
           <div
             style={{
               display: "inline-block",
-              padding: "6px 16px",
+              padding: "8px 20px",
               borderRadius: "999px",
-              background: "rgba(255, 255, 255, 0.05)",
-              border: "1px solid rgba(255, 255, 255, 0.1)",
-              color: "#a855f7",
-              fontSize: "12px",
-              fontWeight: 600,
-              letterSpacing: "0.05em",
-              textTransform: "uppercase",
-              marginBottom: "24px",
+              background: "rgba(255, 255, 255, 0.03)",
+              border: "1px solid rgba(255, 255, 255, 0.15)",
+              color: "rgba(255, 255, 255, 0.9)",
+              fontSize: "13px",
+              fontWeight: 500,
+              letterSpacing: "0.02em",
+              marginBottom: "32px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
             }}
           >
             {badge}
@@ -126,14 +125,13 @@ export function HoloHero({
         {title && (
           <h1
             style={{
-              fontSize: "clamp(40px, 6vw, 72px)",
+              fontSize: "clamp(48px, 8vw, 84px)",
               fontWeight: 800,
               color: "#fff",
               lineHeight: 1.1,
               letterSpacing: "-0.02em",
               whiteSpace: "pre-line",
-              marginBottom: "24px",
-              textShadow: "0 10px 30px rgba(0,0,0,0.5)",
+              marginBottom: "28px",
             }}
           >
             {title}
@@ -143,11 +141,12 @@ export function HoloHero({
         {subtitle && (
           <p
             style={{
-              fontSize: "18px",
-              color: "rgba(255, 255, 255, 0.6)",
-              maxWidth: "600px",
-              margin: "0 auto 40px auto",
-              lineHeight: 1.5,
+              fontSize: "21px",
+              color: "rgba(255, 255, 255, 0.7)",
+              maxWidth: "720px",
+              margin: "0 auto 48px auto",
+              lineHeight: 1.4,
+              fontWeight: 400,
             }}
           >
             {subtitle}
@@ -156,28 +155,29 @@ export function HoloHero({
 
         {primaryAction && (
           <motion.button
-            whileHover={{ scale: 1.06 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.98 }}
             onClick={primaryAction.onClick}
             style={{
-              padding: "16px 40px",
+              padding: "18px 48px",
               borderRadius: "999px",
               background:
-                "linear-gradient(135deg, #a855f7 0%, #ec4899 55%, #f97316 100%)",
+                "linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #f43f5e 100%)",
               color: "#fff",
               fontWeight: 700,
-              fontSize: "16px",
+              fontSize: "17px",
               border: "none",
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: "10px",
+              gap: "12px",
               cursor: "pointer",
-              boxShadow: "0 14px 44px rgba(168,85,247,0.5)",
+              boxShadow: "0 20px 50px rgba(99,102,241,0.3)",
               margin: "0 auto",
             }}
           >
             {primaryAction.label}
-            <ArrowRight size={18} />
+            <ArrowRight size={20} />
           </motion.button>
         )}
       </div>
@@ -295,7 +295,7 @@ function VideoTile({ card }: { card: VideoCard }) {
     <div
       onMouseEnter={() => {
         setHover(true);
-        videoRef.current?.play().catch(() => {});
+        videoRef.current?.play().catch(() => { });
       }}
       onMouseLeave={() => {
         setHover(false);
