@@ -17,39 +17,14 @@ type Member = {
 
 const TEAM: Member[] = [
   {
-    name: "Priyansh Gour",
+    name: "Neeraj Soni",
     role: "Founder & CEO",
-    image: "https://randomuser.me/api/portraits/men/32.jpg",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMc8EvEmkIlnIJaPtCqGGZUJfWVv6qV0fYBQ&s",
     bio: "Visionary leader with a passion for digital innovation and client success.",
     short: "Scaling brands with performance + design.",
     tags: ["Leadership", "Strategy", "Growth"],
     featured: true,
-  },
-  {
-    name: "Aarav Sharma",
-    role: "Lead Developer",
-    image: "https://randomuser.me/api/portraits/men/45.jpg",
-    bio: "Expert in web technologies and building scalable digital products.",
-    short: "Next.js, Tailwind, Supabase — ship fast.",
-    tags: ["Next.js", "Supabase", "CI/CD"],
-  },
-  {
-    name: "Isha Verma",
-    role: "Marketing Head",
-    image: "https://randomuser.me/api/portraits/women/65.jpg",
-    bio: "Strategist focused on creative campaigns and brand growth.",
-    short: "Full-funnel ads + brand storytelling.",
-    tags: ["Funnels", "Creatives", "Analytics"],
-    featured: true,
-  },
-  {
-    name: "Riya Singh",
-    role: "Content Specialist",
-    image: "https://randomuser.me/api/portraits/women/68.jpg",
-    bio: "Storyteller and content creator with a flair for engaging audiences.",
-    short: "Long-form + shorts that convert.",
-    tags: ["Copy", "SEO", "Shorts"],
-  },
+  
 ];
 
 /* ------------------------------------------
