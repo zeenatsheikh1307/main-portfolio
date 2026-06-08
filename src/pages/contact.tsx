@@ -156,7 +156,7 @@ const Contact: React.FC = () => {
       icon: <Mail className="w-5 h-5 text-purple-300" />,
       badge: "bg-purple-500/15 border-purple-500/30",
       title: "Email",
-      content: "metabulls2@gmail.com",
+      content: "metabulluniverse@gmail.com",
     },
     {
       icon: <Phone className="w-5 h-5 text-blue-300" />,
