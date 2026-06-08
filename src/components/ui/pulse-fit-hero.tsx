@@ -71,13 +71,21 @@ export function PulseFitHero({
         className
       )}
       style={{
-        background: "linear-gradient(180deg, #08080f 0%, #0d0d15 50%, #08080f 100%)",
+        background: "#000000",
       }}
       role="banner"
       aria-label="Hero section"
     >
-      {/* Background Decorative Glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-purple-600/10 blur-[120px] rounded-full pointer-events-none" />
+      {/* Cinematic Overlays & High-End Atmospheric Glows */}
+      <div
+        className="absolute inset-0 pointer-events-none z-[1] opacity-[0.03]"
+        style={{ backgroundImage: `url('https://grainy-gradients.vercel.app/noise.svg')` }}
+      />
+
+      {/* Dynamic Background Glows - Reduced for Depth */}
+      <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[80%] h-[70%] bg-purple-600/[0.05] blur-[150px] rounded-full pointer-events-none animate-pulse" />
+      <div className="absolute top-[20%] right-[-10%] w-[40%] h-[40%] bg-blue-600/[0.05] blur-[120px] rounded-full pointer-events-none animate-pulse" style={{ animationDelay: '2s' }} />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-purple-500/[0.03] blur-[120px] rounded-full pointer-events-none animate-pulse" style={{ animationDelay: '4s' }} />
 
       {/* Header */}
       {!hideHeader && (
@@ -160,7 +168,7 @@ export function PulseFitHero({
           {children}
         </div>
       ) : (
-        <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 pt-12">
+        <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 pt-40">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -168,15 +176,16 @@ export function PulseFitHero({
             className="flex flex-col items-center text-center max-w-4xl"
             style={{ gap: "24px" }}
           >
-            {/* Title */}
+            {/* Title - Cinematic Gradient & Tracking */}
             <h1
-              className="text-white"
+              className="text-white text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/50"
               style={{
                 fontFamily: "Inter, sans-serif",
-                fontWeight: 800,
-                fontSize: "clamp(40px, 7vw, 84px)",
-                lineHeight: "0.95",
-                letterSpacing: "-0.04em",
+                fontWeight: 900,
+                fontSize: "clamp(46px, 8vw, 92px)",
+                lineHeight: "0.9",
+                letterSpacing: "-0.05em",
+                filter: "drop-shadow(0 0 30px rgba(255,255,255,0.1))",
               }}
             >
               {title}
@@ -207,18 +216,17 @@ export function PulseFitHero({
                 {primaryAction && (
                   <button
                     onClick={primaryAction.onClick}
-                    className="flex flex-row items-center gap-2 px-10 py-4 rounded-full transition-all hover:scale-105 active:scale-95 group"
+                    className="flex flex-row items-center gap-2 px-12 py-5 rounded-full transition-all hover:scale-105 active:scale-95 group shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] hover:shadow-[0_0_50px_-5px_rgba(255,255,255,0.4)]"
                     style={{
                       background: "#FFFFFF",
                       fontFamily: "Inter, sans-serif",
                       fontSize: "16px",
                       fontWeight: 700,
                       color: "#000000",
-                      boxShadow: "0 10px 30px rgba(255, 255, 255, 0.1)",
                     }}
                   >
                     {primaryAction.label}
-                    <svg 
+                    <svg
                       width="20" height="20" viewBox="0 0 20 20" fill="none"
                       className="group-hover:translate-x-1 transition-transform"
                     >
@@ -236,15 +244,13 @@ export function PulseFitHero({
                 {secondaryAction && (
                   <button
                     onClick={secondaryAction.onClick}
-                    className="px-10 py-4 rounded-full transition-all hover:scale-105 active:scale-95"
+                    className="px-12 py-5 rounded-full transition-all hover:scale-105 active:scale-95 border border-white/10 hover:border-white/30 backdrop-blur-3xl hover:bg-white/5"
                     style={{
-                      background: "rgba(255, 255, 255, 0.05)",
-                      border: "1px solid rgba(255, 255, 255, 0.1)",
+                      background: "rgba(255, 255, 255, 0.03)",
                       fontFamily: "Inter, sans-serif",
                       fontSize: "16px",
                       fontWeight: 600,
                       color: "#FFFFFF",
-                      backdropFilter: "blur(10px)",
                     }}
                   >
                     {secondaryAction.label}
@@ -361,17 +367,19 @@ export function PulseFitHero({
             {[...programs, ...programs, ...programs].map((program, index) => (
               <motion.div
                 key={index}
-                whileHover={{ scale: 1.05, y: -10 }}
-                transition={{ duration: 0.3 }}
+                whileHover={{ scale: 1.02, y: -10 }}
+                transition={{ duration: 0.5 }}
                 onClick={program.onClick}
-                className="flex-shrink-0 cursor-pointer relative overflow-hidden"
+                className="flex-shrink-0 cursor-pointer relative overflow-hidden group/card"
                 style={{
                   width: "356px",
                   height: "480px",
-                  borderRadius: "24px",
-                  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.12)",
+                  borderRadius: "32px",
+                  boxShadow: "0 20px 50px rgba(0, 0, 0, 0.3)",
                 }}
               >
+                {/* Image Glow Follow (CSS Hover) */}
+                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-700 pointer-events-none z-10" />
                 {/* Image */}
                 <img
                   src={program.image}

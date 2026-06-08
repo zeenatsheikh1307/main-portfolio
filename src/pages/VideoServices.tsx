@@ -9,6 +9,10 @@ import {
   Award,
   ArrowRight,
   Check,
+  Search,
+  Video,
+  Layers,
+  Send,
 } from "lucide-react";
 import { gsap } from "gsap";
 import { motion } from "framer-motion";
@@ -16,17 +20,8 @@ import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Navigation from "@/components/Navigation";
 import { PricingSection } from "@/components/ui/pricing";
-import CoverflowCarousel from "@/components/ui/coverflow-carousel";
-import { HoloHero } from "@/components/ui/holo-hero";
 import { ReadyToBuild } from "@/components/ui/ready-to-build";
 import { PulseFitHero } from "@/components/ui/pulse-fit-hero";
-
-import v1 from "./assets/assests/original-b8969bc781998cd5a622d584dcb359a6.mp4";
-import v2 from "./assets/assests/Video.mp4";
-import v3 from "./assets/assests/osmo.mp4";
-import v4 from "./assets/assests/Video.mp4";
-import v5 from "./assets/assests/original-b8969bc781998cd5a622d584dcb359a6.mp4";
-import v6 from "./assets/assests/osmo.mp4";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -69,207 +64,129 @@ const heroPrograms = [
   },
 ];
 
-const videoProjects = [
+
+const services = [
   {
-    id: 1,
-    title: "Brand Documentary",
-    description: "Corporate documentary showcasing company culture and values",
-    thumbnail: v1,
-    duration: "3:45",
-    category: "Documentary",
-    year: "2024",
-    youtube: "https://youtube.com/shorts/4ZUyqa2rgmM?feature=share",
+    icon: Film,
+    title: "Brand Stories",
+    description: "Cinematic documentaries that capture your brand's soul and connect emotionally.",
+    accent: "#a855f7",
   },
   {
-    id: 2,
-    title: "Product Showcase",
-    description: "Dynamic product reveal with motion graphics and animation",
-    thumbnail: v2,
-    duration: "1:30",
-    category: "Commercial",
-    year: "2024",
-    youtube: "https://www.youtube.com/watch?v=VIDEO_ID_2",
+    icon: Camera,
+    title: "Commercial Ads",
+    description: "High-impact product films engineered to convert viewers into customers.",
+    accent: "#3b82f6",
   },
   {
-    id: 3,
-    title: "Music Video",
-    description: "Cinematic music video with creative visual storytelling",
-    thumbnail: v3,
-    duration: "4:12",
-    category: "Creative",
-    year: "2023",
-    youtube: "https://www.youtube.com/watch?v=VIDEO_ID_3",
+    icon: Edit,
+    title: "Post-Production",
+    description: "Professional color grading, sound design, and motion graphics for polished output.",
+    accent: "#10b981",
   },
   {
-    id: 4,
-    title: "Event Highlight",
-    description: "Conference highlights with dynamic editing and graphics",
-    thumbnail: v4,
-    duration: "2:18",
-    category: "Event",
-    year: "2024",
-    youtube: "https://www.youtube.com/watch?v=VIDEO_ID_4",
+    icon: Music,
+    title: "Music Videos",
+    description: "Creative visual storytelling paired with rhythmic editing for artists.",
+    accent: "#f59e0b",
   },
   {
-    id: 5,
-    title: "Animation Reel",
-    description: "2D/3D animation showcase with motion graphics",
-    thumbnail: v5,
-    duration: "1:45",
-    category: "Animation",
-    year: "2024",
-    youtube: "https://www.youtube.com/watch?v=VIDEO_ID_5",
+    icon: Award,
+    title: "Corporate Films",
+    description: "Refined communication for stakeholders with premium production values.",
+    accent: "#ef4444",
   },
   {
-    id: 6,
-    title: "Social Media Campaign",
-    description: "Series of short-form content for social platforms",
-    thumbnail: v6,
-    duration: "0:15",
-    category: "Social",
-    year: "2024",
-    youtube: "https://www.youtube.com/watch?v=VIDEO_ID_6",
+    icon: Palette,
+    title: "VFX & Animation",
+    description: "Bringing the impossible to life with high-end visual effects and 3D modeling.",
+    accent: "#06b6d4",
   },
 ];
 
-// ── Individual work card with video-on-hover ─────────────────────────────
-type WorkProgram = { image: string; video?: string; category: string; title: string };
+const processSteps = [
+  {
+    step: "01",
+    title: "Strategy",
+    icon: Search,
+    description: "Deep-dive into brand goals and target audience behavior.",
+  },
+  {
+    step: "02",
+    title: "Production",
+    icon: Video,
+    description: "Professional shoot with industry-grade equipment and direction.",
+  },
+  {
+    step: "03",
+    title: "Post-Production",
+    icon: Layers,
+    description: "Precision editing, color grading, and sound design.",
+  },
+  {
+    step: "04",
+    title: "Delivery",
+    icon: Send,
+    description: "Final approval and export in all required platform formats.",
+  },
+];
 
-const WorkCard = ({ program }: { program: WorkProgram }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  return (
-    <div
-      className="flex-shrink-0 relative overflow-hidden cursor-none"
-      data-cursor="WATCH"
-      style={{ width: "356px", height: "480px", borderRadius: "24px", boxShadow: "0 12px 40px rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.05)" }}
-      onMouseEnter={() => videoRef.current?.play().catch(() => { })}
-      onMouseLeave={() => { if (videoRef.current) { videoRef.current.pause(); videoRef.current.currentTime = 0; } }}
-    >
-      {program.video && (
-        <video
-          ref={videoRef}
-          muted loop playsInline preload="auto"
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }}
-        >
-          <source src={program.video} type="video/mp4" />
-        </video>
-      )}
-      {!program.video && (
-        <img src={program.image} alt={program.title} draggable={false} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }} />
-      )}
-      <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(10,10,15,0) 0%, rgba(10,10,15,0.85) 100%)" }} />
-      <div className="absolute bottom-0 left-0 right-0 p-6" style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-        <span style={{ fontSize: "12px", fontWeight: 500, color: "rgba(255,255,255,0.8)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
-          {program.category}
-        </span>
-        <h3 style={{ fontSize: "24px", fontWeight: 600, color: "#FFFFFF", lineHeight: "1.3" }}>
-          {program.title}
-        </h3>
-      </div>
-    </div>
-  );
-};
-
-// ── Our Work drag-to-scroll strip ──────────────────────────────────────────
-const OurWorkCarousel = () => {
-  const programs = [...heroPrograms, ...heroPrograms];
-  const CARD_PX = 380; // card width + gap
-  const totalW = heroPrograms.length * CARD_PX;
-
-  const stripRef = useRef<HTMLDivElement>(null);
-  const rafRef = useRef<number>(0);
-  const xRef = useRef(0);
-  const isDrag = useRef(false);
-  const dragStartX = useRef(0);
-  const dragStartScroll = useRef(0);
-
-  useEffect(() => {
-    const strip = stripRef.current;
-    if (!strip) return;
-    const parent = strip.parentElement!;
-
-    const tick = () => {
-      if (!isDrag.current) {
-        xRef.current -= 1.2;
-      }
-      if (xRef.current <= -totalW) xRef.current = 0;
-      strip.style.transform = `translateX(${xRef.current}px)`;
-      rafRef.current = requestAnimationFrame(tick);
-    };
-
-    const onMouseDown = (e: MouseEvent) => {
-      isDrag.current = true;
-      dragStartX.current = e.clientX;
-      dragStartScroll.current = xRef.current;
-      parent.style.cursor = "grabbing";
-    };
-    const onMouseMove = (e: MouseEvent) => {
-      if (!isDrag.current) return;
-      const dx = e.clientX - dragStartX.current;
-      xRef.current = dragStartScroll.current + dx;
-      if (xRef.current > 0) xRef.current = 0;
-      if (xRef.current < -totalW * 2) xRef.current = 0;
-    };
-    const onMouseUp = () => {
-      isDrag.current = false;
-      parent.style.cursor = "grab";
-    };
-    const onMouseEnter = () => { parent.style.cursor = "grab"; };
-    const onMouseLeave = () => { isDrag.current = false; parent.style.cursor = "default"; };
-
-    parent.addEventListener("mousedown", onMouseDown);
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseup", onMouseUp);
-    parent.addEventListener("mouseenter", onMouseEnter);
-    parent.addEventListener("mouseleave", onMouseLeave);
-
-    rafRef.current = requestAnimationFrame(tick);
-    return () => {
-      cancelAnimationFrame(rafRef.current);
-      parent.removeEventListener("mousedown", onMouseDown);
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mouseup", onMouseUp);
-      parent.removeEventListener("mouseenter", onMouseEnter);
-      parent.removeEventListener("mouseleave", onMouseLeave);
-    };
-  }, []);
-
-  return (
-    <section id="projects" className="py-8 md:py-12 bg-[#0a0a0f] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
-        <div className="flex flex-col items-center justify-center mb-4 text-center">
-          <h2 className="text-5xl sm:text-6xl md:text-7xl font-black uppercase mb-4 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent tracking-tight">
-            Our Work
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent mb-4" />
-        </div>
-      </div>
-
-      <div
-        className="relative overflow-hidden"
-        style={{ paddingTop: "20px", paddingBottom: "60px", userSelect: "none" }}
-      >
-        <div className="absolute left-0 top-0 bottom-0 z-10 pointer-events-none" style={{ width: "200px", background: "linear-gradient(90deg, #0a0a0f 0%, rgba(10,10,15,0) 100%)" }} />
-        <div className="absolute right-0 top-0 bottom-0 z-10 pointer-events-none" style={{ width: "200px", background: "linear-gradient(270deg, #0a0a0f 0%, rgba(10,10,15,0) 100%)" }} />
-
-        <div ref={stripRef} style={{ display: "flex", gap: "24px", paddingLeft: "24px", willChange: "transform" }}>
-          {programs.map((program, index) => (
-            <WorkCard key={index} program={program} />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-};
 
 const VideoServices = () => {
-  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
-  const projectsRef = useRef<HTMLDivElement>(null);
+  const processRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    // GSAP: Process Timeline
+    if (processRef.current) {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: processRef.current,
+          start: "top 70%",
+          end: "bottom 80%",
+          scrub: 1.5,
+        }
+      });
+
+      // Animate central line growth
+      tl.to("#central-progress-line", {
+        height: "100%",
+        duration: 1,
+        ease: "none"
+      });
+
+      // Stagger items
+      const items = gsap.utils.toArray(".process-item");
+      items.forEach((item: any, i) => {
+        const watermark = item.querySelector(".process-watermark");
+        const node = item.querySelector(".process-node");
+
+        gsap.fromTo(watermark, 
+          { opacity: 0, scale: 0.8, y: 50 },
+          { 
+            opacity: 0.35, scale: 1, y: 0,
+            scrollTrigger: {
+              trigger: item,
+              start: "top 85%",
+              end: "top 50%",
+              scrub: 1
+            }
+          }
+        );
+
+        gsap.to(node, {
+          scale: 1,
+          scrollTrigger: {
+            trigger: item,
+            start: "top 70%",
+            toggleActions: "play none none reverse"
+          }
+        });
+      });
+    }
 
     // Hero animations
     if (heroRef.current) {
@@ -302,37 +219,11 @@ const VideoServices = () => {
     }
   }, []);
 
-  // Modal logic
-  const getEmbedUrl = (url?: string | null) => {
-    if (!url) return "";
-    const patterns = [
-      /(?:v=|\/videos\/|embed\/|youtu\.be\/|shorts\/)([A-Za-z0-9_-]{6,11})/,
-    ];
-    for (const p of patterns) {
-      const m = url.match(p);
-      if (m && m[1])
-        return `https://www.youtube.com/embed/${m[1]}?autoplay=1&rel=0`;
-    }
-    return url;
-  };
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedVideo(null);
-    };
-    document.addEventListener("keydown", onKey);
-    if (selectedVideo) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [selectedVideo]);
 
   return (
     <div
       className="min-h-screen text-foreground font-sans transition-colors duration-300"
-      style={{ background: "#08080f" }}
+      style={{ background: "#000000" }}
     >
       <Navigation />
       <PulseFitHero
@@ -348,24 +239,136 @@ const VideoServices = () => {
           onClick: () => { document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' }) },
         }}
         disclaimer="*Professional Production Within 48 Hours"
-        socialProof={{
-          avatars: [
-            "https://i.pravatar.cc/150?img=33",
-            "https://i.pravatar.cc/150?img=12",
-            "https://i.pravatar.cc/150?img=45",
-            "https://i.pravatar.cc/150?img=28",
-          ],
-          text: "Trusted by 50+ Brands Worldwide",
-        }}
-        programs={heroPrograms.map(p => ({
+        programs={heroPrograms.map((p, idx) => ({
+          id: idx,
           image: p.image,
           category: p.category,
-          title: p.title
+          title: p.title,
+          description: ""
         }))}
       />
 
-      {/* Pricing Section */}
-      <section className="relative px-4 md:px-6 py-16 md:py-24 overflow-hidden">
+
+      {/* Specialized Services Grid */}
+      <section className="py-20 bg-black relative overflow-hidden" ref={servicesRef}>
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-6xl font-black text-white mb-4 uppercase tracking-tight">
+              Specialized Services
+            </h2>
+            <div className="w-24 h-1 bg-purple-500 mx-auto" />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {services.map((service, index) => (
+              <motion.div
+                key={service.title}
+                className="service-card p-8 rounded-3xl bg-white/[0.03] border border-white/10 hover:border-white/20 transition-all group"
+                whileHover={{ y: -10 }}
+              >
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110"
+                  style={{ background: `${service.accent}20`, border: `1px solid ${service.accent}40` }}
+                >
+                  <service.icon style={{ color: service.accent }} size={32} />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-3">{service.title}</h3>
+                <p className="text-gray-400 leading-relaxed">{service.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Process Section - Refined GSAP Timeline */}
+      <section 
+        id="process-section" 
+        ref={processRef}
+        className="py-32 bg-black border-t border-white/5 relative overflow-hidden"
+      >
+        {/* Ambient Atmosphere */}
+        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none mix-blend-overlay" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-blue-600/[0.02] blur-[150px] rounded-full pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
+          <div className="text-center mb-28">
+            <div className="inline-block px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/5 text-blue-400 text-xs font-bold tracking-[0.3em] uppercase mb-8">
+              Workflow
+            </div>
+            <h2 className="text-5xl md:text-7xl font-black text-white mb-6 uppercase tracking-tighter italic">
+              Our Process
+            </h2>
+            <div className="w-32 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent mx-auto" />
+          </div>
+
+          {/* Timeline Container */}
+          <div className="relative">
+            {/* Central Line with GSAP Growth (Desktop Only) */}
+            <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-white/5 hidden md:block">
+              <div 
+                id="central-progress-line"
+                className="absolute left-[-1px] top-0 w-1 bg-gradient-to-b from-blue-600 via-blue-400 to-blue-600 origin-top h-0"
+              />
+            </div>
+
+            <div className="space-y-32">
+              {processSteps.map((item, index) => (
+                <div 
+                  key={item.step} 
+                  className={`process-item relative flex flex-col ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center justify-between gap-8 md:gap-12`}
+                >
+                  {/* Content Side */}
+                  <div className="w-full md:w-5/12 text-center md:text-left relative z-10">
+                    <div className="flex flex-col md:items-start items-center">
+                      <span className="text-blue-500 font-mono text-sm mb-4 tracking-widest uppercase">Step {item.step}</span>
+                      <h3 className="text-3xl md:text-5xl font-black text-white mb-6 uppercase tracking-tight leading-none">
+                        {item.title}
+                      </h3>
+                      <p className="text-gray-400 text-lg leading-relaxed max-w-md">
+                        {item.description}
+                      </p>
+                      
+                      <div className="mt-8 flex items-center gap-4 group cursor-pointer lg:hover:gap-6 transition-all">
+                        <span className="text-xs font-bold text-white/40 uppercase tracking-widest group-hover:text-blue-400 transition-colors">Learn More</span>
+                        <div className="w-12 h-[1px] bg-white/20 group-hover:bg-blue-500 transition-colors" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Node & Watermark Side */}
+                  <div className="w-full md:w-5/12 relative h-32 md:h-auto flex items-center justify-center">
+                    {/* Massive Background Number - High Visibility Solid Style */}
+                    <div 
+                      className="process-watermark absolute text-[12rem] md:text-[22rem] font-black italic select-none pointer-events-none z-0 tracking-tighter opacity-0 scale-90"
+                      style={{ 
+                        color: 'rgba(255,255,255,0.2)',
+                        WebkitTextStroke: 'none'
+                      }}
+                    >
+                      {item.step}
+                    </div>
+
+                    {/* Central Glowing Node */}
+                    <div className="absolute left-1/2 md:hidden block top-[-20px] -translate-x-1/2 w-4 h-4 rounded-full bg-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.8)] z-30" />
+                    <div className="w-full h-[1px] md:hidden block bg-gradient-to-r from-transparent via-blue-500/20 to-transparent absolute top-[-10px]" />
+                  </div>
+
+                  {/* Central Node (Desktop Only) */}
+                  <div className="process-node absolute left-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-black border-2 border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.5)] z-20 hidden md:block scale-0">
+                    <div className="absolute inset-[4px] rounded-full bg-blue-500 animate-pulse" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Section - Restored from Web Services Structure */}
+      <section
+        id="pricing"
+        className="relative px-4 md:px-6 py-16 md:py-24 bg-black overflow-hidden"
+      >
         <PricingSection
           className="text-white w-full"
           heading="Pricing"
@@ -395,9 +398,9 @@ const VideoServices = () => {
                 text: "Get Started",
                 href: "/contact",
               },
+              highlighted: false,
             },
             {
-              highlighted: true,
               name: "AI Model Videos",
               info: "Advanced AI-generated video content",
               price: {
@@ -421,6 +424,7 @@ const VideoServices = () => {
                 text: "Get Started",
                 href: "/contact",
               },
+              highlighted: true,
             },
             {
               name: "UGC Content",
@@ -447,37 +451,13 @@ const VideoServices = () => {
                 text: "Get Started",
                 href: "/contact",
               },
+              highlighted: false,
             },
           ]}
         />
       </section>
 
-      {/* Video Modal */}
-      {selectedVideo && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
-          role="dialog"
-          aria-modal="true"
-        >
-          <div className="relative w-full max-w-5xl rounded-2xl overflow-hidden bg-black shadow-2xl border border-white/10">
-            <button
-              onClick={() => setSelectedVideo(null)}
-              className="absolute top-4 right-4 z-50 bg-black/50 text-white rounded-full p-2 hover:bg-white/20 transition-colors"
-            >
-              ✕
-            </button>
-            <div className="aspect-video w-full">
-              <iframe
-                title="Embedded video"
-                className="w-full h-full"
-                src={getEmbedUrl(selectedVideo)}
-                allow="autoplay; encrypted-media; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
-          </div>
-        </div>
-      )}
+
 
       {/* Ready to Build CTA Section */}
       <ReadyToBuild />
