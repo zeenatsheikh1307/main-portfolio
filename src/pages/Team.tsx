@@ -24,7 +24,7 @@ const TEAM: Member[] = [
     short: "Scaling brands with performance + design.",
     tags: ["Leadership", "Strategy", "Growth"],
     featured: true,
-  
+  },
 ];
 
 /* ------------------------------------------
