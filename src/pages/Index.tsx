@@ -384,13 +384,11 @@ const Index = () => {
       background-clip: text;
       color: transparent;
       font-weight: 600;
-      font-family: 'Outfit', sans-serif;
     }
     .hero-title-exact { 
       color: #fff; 
       font-weight: 800; 
       letter-spacing: -0.04em; 
-      font-family: 'Plus Jakarta Sans', sans-serif;
       text-transform: capitalize;
     }
     .hero-paragraph-exact { 
@@ -398,7 +396,6 @@ const Index = () => {
       max-width: 62ch; 
       margin-left:auto; 
       margin-right:auto; 
-      font-family: 'Outfit', sans-serif;
       font-weight: 400;
     }
 
@@ -738,7 +735,6 @@ const Index = () => {
                           opacity: 0.12,
                           marginRight: "4rem",
                           letterSpacing: "-0.01em",
-                          fontFamily: "'Plus Jakarta Sans', sans-serif",
                           textTransform: "uppercase",
                         }}
                       >
@@ -751,7 +747,6 @@ const Index = () => {
                           WebkitTextStroke: "2px rgba(255,255,255,0.4)",
                           marginRight: "4rem",
                           letterSpacing: "-0.01em",
-                          fontFamily: "'Plus Jakarta Sans', sans-serif",
                           textTransform: "uppercase",
                         }}
                       >
@@ -763,7 +758,6 @@ const Index = () => {
                           opacity: 0.12,
                           marginRight: "4rem",
                           letterSpacing: "-0.01em",
-                          fontFamily: "'Plus Jakarta Sans', sans-serif",
                           textTransform: "uppercase",
                         }}
                       >
@@ -778,12 +772,13 @@ const Index = () => {
                 <span className="hero-el hidden sm:inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm md:text-base font-medium mb-6 hero-tagline-gradient"></span>
 
                 <h1
-                  className="hero-el hero-title-exact tracking-tight mb-4 sm:mb-6 text-white text-[clamp(2.6rem,6.2vw,5.25rem)] leading-[1.03]"
+                  className="hero-el hero-title-exact tracking-tight mb-4 sm:mb-6 text-white text-[32px] sm:text-[42px] md:text-[clamp(2.6rem,6.2vw,5.25rem)] leading-[1.1] md:leading-[1.03]"
                   style={{ textShadow: "0 10px 30px rgba(2,6,23,0.6)" }}
                 >
                   <span className="block">Build, launch & grow</span>
                   <span className="block">your digital brand.</span>
                 </h1>
+                Riverside,
 
                 <p className="hero-el hero-paragraph-exact text-base md:text-lg lg:text-xl mb-8 md:mb-10 mx-auto leading-relaxed max-w-2xl text-white/75">
                   MetaBull Universe designs clean websites, strong visual
@@ -801,13 +796,8 @@ const Index = () => {
                       </span>
                     </button>
                   </Link>
-                  <Link to="/contact">
-                    <button className="hero-btn-glass group">
-                      Talk to Team
-                      <span className="ml-2 opacity-1 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
-                        →
-                      </span>
-                    </button>
+                  <Link to="/services">
+                    <button className="hero-btn-glass">Our Services</button>
                   </Link>
                 </div>
               </div>
@@ -818,7 +808,7 @@ const Index = () => {
 
             {/* BRANDING MARQUEE */}
             <div className="w-full bg-black h-16 py-0 overflow-hidden relative z-20 border-y border-white/10 select-none">
-              <div className="hero-scroll-track whitespace-nowrap flex items-center h-full">
+              <div className="hero-scroll-track whitespace-nowrap flex items-center h-full" data-cursor="DRAG">
                 {[...Array(4)].map((_, i) => (
                   <div key={i} className="flex items-center gap-32 mx-16 shrink-0 min-w-max">
                     {[
@@ -886,29 +876,35 @@ const Index = () => {
                       title: "Strategic Marketing",
                       text: "ROI-focused performance marketing campaigns.",
                       img: adsImg,
+                      path: "/ads-service",
                     },
                     {
                       tag: "02",
                       title: "Video Production",
                       text: "High-impact video content for brands that want to stand out.",
                       img: brandingImg,
+                      path: "/video-services",
                     },
                     {
                       tag: "03",
                       title: "Web Platforms",
                       text: "High-performance, scalable web ecosystems.",
                       img: websiteImg,
+                      path: "/web-services",
                     },
                     {
                       tag: "04",
                       title: "Social Media Management",
                       text: "Strategic visual identities that tell your story.",
                       img: socialImg,
+                      path: "/social-services",
                     },
                   ].map((c, idx) => (
-                    <div
+                    <Link
                       key={idx}
-                      className="group relative service-premium-card rounded-[24px] overflow-hidden flex flex-col p-8 h-[26rem] md:h-[29rem]"
+                      to={c.path}
+                      className="group relative service-premium-card rounded-[24px] overflow-hidden flex flex-col p-8 h-[26rem] md:h-[29rem] cursor-none"
+                      data-cursor="VIEW"
                       onMouseMove={(e) => {
                         const rect = e.currentTarget.getBoundingClientRect();
                         const x = e.clientX - rect.left;
@@ -953,7 +949,7 @@ const Index = () => {
                           loading="lazy"
                         />
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
 

@@ -1,547 +1,639 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Link } from "react-router-dom";
 import Navigation from "../components/Navigation";
-import {
-  Rocket,
-  Sparkles,
-  Palette,
-  Code2,
-  Megaphone,
-  Target,
-  LineChart,
-  ShieldCheck,
-  Stars,
-  Workflow,
-  Gauge,
-  Globe2,
-  MoveRight,
-  CheckCircle2,
-  ArrowRight,
-  Zap,
-} from "lucide-react";
 
-/** AboutUs – Pro MU theme • Bigger cards • Better structure • Smooth animations (pure Tailwind + tiny JS) */
+gsap.registerPlugin(ScrollTrigger);
+
+// ─── Process Steps Data ───────────────────────────────────────────────
+const STEPS = [
+  {
+    num: "01",
+    label: "analysis",
+    title: "Discovery & Analysis",
+    desc: "We explore your brand's core message and set the direction for the narrative. Deep research, competitor analysis, and strategy.",
+  },
+  {
+    num: "02",
+    label: "concept",
+    title: "Concept & Strategy",
+    desc: "We propose unique concepts for your project, bringing ideas to life with visual mood boards and strategic direction.",
+  },
+  {
+    num: "03",
+    label: "visuals & manifesto",
+    title: "Visuals & Manifesto",
+    desc: "We provide 3D visualizations and a manifesto to convey the key message and ensure lasting impact.",
+  },
+  {
+    num: "04",
+    label: "budgeting",
+    title: "Budgeting & Delivery",
+    desc: "We offer transparent pricing with no hidden costs. Clear timelines, precise delivery, and post-launch support.",
+  },
+];
+
+// ─── Scrolling marquee items ──────────────────────────────────────────
+const MARQUEE = [
+  "Web Design", "◆", "Branding", "◆", "Video Production", "◆",
+  "Performance Ads", "◆", "AI Automation", "◆", "Social Media", "◆",
+  "UI/UX Design", "◆", "SEO & Growth", "◆",
+];
 
 export default function AboutUs() {
-  const ioRef = useRef<IntersectionObserver | null>(null);
-  const heroRef = useRef<HTMLDivElement | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
+  const pathRef = useRef<SVGPathElement>(null);
+  const dotRef = useRef<SVGCircleElement>(null);
+  const stepRefs = useRef<HTMLDivElement[]>([]);
+  const marqueeRef = useRef<HTMLDivElement>(null);
+
+  // ─── Mouse tracking for Parallax ────────────────────────────────────
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const handleMouseMove = (e: MouseEvent) => {
+    // Convert to range -0.5 to 0.5
+    mouseRef.current = {
+      x: (e.clientX / window.innerWidth) - 0.5,
+      y: (e.clientY / window.innerHeight) - 0.5,
+    };
+  };
 
   useEffect(() => {
-    const els = document.querySelectorAll(".reveal");
-    ioRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("in");
-            ioRef.current?.unobserve(e.target as Element);
-          }
-        });
-      },
-      { threshold: 0.12 }
-    );
-    els.forEach((el) => ioRef.current?.observe(el));
-    return () => ioRef.current?.disconnect();
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Hero entrance animation + subtle decorative float (respects reduced motion)
+  // ─── GSAP Hero & Interactive Logic ───────────────────────────────────
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    try {
-      gsap.registerPlugin(ScrollTrigger);
-    } catch (e) {
-      /* ignore if plugin already registered */
-    }
+    const ctx = gsap.context(() => {
+      // Title entrance
+      gsap.from(".about-hero-word", {
+        y: 140,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power4.out",
+        stagger: 0.1,
+        delay: 0.15,
+      });
 
-    const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches ?? false;
-    if (prefersReduced) return;
+      // Interactive Parallax Loop
+      gsap.ticker.add(() => {
+        const { x, y } = mouseRef.current;
+        
+        // Move "about" (parallax layer 1)
+        gsap.to(".parallax-layer-1", {
+          x: x * 40,
+          y: y * 25,
+          duration: 1.5,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+
+        // Move "us" (parallax layer 2 - opposite/different intensity)
+        gsap.to(".parallax-layer-2", {
+          x: x * -60,
+          y: y * 40,
+          duration: 2,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+
+        // Background blobs react to mouse
+        gsap.to(".hero-blob-1", { x: 30 + (x * 100), y: -20 + (y * 80), duration: 4, ease: "power2.out", overwrite: "auto" });
+        gsap.to(".hero-blob-2", { x: -25 + (x * -80), y: 30 + (y * -60), duration: 5, ease: "power2.out", overwrite: "auto" });
+        gsap.to(".hero-blob-3", { x: 15 + (x * 50), y: 25 + (y * 40), duration: 4.5, ease: "power2.out", overwrite: "auto" });
+      });
+
+      // Fade in sub elements
+      gsap.from(".about-sub", {
+        y: 24,
+        opacity: 0,
+        duration: 0.9,
+        ease: "power3.out",
+        stagger: 0.12,
+        delay: 0.8,
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  // ─── Marquee infinite scroll ─────────────────────────────────────────
+  useEffect(() => {
+    const el = marqueeRef.current;
+    if (!el) return;
+    gsap.to(el, {
+      x: "-50%",
+      duration: 20,
+      ease: "none",
+      repeat: -1,
+    });
+  }, []);
+
+  // ─── GSAP SVG Path Draw on Scroll ───────────────────────────────────
+  useEffect(() => {
+    if (!pathRef.current) return;
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.from("#about-hero-title", { y: 30, opacity: 0, duration: 0.8 })
-        .from(
-          ".about-hero-sub",
-          { y: 18, opacity: 0, duration: 0.7 },
-          "-=0.45"
-        )
-        .from(
-          ".about-hero-ctas a",
-          { y: 12, opacity: 0, duration: 0.55, stagger: 0.12 },
-          "-=0.4"
-        );
-
-      gsap.to(".hero-blob", {
-        y: 18,
-        x: 10,
-        rotation: 6,
-        duration: 6,
-        yoyo: true,
-        repeat: -1,
-        ease: "sine.inOut",
+      // Get total path length
+      const pathLength = pathRef.current!.getTotalLength();
+      gsap.set(pathRef.current, {
+        strokeDasharray: pathLength,
+        strokeDashoffset: pathLength,
       });
-    }, heroRef);
+
+      // Draw the path as user scrolls
+      gsap.to(pathRef.current, {
+        strokeDashoffset: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".process-section",
+          start: "top 80%",
+          end: "bottom 20%",
+          scrub: 1.2,
+        },
+      });
+
+      // Animate the dot along the path
+      if (dotRef.current) {
+        gsap.to(dotRef.current, {
+          motionPath: {
+            path: pathRef.current,
+            align: pathRef.current,
+            autoRotate: false,
+          },
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".process-section",
+            start: "top 80%",
+            end: "bottom 20%",
+            scrub: 1.2,
+          },
+        });
+      }
+
+      // Animate each step in as scroll reaches it
+      stepRefs.current.forEach((el, i) => {
+        if (!el) return;
+        gsap.from(el, {
+          x: i % 2 === 0 ? -60 : 60,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 75%",
+            toggleActions: "play none none none",
+          },
+        });
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  // ─── Scroll scaling for hero exit ──────────────────────────────────
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.to(heroRef.current, {
+        scale: 0.95,
+        opacity: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroRef.current,
+          start: "center center",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    }, containerRef);
+    return () => ctx.revert();
+  }, []);
+
+  // ─── Scroll reveal for other sections ───────────────────────────────
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray<HTMLElement>(".scroll-reveal").forEach((el) => {
+        gsap.from(el, {
+          y: 50,
+          opacity: 0,
+          duration: 0.9,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        });
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  // ─── Stats Count-up Animation ───────────────────────────────────────
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const stats = gsap.utils.toArray<HTMLElement>(".stat-number");
+      stats.forEach((stat) => {
+        const target = parseFloat(stat.getAttribute("data-target") || "0");
+        const suffix = stat.getAttribute("data-suffix") || "";
+        
+        const obj = { value: 0 };
+        gsap.to(obj, {
+          value: target,
+          duration: 2,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: stat,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+          onUpdate: () => {
+            stat.innerText = Math.floor(obj.value) + suffix;
+          },
+        });
+      });
+    }, containerRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#080910] text-white antialiased overflow-x-hidden">
+    <div ref={containerRef} className="min-h-screen bg-[#080808] text-white overflow-x-hidden">
       <Navigation />
 
-      {/* Cosmic background glows */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed inset-0 -z-10"
-        style={{
-          background: `
-            radial-gradient(1100px 560px at 15% -5%, rgba(67,0,255,0.28), transparent 60%),
-            radial-gradient(900px 480px at 85% 8%, rgba(255,0,102,0.22), transparent 55%),
-            radial-gradient(800px 520px at 50% 120%, rgba(43,192,228,0.14), transparent 60%)
-          `,
-        }}
-      />
+      {/* ═══════════════════════════════════════════════
+          HERO — Pure typography + abstract bg
+      ═══════════════════════════════════════════════ */}
+      <section ref={heroRef} className="relative min-h-screen overflow-hidden flex flex-col">
 
-      {/* ===================== HERO (no image) ===================== */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 -z-10 opacity-70 [mask-image:radial-gradient(60%_40%_at_50%_30%,black,transparent)]">
-          <div className="absolute inset-0 bg-[radial-gradient(650px_320px_at_50%_0%,rgba(255,255,255,0.10),transparent)] animate-pulse" />
+        {/* ─── High-end Film Grain / Noise Overlay ─── */}
+        <div className="pointer-events-none absolute inset-0 z-50 opacity-[0.03] mix-blend-overlay overflow-hidden">
+          <div className="noise-grain absolute inset-0 bg-[#080808]" />
         </div>
 
-        <div className="mx-auto max-w-7xl px-8 md:px-12 lg:px-20 pt-28 md:pt-32 lg:pt-36 hero-full flex items-center">
-          <div className="mx-auto max-w-6xl text-center reveal opacity-0 translate-y-6 relative z-10 pb-16 md:pb-20 lg:pb-24">
-            {/* soft radial spotlight */}
-            <div aria-hidden="true" className="pointer-events-none absolute inset-0 flex justify-center">
-              <div className="absolute -top-16 h-96 w-3/4 rounded-full bg-gradient-to-br from-[#2bc0e4]/6 to-[#4300FF]/6 blur-3xl opacity-40" />
-            </div>
+        {/* ─── Abstract atmospheric background blobs ─── */}
+        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          {/* Large purple blob — top left */}
+          <div
+            className="hero-blob-1 absolute rounded-full blur-[120px] opacity-30"
+            style={{ width: 600, height: 500, top: "-10%", left: "-8%", background: "radial-gradient(circle, #4f00e8 0%, transparent 70%)" }}
+          />
+          {/* Pink/red blob — top right */}
+          <div
+            className="hero-blob-2 absolute rounded-full blur-[140px] opacity-20"
+            style={{ width: 550, height: 450, top: "5%", right: "-10%", background: "radial-gradient(circle, #e8006f 0%, transparent 70%)" }}
+          />
+          {/* Cyan blob — bottom center */}
+          <div
+            className="hero-blob-3 absolute rounded-full blur-[130px] opacity-15"
+            style={{ width: 500, height: 400, bottom: "5%", left: "30%", background: "radial-gradient(circle, #00b4e8 0%, transparent 70%)" }}
+          />
 
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/8 bg-white/4 px-4 py-2 text-sm tracking-wide text-white/80 backdrop-blur inline-block">
-              <Stars className="h-4 w-4 text-[#2bc0e4]" />
-              <Zap className="h-4 w-4 text-[#FF0066]" />
-              <span>Metabull Universe — About</span>
-            </div>
+          {/* Subtle dot grid overlay */}
+          <div
+            className="absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)",
+              backgroundSize: "32px 32px",
+            }}
+          />
+        </div>
 
-            <h1 id="about-hero-title" className="mt-6 hero-title font-extrabold leading-[0.92]">
-              <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[72px] xl:text-[84px]">We build <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#2bc0e4] via-[#4300FF] to-[#FF0066]">performant products</span></span>
-              <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[72px] xl:text-[84px]">that users love.</span>
+        {/* ─── Thin left accent line ─── */}
+        <div className="absolute left-6 top-32 bottom-32 w-px bg-white/10 hidden lg:block" />
+
+        {/* ─── Static Status Labels — Repositioned to Top Right ─── */}
+        <div className="absolute right-12 top-32 hidden xl:flex flex-col gap-6 text-right pointer-events-none">
+          <div className="flex flex-col gap-1">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-white/20">established.inc</span>
+            <span className="text-xs font-black tracking-widest text-white/40 italic">2021 ©</span>
+          </div>
+          <div className="flex flex-col gap-1">
+            <span className="text-[10px] tracking-[0.3em] uppercase text-white/20">location</span>
+            <span className="text-xs font-black tracking-widest text-white/40 italic">BHOPAL, IN</span>
+          </div>
+        </div>
+
+        {/* ─── Center content ─── */}
+        <div className="relative z-10 flex flex-col items-center justify-center flex-1 text-center px-4 pt-28 pb-8">
+
+          {/* Label */}
+          <p className="about-sub text-[10px] tracking-[0.45em] uppercase text-white/25 font-medium mb-12">
+            metabull universe / about us
+          </p>
+
+          {/* ─── GIANT STACKED MAIN TITLE — UPPERCASE ─── */}
+          <div className="w-full flex justify-start parallax-layer-1">
+            <h1
+              className="about-hero-word block font-black leading-[1.1] tracking-[-0.05em] text-transparent bg-clip-text bg-gradient-to-r from-white via-white/80 to-white/40 liquid-text pl-[14vw]"
+              style={{ fontSize: "clamp(80px, 22vw, 240px)" }}
+            >
+              ABOUT
             </h1>
-
-            {/* shining stripe */}
-            <div className="absolute left-0 top-28 w-2/3 h-16 -skew-x-12 bg-gradient-to-r from-white/30 via-white/8 to-transparent opacity-30 blur-md z-0" style={{ animation: 'shine 3s ease-in-out infinite' }} />
-
-            {/* decorative floating blob (behind heading) */}
-            <div className="pointer-events-none">
-              <div className="hero-blob absolute right-12 top-8 h-60 w-60 rounded-3xl bg-gradient-to-br from-[#2bc0e4] to-[#4300FF] opacity-10 blur-3xl z-0" />
-            </div>
-
-            <p className="mx-auto mt-6 max-w-2xl text-base text-white/75 sm:text-lg about-hero-sub">
-              Full-stack development, brand design, performance marketing & AI automations—delivered with clarity,
-              speed, and measurable impact.
-            </p>
-
-            <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row about-hero-ctas">
-              <a
-                href="/contact"
-                className="group relative inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-purple-500 via-purple-600 to-violet-600 px-8 py-5 text-base font-semibold text-white transition-all duration-300 hover:from-purple-600 hover:via-violet-600 hover:to-fuchsia-600 hover:shadow-[0_0_60px_rgba(168,85,247,0.45)] hover:scale-[1.02] cta-pul"
-              >
-                Start a project
-                <Rocket className="ml-3 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </a>
-              <a
-                href="/services"
-                className="group inline-flex items-center justify-center rounded-2xl border border-white/16 bg-white/4 px-8 py-5 text-base font-semibold text-white/90 backdrop-blur-md transition-all duration-300 hover:border-white/36 hover:bg-white/10 hover:scale-[1.02]"
-              >
-                Explore services
-                <MoveRight className="ml-3 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </a>
-            </div>
-
-            {/* trust cards removed per request */}
+          </div>
+          <div className="w-full flex justify-end -mt-[4vw] parallax-layer-2">
+            <h1
+              className="about-hero-word block font-black leading-[1.1] tracking-[-0.05em] pr-[14vw]"
+              style={{
+                fontSize: "clamp(80px, 22vw, 240px)",
+                WebkitTextStroke: "2px rgba(255,255,255,0.7)",
+                color: "transparent",
+                filter: "drop-shadow(0 0 20px rgba(255,255,255,0.15))",
+              }}
+            >
+               US
+            </h1>
           </div>
         </div>
+
+        {/* ─── Scrolling marquee strip — Slimmer & More Elegant ─── */}
+        <div className="relative z-10 border-t border-b border-white/10 overflow-hidden py-8 mt-auto bg-white/[0.02] backdrop-blur-[4px]">
+          <div ref={marqueeRef} className="flex items-center gap-16 whitespace-nowrap" style={{ width: "200%" }}>
+            {[...MARQUEE, ...MARQUEE].map((item, i) => (
+              <span
+                key={i}
+                className={`text-2xl font-black tracking-[0.1em] uppercase shrink-0 ${
+                  item === "◆" ? "text-white/10" : "text-white/40 italic"
+                }`}
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Fade to next section */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#080808] to-transparent pointer-events-none" />
       </section>
 
-      {/* ===================== WHO WE ARE ===================== */}
-      <section className="relative">
-        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 py-14 md:grid-cols-2 md:py-18">
-          <div className="order-2 reveal opacity-0 translate-y-6 md:order-1">
-            <SectionHeading eyebrow="Who we are" title="A multi-disciplinary studio">
-              We’re a Bhopal-based creative + engineering team crafting high-impact websites, apps, and campaigns.
-              Our DNA mixes product thinking, performance marketing, and cinematic content—powered by AI workflows.
-            </SectionHeading>
+      {/* ═══════════════════════════════════════════════
+          STATS ROW
+      ═══════════════════════════════════════════════ */}
+      <section className="py-16 px-6">
+        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+          {[
+            { num: "200", suffix: "+", label: "Projects Delivered" },
+            { num: "50", suffix: "+", label: "Happy Clients" },
+            { num: "3", suffix: "×", label: "Avg. ROI for Ads" },
+            { num: "3", suffix: "yrs+", label: "In Industry" },
+          ].map((s, i) => (
+            <div key={i} className="scroll-reveal text-center">
+              <div
+                className="stat-number font-black leading-none"
+                data-target={s.num}
+                data-suffix={s.suffix}
+                style={{ fontSize: "clamp(36px, 6vw, 72px)", letterSpacing: "-0.04em" }}
+              >
+                0{s.suffix}
+              </div>
+              <div className="mt-2 text-xs uppercase tracking-[0.2em] text-white/40">{s.label}</div>
+            </div>
+          ))}
+        </div>
 
-            <ul className="mt-8 space-y-4 text-sm text-white/80">
-              {[
-                {
-                  icon: ShieldCheck,
-                  text: "Transparent process, measurable outcomes, clear communication.",
-                  color: "#2bc0e4",
-                },
-                {
-                  icon: Target,
-                  text: "Obsessed with shipping fast without compromising UX polish.",
-                  color: "#4300FF",
-                },
-                {
-                  icon: Sparkles,
-                  text: "AI-powered systems that reduce response times and costs.",
-                  color: "#FF0066",
-                },
-              ].map((item, i) => (
-                <li
-                  key={i}
-                  className="flex items-start gap-4 rounded-xl p-3 transition-all duration-300 hover:bg-white/5 hover:scale-[1.02]"
-                >
+        {/* Divider line */}
+        <div className="max-w-5xl mx-auto mt-12 h-px bg-white/8" />
+      </section>
+
+      {/* ═══════════════════════════════════════════════
+          PROCESS — Curved SVG Path + Steps
+      ═══════════════════════════════════════════════ */}
+      <section className="process-section relative px-6 py-28 overflow-hidden" style={{ minHeight: "160vh" }}>
+        {/* Section label */}
+        <div className="scroll-reveal text-left max-w-6xl mx-auto mb-8">
+          <span className="text-xs tracking-[0.3em] uppercase text-white/30">process.</span>
+        </div>
+
+        {/* SVG curved path — mimics the organic hand-drawn line */}
+        <svg
+          className="absolute left-0 top-0 w-full pointer-events-none"
+          style={{ height: "100%" }}
+          viewBox="0 0 800 1600"
+          preserveAspectRatio="xMidYMid meet"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* The organic curving path */}
+          <path
+            ref={pathRef}
+            d="M 400 80
+               C 300 200, 150 250, 200 380
+               C 260 520, 520 480, 480 620
+               C 430 780, 180 780, 220 940
+               C 260 1080, 560 1060, 520 1200
+               C 480 1340, 250 1380, 300 1500"
+            stroke="rgba(200, 255, 100, 0.7)"
+            strokeWidth="2"
+            strokeLinecap="round"
+            fill="none"
+          />
+
+          {/* Moving dot on path */}
+          <circle
+            ref={dotRef}
+            cx="400"
+            cy="80"
+            r="6"
+            fill="rgba(200, 255, 100, 1)"
+            style={{ filter: "drop-shadow(0 0 8px rgba(200,255,100,0.8))" }}
+          />
+        </svg>
+
+        {/* Process Steps — alternating left/right */}
+        <div className="relative max-w-5xl mx-auto">
+          {STEPS.map((step, i) => (
+            <div
+              key={i}
+              ref={(el) => { if (el) stepRefs.current[i] = el; }}
+              className={`flex items-start gap-6 mb-32 ${i % 2 === 0 ? "justify-start" : "justify-end"}`}
+            >
+              <div
+                className={`max-w-xs ${i % 2 !== 0 ? "text-right" : "text-left"}`}
+                style={{ paddingLeft: i % 2 === 0 ? "8%" : "0", paddingRight: i % 2 !== 0 ? "8%" : "0" }}
+              >
+                {/* Bullet + small label */}
+                <div className={`flex items-center gap-3 mb-3 ${i % 2 !== 0 ? "justify-end" : ""}`}>
                   <span
-                    className="mt-0.5 grid h-9 w-9 place-items-center rounded-lg"
-                    style={{ backgroundColor: `${item.color}1A` }}
-                  >
-                    <item.icon className="h-4 w-4" style={{ color: item.color }} />
+                    className="inline-block w-2 h-2 rounded-full"
+                    style={{ backgroundColor: "rgba(200, 255, 100, 0.8)" }}
+                  />
+                  <span className="text-xs font-bold tracking-[0.2em] uppercase text-white/40">
+                    ◦ {step.label}
                   </span>
-                  <span className="leading-relaxed">{item.text}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Abstract visual (no stock photo) */}
-          <div className="order-1 reveal opacity-0 translate-y-6 md:order-2">
-            <div className="relative mx-auto aspect-[16/10] w-full max-w-xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.07] to-white/[0.02] p-1 backdrop-blur-xl">
-              {/* Replace abstract visual with a team photo from Unsplash (public image) */}
-              <div className="relative h-full w-full rounded-2xl bg-[#06060a] overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1400&auto=format&fit=crop"
-                  alt="Our team"
-                  className="w-full h-full object-cover object-center"
-                />
-
-                {/* subtle gradient overlay to match site style */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#000000]/20 via-transparent to-[#000000]/30" />
-              </div>
-              <div className="pointer-events-none absolute inset-0 rounded-2xl ring-1 ring-white/10" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===================== CAPABILITIES (BIGGER CARDS) ===================== */}
-      <section className="relative">
-        <div className="mx-auto max-w-7xl px-6 py-14 md:py-18">
-          <SectionHeading eyebrow="What we do" title="Capabilities that move the needle">
-            Strategy, design, engineering, and growth—one tight squad.
-          </SectionHeading>
-
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                icon: Code2,
-                title: "Web & App Development",
-                desc: "Next.js + Tailwind with scalable backends (Supabase/Convex). Fast, secure & SEO-ready.",
-              },
-              {
-                icon: Palette,
-                title: "Brand & UI/UX",
-                desc: "Design systems, motion, accessibility and crisp component libraries.",
-              },
-              {
-                icon: Megaphone,
-                title: "Performance Marketing",
-                desc: "Meta/Google Ads with clean tracking, funnels, and creative testing.",
-              },
-              {
-                icon: Sparkles,
-                title: "AI Integrations",
-                desc: "Chatbots, voice agents and automations to reduce cost and response time.",
-              },
-              {
-                icon: LineChart,
-                title: "Analytics & CRO",
-                desc: "Dashboards, heatmaps and experiments to turn visitors into customers.",
-              },
-              {
-                icon: Gauge,
-                title: "Performance & SEO",
-                desc: "Core Web Vitals, Lighthouse 95+, server rendering & technical SEO.",
-              },
-            ].map((f, i) => (
-              <FeatureBig key={f.title} {...f} delay={i * 80} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===================== PROCESS (BIGGER, STEPPED) ===================== */}
-      <section className="relative">
-        <div className="mx-auto max-w-7xl px-6 py-14 md:py-18">
-          <SectionHeading eyebrow="How we work" title="Process that keeps momentum">
-            No fluff—weekly sprints, async clarity, and demo-first collaboration.
-          </SectionHeading>
-
-          <div className="mt-12 grid grid-cols-1 gap-8 md:grid-cols-3">
-            {[
-              { icon: Workflow, title: "Discover", desc: "Goals, users, constraints. We align on KPIs & guardrails." },
-              { icon: Palette, title: "Design", desc: "Flows, wireframes, high-fidelity UI and motion guidelines." },
-              { icon: Globe2, title: "Build & Iterate", desc: "Ship in small slices, measure, optimize, then scale." },
-            ].map((s, i) => (
-              <ProcessCard key={s.title} index={i} {...s} />
-            ))}
-          </div>
-
-          <ul className="reveal opacity-0 translate-y-6 mx-auto mt-10 grid max-w-4xl grid-cols-1 gap-4 text-sm text-white/80 sm:grid-cols-2">
-            {[
-              "Weekly demos & clear milestones",
-              "Transparent pricing & scope",
-              "Design systems & component libraries",
-              "Performance-first development",
-            ].map((t) => (
-              <li key={t} className="flex items-center gap-3 rounded-xl p-3 hover:bg-white/5 transition">
-                <CheckCircle2 className="h-5 w-5 text-[#2bc0e4]" />
-                <span>{t}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* ===================== MILESTONES (TIMELINE CARD) ===================== */}
-      <section className="relative">
-        <div className="mx-auto max-w-7xl px-6 py-14 md:py-18">
-          <SectionHeading eyebrow="Journey" title="Milestones on our path">
-            A quick timeline of how we’ve grown with our partners.
-          </SectionHeading>
-
-          <div className="mt-12">
-            <div className="relative mx-auto rounded-2xl border border-white/6 bg-white/[0.02] p-8 text-white/90">
-              <div className="flex items-center gap-3 mb-6">
-                <Stars className="h-5 w-5 text-purple-400" />
-                <h3 className="text-lg font-semibold">Milestones</h3>
-              </div>
-
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                {/* left column timeline */}
-                <div className="relative pl-10">
-                  <div className="absolute left-4 top-0 bottom-0 w-px bg-white/10" />
-                  <ul className="space-y-8">
-                    {[
-                      {
-                        year: '2022',
-                        title: 'Launched Creative + Tech Studio',
-                        desc: 'First 20 projects completed with repeat clients.',
-                      },
-                      {
-                        year: '2023',
-                        title: 'Performance Marketing Wing',
-                        desc: '2× ROI avg. across ecom & local businesses.',
-                      },
-                      {
-                        year: '2024',
-                        title: 'AI Assistants & Automation',
-                        desc: 'Voice bots, chatbots, content pipelines live.',
-                      },
-                    ].map((m) => (
-                      <li key={m.title} className="relative">
-                        <span className="absolute -left-6 top-1 h-3 w-3 rounded-full bg-purple-500 ring-2 ring-white/6" />
-                        <div className="text-sm font-semibold text-purple-400">{m.year}</div>
-                        <h4 className="mt-1 text-lg font-semibold">{m.title}</h4>
-                        <p className="mt-1 text-sm text-white/70">{m.desc}</p>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
 
-                {/* right column timeline */}
-                <div className="relative pl-10">
-                  <div className="absolute left-4 top-0 bottom-0 w-px bg-white/10" />
-                  <ul className="space-y-8">
-                    {[
-                      {
-                        year: '2024–25',
-                        title: 'Scaling Delivery & Ops',
-                        desc: 'Faster turnarounds, tighter QA, better handoffs.',
-                      },
-                      {
-                        year: '2025',
-                        title: 'Enterprise-grade Builds',
-                        desc: 'Complex dashboards, CRM, and real-time apps.',
-                      },
-                    ].map((m) => (
-                      <li key={m.title} className="relative">
-                        <span className="absolute -left-6 top-1 h-3 w-3 rounded-full bg-purple-500 ring-2 ring-white/6" />
-                        <div className="text-sm font-semibold text-purple-400">{m.year}</div>
-                        <h4 className="mt-1 text-lg font-semibold">{m.title}</h4>
-                        <p className="mt-1 text-sm text-white/70">{m.desc}</p>
-                      </li>
-                    ))}
-                  </ul>
+                {/* Step number */}
+                <div
+                  className="font-black text-white/8 leading-tight pt-2 mb-1 select-none"
+                  style={{ fontSize: "clamp(48px, 8vw, 96px)", letterSpacing: "-0.04em" }}
+                >
+                  {step.num}
                 </div>
+
+                {/* Step title */}
+                <h3 className="text-lg font-bold text-white mb-2">{step.title}</h3>
+
+                {/* Step desc */}
+                <p className="text-sm text-white/50 leading-relaxed">{step.desc}</p>
               </div>
             </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* ===================== CTA ===================== */}
-      <section className="relative">
-        <div className="mx-auto max-w-7xl px-6 pb-20 pt-8 md:pb-28">
-          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-r from-white/[0.08] to-white/[0.03] p-8 text-center backdrop-blur-2xl">
-            <div className="absolute inset-0 bg-gradient-to-r from-[#2bc0e4]/10 via-[#4300FF]/10 to-[#FF0066]/10 opacity-40" />
-            <h3 className="relative text-3xl font-bold sm:text-4xl">Ready to build something ambitious?</h3>
-            <p className="relative mx-auto mt-4 max-w-2xl text-base text-white/70 sm:text-lg">
-              Let’s align on goals, timelines, and budgets—and then ship.
+      {/* ═══════════════════════════════════════════════
+          WHO WE ARE — Split text section
+      ═══════════════════════════════════════════════ */}
+      <section className="px-6 py-24 border-t border-white/8">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          {/* Left — big quote */}
+          <div className="scroll-reveal">
+            <p className="text-xs tracking-[0.3em] uppercase text-white/30 mb-6">who we are</p>
+            <blockquote
+              className="font-black leading-[1.1] text-white"
+              style={{ fontSize: "clamp(28px, 4vw, 52px)", letterSpacing: "-0.03em" }}
+            >
+              "We don't just design —{" "}
+              <span className="text-white/40">we build experiences that people remember long after they leave."</span>
+            </blockquote>
+          </div>
+
+          {/* Right — details */}
+          <div className="scroll-reveal space-y-6 text-white/60 text-base leading-relaxed">
+            <p>
+              MetaBull Universe is a full-service creative & technology studio based in Bhopal. We blend performance
+              marketing, cinematic content, brand design, and AI-powered automations into one tight, high-impact squad.
             </p>
-            <div className="relative mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <a
-                href="/contact"
-                className="group relative inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-[#2bc0e4] to-[#4300FF] px-8 py-4 font-semibold text-white transition-all duration-300 hover:from-[#4300FF] hover:to-[#FF0066] hover:shadow-[0_0_50px_rgba(67,0,255,0.5)] hover:scale-[1.02]"
+            <p>
+              Our team of designers, developers, marketers, and strategists work as a unified creative unit — no silos,
+              no chasing briefs. Just one team obsessed with pushing the work further.
+            </p>
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-3 mt-4 text-white font-semibold text-sm tracking-wide group"
+            >
+              <span
+                className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center transition-all group-hover:bg-white group-hover:text-black"
               >
-                Book a discovery call
-                <Rocket className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </a>
-              <a
-                href="/portfolio"
-                className="group inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/5 px-8 py-4 font-semibold text-white/90 backdrop-blur-md transition-all duration-300 hover:border-white/40 hover:bg-white/10 hover:scale-[1.02]"
-              >
-                View our work
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </a>
-            </div>
+                →
+              </span>
+              Start a project
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Local styles */}
+      {/* ═══════════════════════════════════════════════
+          CAPABILITIES — Dark card grid
+      ═══════════════════════════════════════════════ */}
+      <section className="px-6 py-24 border-t border-white/8">
+        <div className="max-w-6xl mx-auto">
+          <div className="scroll-reveal mb-16 flex items-end justify-between">
+            <div>
+              <p className="text-xs tracking-[0.3em] uppercase text-white/30 mb-4">capabilities</p>
+              <h2
+                className="font-black text-white leading-[1.0]"
+                style={{ fontSize: "clamp(32px, 5vw, 64px)", letterSpacing: "-0.04em" }}
+              >
+                What we<br />master
+              </h2>
+            </div>
+            <Link to="/services" className="text-sm text-white/40 hover:text-white transition-colors hidden md:block">
+              View all services →
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/8">
+            {[
+              { num: "01", title: "Web & App Development", desc: "Next.js, React, WordPress — blazing fast, SEO-ready, pixel-perfect." },
+              { num: "02", title: "Brand & Visual Identity", desc: "Logos, design systems, motion guidelines, and component libraries." },
+              { num: "03", title: "Performance Marketing", desc: "Meta & Google Ads with creative testing, funnels, and clean tracking." },
+              { num: "04", title: "Video Production", desc: "Cinematic reels, product films, social content, and UGC campaigns." },
+              { num: "05", title: "AI Automations", desc: "Voice bots, chatbots, and content pipelines to cut cost and time." },
+              { num: "06", title: "Social Media", desc: "Strategy, content calendars, post design, and community management." },
+            ].map((c, i) => (
+              <div
+                key={i}
+                className="scroll-reveal bg-[#080808] p-8 group hover:bg-[#111] transition-colors duration-300 cursor-default"
+              >
+                <div className="text-xs text-white/20 font-mono mb-6">{c.num}</div>
+                <h3 className="font-bold text-white text-lg mb-3 group-hover:text-white/90">{c.title}</h3>
+                <p className="text-sm text-white/40 leading-relaxed">{c.desc}</p>
+                {/* Hover underline */}
+                <div className="mt-6 h-px w-0 group-hover:w-full bg-white/20 transition-all duration-500" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════
+          CTA — Full width minimal
+      ═══════════════════════════════════════════════ */}
+      <section className="px-6 py-32 border-t border-white/8">
+        <div className="max-w-5xl mx-auto text-center">
+          <div className="scroll-reveal">
+            <p className="text-xs tracking-[0.3em] uppercase text-white/30 mb-8">let's work together</p>
+            <h2
+              className="font-black leading-[1.0] text-white mb-10"
+              style={{ fontSize: "clamp(42px, 8vw, 110px)", letterSpacing: "-0.04em" }}
+            >
+              Ready to build<br />
+              <span className="text-white/30">something great?</span>
+            </h2>
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-4 border border-white/20 rounded-full px-10 py-5 text-base font-semibold text-white hover:bg-white hover:text-black transition-all duration-300 group"
+            >
+              Book a discovery call
+              <span className="group-hover:translate-x-2 transition-transform">→</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Inline styles ────────────────────────── */}
       <style>{`
-        .reveal { transition: transform .8s cubic-bezier(.25,.46,.45,.94), opacity .8s; }
-        .reveal.in { opacity: 1 !important; transform: translateY(0) scale(1) !important; }
-        @keyframes shine { 0%{transform:translateX(-110%) skewX(-15deg);} 100%{transform:translateX(200%) skewX(-15deg);} }
-        @keyframes gradientShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
-        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-
-        /* Make hero fill viewport minus the fixed nav height (responsive) */
-        .hero-full { min-height: calc(100vh - 6rem); }
-        @media (min-width: 768px) { .hero-full { min-height: calc(100vh - 7rem); } }
-        @media (min-width: 1024px) { .hero-full { min-height: calc(100vh - 8rem); } }
-
-        /* CTA pulse (subtle) */
-        @media (prefers-reduced-motion: no-preference) {
-          .cta-pulse { animation: ctaPulse 3.6s ease-in-out infinite; }
-          @keyframes ctaPulse { 0%{transform:scale(1)} 50%{transform:scale(1.03)} 100%{transform:scale(1)} }
+        /* Smooth antialiasing for big display text */
+        h1, h2, h3, blockquote {
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
         }
 
-        .trust-card { box-shadow: 0 6px 24px rgba(0,0,0,0.45); }
+        /* Liquid gradient animation for titles */
+        .liquid-text {
+          background-size: 200% auto;
+          animation: liquid 8s linear infinite;
+        }
+
+        @keyframes liquid {
+          0% { background-position: 0% center; }
+          50% { background-position: 100% center; }
+          100% { background-position: 0% center; }
+        }
+
+        /* High-end animated film grain */
+        .noise-grain {
+          background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+          animation: noise 0.2s infinite;
+        }
+
+        @keyframes noise {
+          0%, 100% { transform: translate(0, 0); }
+          10% { transform: translate(-5%, -10%); }
+          20% { transform: translate(-15%, 5%); }
+          30% { transform: translate(7%, -25%); }
+          40% { transform: translate(-5%, 25%); }
+          50% { transform: translate(-15%, 10%); }
+          60% { transform: translate(15%, 0%); }
+          70% { transform: translate(0%, 15%); }
+          80% { transform: translate(3%, 35%); }
+          90% { transform: translate(-10%, 10%); }
+        }
       `}</style>
-    </div>
-  );
-}
-
-/* -------------------- Reusables -------------------- */
-
-function SectionHeading({
-  eyebrow,
-  title,
-  children,
-}: {
-  eyebrow: string;
-  title: string;
-  children?: React.ReactNode;
-}) {
-  return (
-    <div className="mx-auto max-w-3xl text-center reveal opacity-0 translate-y-6">
-      <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm tracking-wide text-white/80 backdrop-blur">
-        <Sparkles className="h-4 w-4 text-[#2bc0e4]" />
-        {eyebrow}
-      </div>
-      <h2 className="mt-6 text-3xl font-bold sm:text-4xl md:text-5xl bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
-        {title}
-      </h2>
-      {children && <p className="mx-auto mt-4 max-w-2xl text-white/70">{children}</p>}
-    </div>
-  );
-}
-
-function FeatureBig({
-  icon: Icon,
-  title,
-  desc,
-  delay = 0,
-}: {
-  icon: any;
-  title: string;
-  desc: string;
-  delay?: number;
-}) {
-  return (
-    <div
-      className="reveal opacity-0 translate-y-6 group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.05] p-7 backdrop-blur-md transition-all duration-500 hover:border-white/20 hover:bg-white/[0.09] hover:scale-[1.02]"
-      style={{ transitionDelay: `${delay}ms` }}
-    >
-      <div className="relative z-10">
-        <div className="flex items-center gap-5">
-          <div className="grid h-14 w-14 place-items-center rounded-xl bg-gradient-to-br from-white/10 to-white/5 text-white transition-all duration-300 group-hover:scale-110 group-hover:from-[#2bc0e4]/20 group-hover:to-[#4300FF]/20">
-            <Icon className="h-6 w-6" />
-          </div>
-          <h4 className="text-lg font-semibold sm:text-xl">{title}</h4>
-        </div>
-        <p className="mt-3 text-sm text-white/75 leading-relaxed">{desc}</p>
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-r from-[#2bc0e4]/5 via-[#4300FF]/6 to-[#FF0066]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-    </div>
-  );
-}
-
-function ProcessCard({
-  icon: Icon,
-  title,
-  desc,
-  index,
-}: {
-  icon: any;
-  title: string;
-  desc: string;
-  index: number;
-}) {
-  return (
-    <div className="reveal opacity-0 translate-y-6 group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.05] backdrop-blur">
-      <div className="relative p-7">
-        <div className="flex items-center gap-5">
-          <div className="relative">
-            <div className="grid h-14 w-14 place-items-center rounded-xl bg-gradient-to-br from-white/10 to-white/5 text-white">
-              <Icon className="h-6 w-6" />
-            </div>
-            <div className="absolute -top-2 -right-2 flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-r from-[#2bc0e4] to-[#4300FF] text-xs font-bold">
-              {index + 1}
-            </div>
-          </div>
-          <h4 className="text-xl font-semibold">{title}</h4>
-        </div>
-        <p className="mt-3 text-sm text-white/75 leading-relaxed">{desc}</p>
-      </div>
-      <div className="h-1.5 w-full bg-white/5">
-        <div className="h-1.5 w-0 bg-gradient-to-r from-[#2bc0e4] via-[#4300FF] to-[#FF0066] transition-all duration-1000 group-hover:w-full" />
-      </div>
-    </div>
-  );
-}
-
-function Milestone({
-  year,
-  title,
-  desc,
-  delay = 0,
-}: {
-  year: string;
-  title: string;
-  desc: string;
-  delay?: number;
-}) {
-  return (
-    <div
-      className="reveal opacity-0 translate-y-6 group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.05] p-7 backdrop-blur-md transition-all duration-500 hover:border-white/20 hover:bg-white/[0.09] hover:scale-[1.02]"
-      style={{ transitionDelay: `${delay}ms` }}
-    >
-      <div className="text-sm font-semibold text-[#2bc0e4]">{year}</div>
-      <h4 className="mt-2 text-xl font-semibold">{title}</h4>
-      <p className="mt-3 text-white/75 leading-relaxed">{desc}</p>
-      <div className="absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r from-[#2bc0e4] to-[#4300FF] transition-all duration-500 group-hover:w-full" />
     </div>
   );
 }

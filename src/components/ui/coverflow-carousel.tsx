@@ -81,7 +81,7 @@ const CoverflowCarousel: React.FC<CoverflowCarouselProps> = ({
 
     return (
         <div className={cn("relative w-full max-w-[1400px] mx-auto py-12", className)}>
-            <div className="overflow-hidden perspective-[1000px] px-4 md:px-12" ref={emblaRef}>
+            <div className="overflow-hidden perspective-[1000px] px-4 md:px-12" ref={emblaRef} data-cursor="DRAG">
                 <div className={cn("flex touch-pan-y -ml-4 items-center", containerHeight)}>
                     {loopedItems.map((item, index) => (
                         <CarouselCard

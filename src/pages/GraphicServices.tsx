@@ -143,7 +143,7 @@ const GraphicServices = () => {
                     transition={{ duration: 0.88, delay: 1.5, ease: "easeOut" }}
                 >
                     {/* Main heading - Impactful but fitting */}
-                    <h1 className="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-[5.5rem] font-black text-white leading-[1.05] tracking-tighter mb-6">
+                    <h1 className="text-[32px] sm:text-[40px] md:text-6xl lg:text-[5.5rem] font-black text-white leading-[1.1] md:leading-[1.05] tracking-tighter mb-6">
                         Designs that make your <br className="hidden md:block" />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-600">brand </span>
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-500 to-rose-500">unforgettable</span>
@@ -169,58 +169,60 @@ const GraphicServices = () => {
                     </div>
                 </motion.div>
 
-                {/* Parallax Floating Images — shifted right */}
-                <Floating sensitivity={-1} className="overflow-hidden absolute inset-0 pt-[80px]">
-                    <FloatingElement depth={0.5} className="top-[15%] left-[12%]">
-                        <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.15 }}
-                            src={floatingImages[0].url} alt={floatingImages[0].alt}
-                            className="w-16 h-16 md:w-24 md:h-24 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform" />
-                    </FloatingElement>
+                {/* Parallax Floating Images — hidden on mobile to avoid overlap */}
+                <div className="hidden md:block absolute inset-0 pt-[80px]">
+                    <Floating sensitivity={-1} className="overflow-hidden">
+                        <FloatingElement depth={0.5} className="top-[15%] left-[12%]">
+                            <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.15 }}
+                                src={floatingImages[0].url} alt={floatingImages[0].alt}
+                                className="w-16 h-16 md:w-24 md:h-24 object-cover hover:scale-105 duration-200 cursor-none transition-transform" data-cursor="VIEW" />
+                        </FloatingElement>
 
-                    <FloatingElement depth={1} className="top-[18%] left-[32%]">
-                        <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.3 }}
-                            src={floatingImages[1].url} alt={floatingImages[1].alt}
-                            className="w-20 h-20 md:w-28 md:h-28 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform" />
-                    </FloatingElement>
+                        <FloatingElement depth={1} className="top-[18%] left-[32%]">
+                            <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.3 }}
+                                src={floatingImages[1].url} alt={floatingImages[1].alt}
+                                className="w-20 h-20 md:w-28 md:h-28 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform" />
+                        </FloatingElement>
 
-                    <FloatingElement depth={2} className="top-[12%] left-[72%]">
-                        <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.45 }}
-                            src={floatingImages[2].url} alt={floatingImages[2].alt}
-                            className="w-24 h-32 md:w-32 md:h-44 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform" />
-                    </FloatingElement>
+                        <FloatingElement depth={2} className="top-[12%] left-[72%]">
+                            <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.45 }}
+                                src={floatingImages[2].url} alt={floatingImages[2].alt}
+                                className="w-24 h-32 md:w-32 md:h-44 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform" />
+                        </FloatingElement>
 
-                    <FloatingElement depth={1} className="top-[8%] left-[93%]">
-                        <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.6 }}
-                            src={floatingImages[3].url} alt={floatingImages[3].alt}
-                            className="w-24 h-24 md:w-32 md:h-32 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform" />
-                    </FloatingElement>
+                        <FloatingElement depth={1} className="top-[8%] left-[93%]">
+                            <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.6 }}
+                                src={floatingImages[3].url} alt={floatingImages[3].alt}
+                                className="w-24 h-24 md:w-32 md:h-32 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform" />
+                        </FloatingElement>
 
-                    {/* Middle elements pushed to edges */}
-                    <FloatingElement depth={1.5} className="top-[50%] left-[8%]">
-                        <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.75 }}
-                            src={floatingImages[4].url} alt={floatingImages[4].alt}
-                            className="w-28 h-28 md:w-36 md:h-36 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform" />
-                    </FloatingElement>
+                        {/* Middle elements pushed to edges */}
+                        <FloatingElement depth={1.5} className="top-[50%] left-[8%]">
+                            <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.75 }}
+                                src={floatingImages[4].url} alt={floatingImages[4].alt}
+                                className="w-28 h-28 md:w-36 md:h-36 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform" />
+                        </FloatingElement>
 
-                    <FloatingElement depth={2} className="top-[55%] left-[92%]">
-                        <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.9 }}
-                            src={floatingImages[7].url} alt={floatingImages[7].alt}
-                            className="w-28 h-28 md:w-36 md:h-48 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform" />
-                    </FloatingElement>
+                        <FloatingElement depth={2} className="top-[55%] left-[92%]">
+                            <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.9 }}
+                                src={floatingImages[7].url} alt={floatingImages[7].alt}
+                                className="w-28 h-28 md:w-36 md:h-48 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform" />
+                        </FloatingElement>
 
-                    {/* Bottom elements pushed down and corners */}
-                    <FloatingElement depth={4} className="top-[85%] left-[15%]">
-                        <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 1.05 }}
-                            src={floatingImages[5].url} alt={floatingImages[5].alt}
-                            className="w-32 h-48 md:w-44 md:h-64 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform" />
-                    </FloatingElement>
+                        {/* Bottom elements pushed down and corners */}
+                        <FloatingElement depth={4} className="top-[85%] left-[15%]">
+                            <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 1.05 }}
+                                src={floatingImages[5].url} alt={floatingImages[5].alt}
+                                className="w-32 h-48 md:w-44 md:h-64 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform" />
+                        </FloatingElement>
 
-                    <FloatingElement depth={1} className="top-[88%] left-[82%]">
-                        <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 1.2 }}
-                            src={floatingImages[6].url} alt={floatingImages[6].alt}
-                            className="w-24 h-24 md:w-32 md:h-32 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform" />
-                    </FloatingElement>
-                </Floating>
+                        <FloatingElement depth={1} className="top-[88%] left-[82%]">
+                            <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 1.2 }}
+                                src={floatingImages[6].url} alt={floatingImages[6].alt}
+                                className="w-24 h-24 md:w-32 md:h-32 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform" />
+                        </FloatingElement>
+                    </Floating>
+                </div>
             </section>
 
             {/* Our Work — 3D Carousel Gallery */}

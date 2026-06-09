@@ -80,6 +80,7 @@ html {
 @layer utilities {
   .font-sans {
     font-family:
+      "Plus Jakarta Sans",
       "Inter",
       -apple-system,
       BlinkMacSystemFont,
@@ -300,9 +301,24 @@ html {
         hsl(var(--blue-400) / 0.6),
         hsl(var(--purple-400) / 0.6));
   }
+
+  /* Animated Text Gradient (Premium) */
+  .text-animate-gradient {
+    background: conic-gradient(from 180deg at 50% 50%, #2BC0E4 0deg, #4300FF 120deg, #FF0066 240deg, #2BC0E4 360deg);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradient-x 6s infinite alternate;
+  }
 }
 
 /* Optimized keyframes */
+@keyframes gradient-x { 
+  0%{ background-position: 0% 50%; } 
+  100%{ background-position: 100% 50%; } 
+}
+
 @keyframes float {
 
   0%,

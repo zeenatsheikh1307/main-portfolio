@@ -82,21 +82,31 @@ const features = [
     <div className="min-h-screen bg-[#0a0a0f] text-foreground transition-colors duration-300 overflow-x-hidden">
       <Navigation />
 
-      {/* Hero Section - Scroll Morph Hero */}
-      <ScrollMorphHero />
+      {/* Hero Section - Scroll Morph Hero - Hidden on Mobile for better UX */}
+      <div className="hidden md:block">
+        <ScrollMorphHero />
+      </div>
+      <div className="md:hidden pt-24 pb-12 px-6 text-center">
+        <h1 className="text-4xl font-black uppercase mb-4 text-white tracking-tight">
+          Social Growth
+        </h1>
+        <p className="text-gray-400 text-lg">
+          Scaling brands through viral content and community building.
+        </p>
+      </div>
 
       {/* Our Work - Social Media Case Studies */}
       <section
         id="work"
-        className="px-4 md:px-6 py-16 md:py-24 bg-[#08080c] relative overflow-hidden"
+        className="px-4 md:px-6 py-12 md:py-24 bg-[#08080c] relative overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto mb-16">
+        <div className="max-w-7xl mx-auto mb-10 md:mb-16">
           <div className="flex flex-col items-center justify-center text-center">
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase mb-4 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent tracking-tight">
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-black uppercase mb-3 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent tracking-tight">
               Our Results
             </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent mb-6"></div>
-            <p className="text-gray-400 max-w-2xl text-lg">
+            <div className="w-16 md:w-24 h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent mb-6"></div>
+            <p className="text-gray-400 max-w-2xl text-base md:text-lg">
               We don't just post; we grow communities. Here is how we've scaled accounts and driven massive engagement.
             </p>
           </div>
@@ -109,7 +119,8 @@ const features = [
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="group relative rounded-[2.5rem] overflow-hidden bg-[#0d0d14] border border-white/5 shadow-2xl flex flex-col"
+            className="group relative rounded-[2.5rem] overflow-hidden bg-[#0d0d14] border border-white/5 shadow-2xl flex flex-col cursor-none"
+            data-cursor="INSIGHTS"
           >
             {/* Image/Feed Mockup Area */}
             <div className="relative h-64 md:h-80 w-full bg-black overflow-hidden">
@@ -160,7 +171,8 @@ const features = [
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="group relative rounded-[2.5rem] overflow-hidden bg-[#0d0d14] border border-white/5 shadow-2xl flex flex-col"
+            className="group relative rounded-[2.5rem] overflow-hidden bg-[#0d0d14] border border-white/5 shadow-2xl flex flex-col cursor-none"
+            data-cursor="INSIGHTS"
           >
             {/* Image/Feed Mockup Area */}
             <div className="relative h-64 md:h-80 w-full bg-black overflow-hidden">
