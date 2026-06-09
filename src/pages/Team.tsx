@@ -1,6 +1,26 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import Navigation from "../components/Navigation";
-import { Search, ChevronDown, X as XIcon } from "lucide-react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import {
+  Linkedin,
+  Twitter,
+  Sparkles,
+  Mail,
+  ArrowUpRight,
+  User,
+  Palette,
+  Github as GithubIcon,
+  Search,
+  ChevronDown,
+  X as XIcon,
+} from "lucide-react";
+import Particles from "../components/Particle";
+import { Spotlight } from "../components/ui/spotlight";
+import Navigation from "@/components/Navigation";
 
 /* ------------------------------------------
    TYPES & TEAM DATA
@@ -13,42 +33,171 @@ type Member = {
   short?: string;
   tags?: string[];
   featured?: boolean;
+  color?: string;
 };
 
 const TEAM: Member[] = [
   {
-    name: "Priyansh Gour",
+    name: "Neeraj Soni",
     role: "Founder & CEO",
-    image: "https://randomuser.me/api/portraits/men/32.jpg",
-    bio: "Visionary leader with a passion for digital innovation and client success.",
+    image: "https://metabulluniverse.com/images/WhatsApp%20Image%202026-04-16%20at%205.48.09%20PM.jpeg",
+    bio: "Visionary leader driving digital transformation and creative excellence across the MetaBull ecosystem.",
     short: "Scaling brands with performance + design.",
     tags: ["Leadership", "Strategy", "Growth"],
     featured: true,
   },
   {
-    name: "Aarav Sharma",
-    role: "Lead Developer",
-    image: "https://randomuser.me/api/portraits/men/45.jpg",
-    bio: "Expert in web technologies and building scalable digital products.",
-    short: "Next.js, Tailwind, Supabase — ship fast.",
-    tags: ["Next.js", "Supabase", "CI/CD"],
+    name: "Rakhi Sahu",
+    role: "Ads Manager",
+    image: "",
+    bio: "Strategic mastermind specializing in high-conversion advertising campaigns and ROI optimization.",
+    short: "High-conversion ads & ROI optimization.",
+    tags: ["Meta Ads", "Google Ads", "Funnels"],
+    color: "from-blue-600 to-indigo-600",
   },
   {
-    name: "Isha Verma",
-    role: "Marketing Head",
-    image: "https://randomuser.me/api/portraits/women/65.jpg",
-    bio: "Strategist focused on creative campaigns and brand growth.",
-    short: "Full-funnel ads + brand storytelling.",
-    tags: ["Funnels", "Creatives", "Analytics"],
-    featured: true,
+    name: "Jaydeep Lodhi",
+    role: "Ads Manager",
+    image: "",
+    bio: "Data-driven specialist focused on scaling digital presence through targeted ad performance.",
+    short: "Scaling brands via targeted performance.",
+    tags: ["Ad Performance", "Analytics", "Scaling"],
+    color: "from-indigo-600 to-purple-600",
   },
   {
-    name: "Riya Singh",
-    role: "Content Specialist",
-    image: "https://randomuser.me/api/portraits/women/68.jpg",
-    bio: "Storyteller and content creator with a flair for engaging audiences.",
-    short: "Long-form + shorts that convert.",
-    tags: ["Copy", "SEO", "Shorts"],
+    name: "Tanishk Goswami",
+    role: "Web Developer",
+    image: "",
+    bio: "Crafting high-performance, responsive web applications with cutting-edge technologies.",
+    short: "Next.js, Tailwind, React developer.",
+    tags: ["Next.js", "React", "Frontend"],
+    color: "from-emerald-600 to-teal-600",
+  },
+  {
+    name: "Zeenat Sheikh",
+    role: "Web Developer",
+    image: "",
+    bio: "Bridging aesthetics and functionality to create seamless digital user journeys.",
+    short: "Stunning UI/UX & clean web code.",
+    tags: ["TypeScript", "UI/UX", "Vite"],
+    color: "from-teal-600 to-cyan-600",
+  },
+  {
+    name: "Shwet Chourey",
+    role: "Web Developer",
+    image: "",
+    bio: "Specializing in scalable architecture and intuitive frontend experiences.",
+    short: "Scalable architecture & frontend.",
+    tags: ["React", "State Management", "CSS"],
+    color: "from-cyan-600 to-blue-600",
+  },
+  {
+    name: "Akshit Saxena",
+    role: "Campaign Manager",
+    image: "",
+    bio: "Executing integrated marketing strategies that resonate with global audiences.",
+    short: "Integrated marketing & growth.",
+    tags: ["Campaigns", "Branding", "Strategy"],
+    color: "from-orange-600 to-red-600",
+  },
+  {
+    name: "Shantanu Pal",
+    role: "Campaign Manager",
+    image: "",
+    bio: "Driving brand growth through innovative engagement and cross-channel campaigns.",
+    short: "Innovative engagement & cross-channel.",
+    tags: ["Growth", "Social Media", "Funnels"],
+    color: "from-red-600 to-pink-600",
+  },
+  {
+    name: "Salman Khan",
+    role: "Campaign Manager",
+    image: "",
+    bio: "Expert in market analysis and strategic execution for high-impact brand visibility.",
+    short: "Market analysis & high-impact visibility.",
+    tags: ["Market Analysis", "Execution", "Brand"],
+    color: "from-pink-600 to-rose-600",
+  },
+  {
+    name: "Sarthak",
+    role: "Social Media Manager",
+    image: "",
+    bio: "Building community and driving engagement across all major social platforms.",
+    short: "Community building & social presence.",
+    tags: ["Social Media", "Engagement", "Community"],
+    color: "from-violet-600 to-purple-600",
+  },
+  {
+    name: "Sejal Patwar",
+    role: "Graphic Designer",
+    image: "",
+    bio: "Translating brand visions into stunning visual identities and digital assets.",
+    short: "Creative graphics & brand design.",
+    tags: ["Illustrator", "Photoshop", "Branding"],
+    color: "from-yellow-600 to-orange-600",
+  },
+  {
+    name: "Rikta Roy",
+    role: "Graphic Designer",
+    image: "",
+    bio: "Creative storyteller focused on high-fidelity design and brand consistency.",
+    short: "High-fidelity designs & storytelling.",
+    tags: ["Figma", "Visual Identity", "Assets"],
+    color: "from-amber-600 to-yellow-600",
+  },
+  {
+    name: "Saif Khan",
+    role: "Video Editor",
+    image: "",
+    bio: "Bringing stories to life through cinematic editing and dynamic motion graphics.",
+    short: "Cinematic video editing & motion.",
+    tags: ["Premiere Pro", "After Effects", "Motion"],
+    color: "from-fuchsia-600 to-pink-600",
+  },
+  {
+    name: "Akaash",
+    role: "Video Editor",
+    image: "",
+    bio: "Mastering the art of visual rhythm and high-impact video production.",
+    short: "Visual rhythm & video production.",
+    tags: ["Post-production", "Editing", "VFX"],
+    color: "from-rose-600 to-red-600",
+  },
+  {
+    name: "Bittu",
+    role: "Video Editor",
+    image: "",
+    bio: "Expert in post-production and digital storytelling for social impact.",
+    short: "Digital storytelling & social impact.",
+    tags: ["Social Content", "Storytelling", "Audio"],
+    color: "from-sky-600 to-blue-600",
+  },
+  {
+    name: "Ekta Sahu",
+    role: "Sales",
+    image: "",
+    bio: "Forging strategic partnerships and driving business growth through tailored solutions.",
+    short: "Partnerships & growth solutions.",
+    tags: ["Partnerships", "Growth", "Solutions"],
+    color: "from-lime-600 to-green-600",
+  },
+  {
+    name: "Aditi Saini",
+    role: "Sales",
+    image: "",
+    bio: "Dedicated to building long-term client relationships and organizational success.",
+    short: "Client relationships & success.",
+    tags: ["Client Success", "Communication", "Sales"],
+    color: "from-green-600 to-emerald-600",
+  },
+  {
+    name: "Jyotsana",
+    role: "Sales",
+    image: "",
+    bio: "Focusing on market expansion and strategic client acquisition strategies.",
+    short: "Market expansion & client acquisition.",
+    tags: ["Market Expansion", "Acquisition", "Strategy"],
+    color: "from-emerald-600 to-cyan-600",
   },
 ];
 
@@ -56,6 +205,10 @@ const TEAM: Member[] = [
    UTILS + HOOKS
 ------------------------------------------- */
 const cn = (...a: (string | false | undefined)[]) => a.filter(Boolean).join(" ");
+
+const getInitials = (name: string) => {
+  return name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
+};
 
 function useReveal<T extends HTMLElement>(stagger = 0.06) {
   const ref = useRef<T | null>(null);
@@ -91,7 +244,7 @@ function useReveal<T extends HTMLElement>(stagger = 0.06) {
 }
 
 const Tag = ({ children }: { children: React.ReactNode }) => (
-  <span className="text-sm sm:text-base rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-foreground/80 shadow-sm">
+  <span className="text-[10px] sm:text-xs rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-foreground/80 shadow-sm">
     {children}
   </span>
 );
@@ -153,7 +306,7 @@ const Team: React.FC = () => {
 
       <Navigation />
 
-      {/* HERO: true full-screen (accounts for mobile browser UI) */}
+      {/* HERO */}
       <section className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 min-h-[100svh] pt-16 sm:pt-20 flex items-center">
         <Starfield />
         <div className="w-full text-center mx-auto" data-reveal>
@@ -189,7 +342,7 @@ const Team: React.FC = () => {
           {/* Avatars + chips */}
           <div className="mt-6 sm:mt-7 flex flex-col items-center gap-4 sm:gap-5">
             <div className="flex -space-x-3">
-              {TEAM.map((m) => (
+              {TEAM.filter(m => m.image).slice(0, 5).map((m) => (
                 <img key={m.name} src={m.image} alt={m.name} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/20 object-cover" />
               ))}
             </div>
@@ -249,23 +402,33 @@ function Card({ member, onOpen }: { member: Member; onOpen: () => void }) {
     >
       <div className="rounded-2xl bg-zinc-900/80 backdrop-blur border border-white/15 overflow-hidden shadow-[0_10px_30px_-12px_rgba(0,0,0,0.45)]">
         {/* image with fixed aspect */}
-        <div className="relative">
-          {!imgLoaded && (
+        <div className="relative overflow-hidden">
+          {(!imgLoaded && member.image) && (
             <div className="aspect-[4/3] w-full overflow-hidden bg-white/5">
               <div className="h-full w-[140%] -translate-x-10 animate-[shimmer_1.2s_infinite] bg-[linear-gradient(110deg,rgba(255,255,255,0.04)_8%,rgba(255,255,255,0.16)_18%,rgba(255,255,255,0.04)_33%)] [background-size:200%_100%]" />
             </div>
           )}
-          <img
-            src={member.image}
-            alt={member.name}
-            className={cn(
-              "aspect-[4/3] w-full object-cover object-center select-none transition-opacity duration-500",
-              imgLoaded ? "opacity-100" : "opacity-0"
-            )}
-            onLoad={() => setImgLoaded(true)}
-            loading="lazy"
-            decoding="async"
-          />
+          {member.image ? (
+            <img
+              src={member.image}
+              alt={member.name}
+              className={cn(
+                "aspect-[4/3] w-full object-cover object-top select-none transition-opacity duration-500",
+                imgLoaded ? "opacity-100" : "opacity-0",
+                member.name === "Neeraj Soni" && "scale-[1.35] origin-top"
+              )}
+              onLoad={() => setImgLoaded(true)}
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <div className="aspect-[4/3] w-full bg-[#111] border-b border-white/5 flex items-center justify-center relative overflow-hidden">
+              <div className={`absolute inset-0 bg-gradient-to-br ${member.color || 'from-purple-900 to-indigo-900'} opacity-20`} />
+              <span className="relative z-10 text-[3rem] font-black text-white/20 group-hover:text-white/40 transition-all duration-500 drop-shadow-2xl">
+                {getInitials(member.name)}
+              </span>
+            </div>
+          )}
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-zinc-900/90 to-transparent" />
         </div>
 
@@ -285,11 +448,11 @@ function Card({ member, onOpen }: { member: Member; onOpen: () => void }) {
             )}
           </div>
 
-          <p className="mt-3 text-[13px] sm:text-sm text-muted-foreground">{member.short || member.bio}</p>
+          <p className="mt-3 text-[13px] sm:text-sm text-muted-foreground truncate">{member.short || member.bio}</p>
 
           {!!member.tags?.length && (
             <div className="mt-4 flex flex-wrap gap-2">
-              {member.tags.map((t) => (
+              {member.tags.slice(0, 3).map((t) => (
                 <Tag key={t}>{t}</Tag>
               ))}
             </div>
@@ -325,8 +488,21 @@ function ProfileModal({ member, onClose }: { member: Member; onClose: () => void
         </button>
 
         <div className="grid grid-cols-1 md:grid-cols-3">
-          <div className="md:col-span-1">
-            <img src={member.image} alt={member.name} className="h-56 w-full object-cover md:h-full" />
+          <div className="md:col-span-1 overflow-hidden">
+            {member.image ? (
+              <img
+                src={member.image}
+                alt={member.name}
+                className={cn(
+                  "h-56 w-full object-cover object-top md:h-full",
+                  member.name === "Neeraj Soni" && "scale-[1.35] origin-top"
+                )}
+              />
+            ) : (
+              <div className="h-56 w-full md:h-full bg-gradient-to-br from-[#111] to-[#222] flex items-center justify-center min-h-[200px]">
+                <span className="text-[4rem] font-black text-white/10">{getInitials(member.name)}</span>
+              </div>
+            )}
           </div>
           <div className="md:col-span-2 p-6">
             <h3 className="text-2xl font-semibold">{member.name}</h3>
