@@ -42,6 +42,8 @@ const TEAM: Member[] = [
     role: "Founder & CEO",
     image: "https://metabulluniverse.com/images/WhatsApp%20Image%202026-04-16%20at%205.48.09%20PM.jpeg",
     bio: "Visionary leader driving digital transformation and creative excellence across the MetaBull ecosystem.",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMc8EvEmkIlnIJaPtCqGGZUJfWVv6qV0fYBQ&s",
+    bio: "Visionary leader with a passion for digital innovation and client success.",
     short: "Scaling brands with performance + design.",
     tags: ["Leadership", "Strategy", "Growth"],
     featured: true,
@@ -198,6 +200,31 @@ const TEAM: Member[] = [
     short: "Market expansion & client acquisition.",
     tags: ["Market Expansion", "Acquisition", "Strategy"],
     color: "from-emerald-600 to-cyan-600",
+    name: "Tanishk Goswami",
+    role: "Web Leader",
+    image: "https://tanishkgoswami-portfolio.vercel.app/main_pfp.svg",
+    bio: "Visionary leader with a passion for digital innovation and client success.",
+    short: "Scaling brands with performance + design.",
+    tags: ["Leadership", "Strategy", "Growth"],
+    featured: true,
+  },
+  {
+    name: "Jaydeep Lodhi",
+    role: "Sales & Marketing Leader",
+    image: "https://img.magnific.com/free-vector/man-profile-account-picture_24908-81754.jpg",
+    bio: "Visionary leader with a passion for digital innovation and client success.",
+    short: "Scaling brands with performance + design.",
+    tags: ["Leadership", "Strategy", "Growth"],
+    featured: true,
+  },
+  {
+    name: "Rakhi Sahu",
+    role: "Sales & Marketing Leader",
+    image: "https://static.vecteezy.com/system/resources/previews/025/869/610/non_2x/profile-image-of-woman-avatar-for-social-networks-with-half-circle-fashion-bright-illustration-in-trendy-style-free-vector.jpg",
+    bio: "Visionary leader with a passion for digital innovation and client success.",
+    short: "Scaling brands with performance + design.",
+    tags: ["Leadership", "Strategy", "Growth"],
+    featured: true,
   },
 ];
 
@@ -369,10 +396,26 @@ const Team: React.FC = () => {
 
       {/* GRID */}
       <section id="team-grid" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12 md:pb-16">
-        <div ref={gridRef} className="grid grid-cols-1 xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {filtered.map((m, idx) => (
-            <Card key={m.name + idx} member={m} onOpen={() => setActive(m)} />
-          ))}
+        <div ref={gridRef}>
+          {/* Featured/Founder card - full width */}
+          {filtered.some(m => m.featured) && (
+            <div className="mb-20 sm:mb-32 lg:mb-40 flex justify-center">
+              {filtered.filter(m => m.featured).map((m, idx) => (
+                <div key={m.name + idx} className="w-full max-w-md sm:max-w-lg lg:max-w-2xl">
+                  <Card member={m} onOpen={() => setActive(m)} />
+                </div>
+              ))}
+            </div>
+          )}
+          
+          {/* Other team members grid */}
+          {filtered.some(m => !m.featured) && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {filtered.filter(m => !m.featured).map((m, idx) => (
+                <Card key={m.name + idx} member={m} onOpen={() => setActive(m)} />
+              ))}
+            </div>
+          )}
         </div>
         {filtered.length === 0 && (
           <div className="text-center text-muted-foreground mt-12 sm:mt-16">No members found.</div>
